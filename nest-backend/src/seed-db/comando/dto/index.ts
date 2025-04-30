@@ -1,0 +1,1 @@
+export {CreateComandoDto} from './create-comando.dto';

@@ -1,0 +1,1 @@
+export { CreateDepartamentoDto } from './create-departamento.dto'

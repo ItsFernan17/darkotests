@@ -1,0 +1,35 @@
+---
+import { NewAsignacion } from "../../../components/Asignaciones/NewAsigancion";
+import Sistema from "../../../layouts/sistema.astro";
+import { FaClipboardList } from "react-icons/fa";
+---
+
+<Sistema title="Nueva Asignacion">
+  <div class="mx-auto mt-10 w-full max-w-6xl px-4 font-page text-primary">
+
+    <!-- Encabezado general -->
+    <header class="mb-12">
+      <div class="flex items-center gap-3 mb-2">
+        <FaClipboardList className="text-[#5673E0] w-8 h-8" />
+        <h1 class="text-[38px] font-extrabold tracking-tight">
+          Asignaciones para Exámenes
+        </h1>
+      </div>
+      <p class="text-gray-500 text-lg">
+        Gestione eficientemente las asignaciones de exámenes por usuario y nivel.
+      </p>
+      <div class="mt-4 w-20 h-1 bg-[#5673E0] rounded-full"></div>
+    </header>
+
+    <!-- Bloque de formulario -->
+    <section class="bg-white border border-gray-200 rounded-2xl shadow-md p-8 md:p-12 transition-all hover:shadow-lg">
+      <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-3 border-gray-100">
+        Crear Nueva Asignación
+      </h2>
+
+      <NewAsignacion client:load />
+    </section>
+
+    <div class="h-24"></div>
+  </div>
+</Sistema>

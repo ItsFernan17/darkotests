@@ -1,0 +1,47 @@
+---
+
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/icono_usuario.png" />
+		<meta name="generator" content={Astro.generator} />
+		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+		 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+		<title>{title}</title>
+	</head>
+	<body class="bg-[#F5F5F5] w-full h-full absolute">
+        <div class="flex items-center w-full h-auto  text-white md:px-9 bg-primary drop-shadow-md justify-between">
+            <div class="flex items-center space-x-8">
+                <a href="/portal/menu-sistema">
+                    <img
+                      src="/logotipo.png"
+                      alt="Logo Ministerio de la Defensa"
+                      class="w-48 transition-all"
+                    />
+                  </a>
+            </div>
+        </div>
+		<div class="">
+			<div class="h-2 flex">
+				<div class="flex-1 bg-[#069CF1]"></div>
+				<div class="flex-1 bg-white"></div>
+				<div class="flex-1 bg-[#069CF1]"></div>
+				</div>
+			<div class="mt-4 ml-[200px] mr-[200px]">
+                <slot/>
+            </div>
+		</div>
+	</body>
+</html>

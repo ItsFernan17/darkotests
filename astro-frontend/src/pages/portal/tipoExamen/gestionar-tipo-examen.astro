@@ -1,0 +1,19 @@
+---
+import Sistema from "../../../layouts/sistema.astro";
+import { ViewTipoExamen } from '../../../components/TipoExamen/ViewTipoExamen';
+---
+
+<Sistema title="Gestión de Tipos de Examen">
+    <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
+      <div class="mt-1 h-8"></div>
+    </div>
+    <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+      Tipos de Examen Registrados en el Sistema
+    </h1>
+    <p class="text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+      Para buscar un tipo de examen específico, ingresa la descripción o CEOM.
+    </p>
+    <div class="max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
+      <ViewTipoExamen client:load />
+    </div>
+</Sistema>

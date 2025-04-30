@@ -1,0 +1,42 @@
+---
+import NavbarSistema from '../components/NavbarSistema';
+
+
+interface Props {
+	title: string;
+}
+
+const { title } = Astro.props;
+
+import AuthGuard from '../components/Auth/auth';
+
+---
+
+<!doctype html>
+<html lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="description" content="Astro description" />
+		<meta name="viewport" content="width=device-width" />
+		<link rel="icon" type="image/svg+xml" href="/icono_usuario.png" />
+		<meta name="generator" content={Astro.generator} />
+		<!-- Íconos adaptados a modo claro/oscuro -->
+		<link rel="icon" type="image/png" href="/icono-dark.svg" media="(prefers-color-scheme: light)">
+		<link rel="icon" type="image/png" href="/icono-light.svg" media="(prefers-color-scheme: dark)">
+
+		<!-- Fuentes -->
+		<link rel="preconnect" href="https://fonts.googleapis.com">
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+		<link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+		<title>{title}</title>
+	</head>
+	<body class="bg-background w-full h-full absolute">
+		<AuthGuard client:load>
+		<div class="">
+			<NavbarSistema client:load />
+			<slot/>
+		</div>
+	</AuthGuard>
+	</body>
+</html>

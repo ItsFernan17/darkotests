@@ -1,0 +1,30 @@
+---
+import { DoExamen } from "../../../components/Examenes/DoExamen"
+import Examen from "../../../layouts/examen.astro";
+---
+
+<Examen title="Evaluacion">
+    <div class="flex flex-col items-center bg-background mt-10 rounded-lg p-5">
+        {/* Encabezado */}
+        <div class="flex flex-col items-center w-full text-center">
+          <div class="w-full mb-5">
+            <h1 class="text-2xl font-extrabold text-[48px] text-primary">
+              Estado Mayor de la Defensa Nacional
+            </h1>
+            <h2 class="text-lg text-primary text-[30px] mt-5">
+              Dirección de Personal Del Estado Mayor de la Defensa Nacional
+            </h2>
+          </div>
+          <div class="w-1/6 flex justify-center">
+            <img src="/EMDN1.png" alt="Logo de la Defensa Nacional" class="w-[193px]" />
+          </div>
+        </div>
+      
+        {/* Contenido del DoExamen debajo del encabezado */}
+        <div class="w-full mt-10 flex justify-center items-center">
+            <DoExamen client:load/>
+          </div>
+      </div>
+      
+      
+</Examen>

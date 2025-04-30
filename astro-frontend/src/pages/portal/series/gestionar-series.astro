@@ -1,0 +1,18 @@
+---
+import Sistema from "../../../layouts/sistema.astro";
+import { ViewSerie } from '../../../components/SeriesExamen/ViewSerieExamen';
+---
+
+<Sistema title="Gestionar Series de Examen">
+  <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
+    <div class="mt-1 h-8"></div>
+  </div>
+  <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+    Series de Examen
+  </h1>
+  <p class=" text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+    Para buscar alguna serie introduce la serie o la instrucción del examen.</p>
+  <div class=" max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
+    <ViewSerie client:load />
+  </div>
+</Sistema>

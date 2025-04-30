@@ -1,0 +1,1 @@
+export { CreateMotivoDto } from './create-motivo.dto';

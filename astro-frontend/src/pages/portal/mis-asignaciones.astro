@@ -1,0 +1,25 @@
+---
+import { ViewAsignacion } from "../../components/Asignaciones/ViewAsignacion";
+import Sistema from "../../layouts/sistema.astro";
+import MensajeEvaluado from "../../components/MensajeEvaluado";
+---
+
+<Sistema title="Mis Asignaciones">
+  <div class="flex flex-col items-center w-full mt-10 text-center">
+    <div class="w-full mb-5">
+      <h1 class="text-2xl font-extrabold text-[48px] text-primary">
+        Estado Mayor de la Defensa Nacional
+      </h1>
+      <h2 class="text-lg text-primary text-[30px] mt-5">
+        Dirección de Personal Del Estado Mayor de la Defensa Nacional
+      </h2>
+      <span id="welcome-message" class=" text-[30px] font-bold  text-primary">
+        <MensajeEvaluado client:load>
+      </span>
+    </div>
+  </div>
+  <div class="ml-32 mr-32">
+    <ViewAsignacion client:load />
+  </div>
+
+</Sistema>

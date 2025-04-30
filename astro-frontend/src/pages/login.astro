@@ -1,0 +1,187 @@
+---
+import { LoginForm } from "../components/Login/LoginForm";
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DarkoTest</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icono-dark.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icono-light.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <main
+      class="min-h-screen w-full bg-[#f3f3f5] relative overflow-hidden flex flex-col items-center justify-center px-4 py-12 font-sans"
+    >
+      <!-- Figuras decorativas (solo círculos, triángulos y cuadrados) -->
+      <svg
+        class="absolute top-[4%] left-[5%] w-24 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <circle cx="50" cy="50" r="50" fill="#FF6F61"></circle>
+      </svg>
+
+      <svg
+        class="absolute top-[8%] right-[10%] w-20 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="60" height="60" fill="#9C27B0" transform="rotate(10 30 30)"
+        ></rect>
+      </svg>
+
+      <svg
+        class="absolute top-[25%] left-[35%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <polygon points="50,0 100,100 0,100" fill="#5673E0"></polygon>
+      </svg>
+
+      <svg
+        class="absolute top-[50%] right-[6%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <circle cx="50" cy="50" r="45" fill="#9C27B0"></circle>
+      </svg>
+
+      <svg
+        class="absolute bottom-[12%] right-[8%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="60" height="60" fill="#5673E0" transform="rotate(45 30 30)"
+        ></rect>
+      </svg>
+
+      <svg
+        class="absolute bottom-[10%] left-[12%] w-20 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <polygon points="50,0 100,100 0,100" fill="#FF6F61"></polygon>
+      </svg>
+
+      <svg
+        class="absolute top-[60%] left-[5%] w-20 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <circle cx="50" cy="50" r="35" fill="#5673E0"></circle>
+      </svg>
+
+      <svg
+        class="absolute top-[15%] left-[70%] w-12 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="50" height="50" fill="#FF6F61" transform="rotate(15 25 25)"
+        ></rect>
+      </svg>
+
+      <!-- Círculo debajo del logo -->
+      <svg
+        class="absolute top-[18%] left-[15%] w-12 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <circle cx="50" cy="50" r="40" fill="#9C27B0"></circle>
+      </svg>
+
+      <!-- Cuadrado pequeño derecho -->
+      <svg
+        class="absolute top-[35%] right-[2%] w-10 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="60" height="60" fill="#5673E0" transform="rotate(30 30 30)"
+        ></rect>
+      </svg>
+
+      <!-- Círculo bajo login -->
+      <svg
+        class="absolute bottom-[20%] left-[55%] w-14 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <circle cx="50" cy="50" r="30" fill="#5673E0"></circle>
+      </svg>
+
+      <!-- Triángulo invertido inferior izquierdo -->
+      <svg
+        class="absolute bottom-[6%] left-[2%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <polygon points="0,0 100,0 50,100" fill="#FF6F61"></polygon>
+      </svg>
+
+      <!-- Cuadrado esquina inferior derecha -->
+      <svg
+        class="absolute bottom-[2%] right-[2%] w-14 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="70" height="70" fill="#9C27B0" transform="rotate(20 35 35)"
+        ></rect>
+      </svg>
+
+      <!-- Logo y bienvenida -->
+      <div class="z-10 flex flex-col items-center mb-6 text-center">
+        <div class="flex items-center gap-3 mb-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            class="w-10 h-10"
+          >
+            <path
+              d="M21 12C21 7.03 16.97 3 12 3C9.05 3 6.47 4.64 5.1 7"
+              stroke="#5673E0"
+              stroke-width="2.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M3 12C3 16.97 7.03 21 12 21C14.95 21 17.53 19.36 18.9 17"
+              stroke="#FF6F61"
+              stroke-width="2.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M9 12.5L11 14.5L15 10"
+              stroke="#2D2C36"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
+          <h1 class="text-3xl font-bold text-[#2d2c36]">DarkoTests</h1>
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold text-[#1a1a1a]">
+          ¡Bienvenido de vuelta!
+        </h2>
+      </div>
+
+      <div class="relative w-full max-w-lg bg-white rounded-2xl shadow-xl p-8 flex flex-col items-center">
+        <p class="text-md mb-8 md:text-md font-bold text-[#1a1a1a]">
+          Inicia sesión en tu cuenta de Asociada
+        </p>       
+        <LoginForm client:load />
+      </div>
+      <p class="text-xl text-[#4b4b4b] mt-6">
+        ¿Es tu primera vez en DarkoTests?
+      </p>
+      <a
+        href="/contacto"
+        class="text-[#5673E0] hover:underline text-sm font-medium"
+        >Ponte en conacto con nosotros</a
+      >
+    </main>
+  </body>
+</html>
