@@ -1,4 +1,12 @@
-import { Body, Controller, Get, Post, UseGuards, Req, UnauthorizedException } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Post,
+  UseGuards,
+  Req,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -12,7 +20,10 @@ import { UserActiveI } from 'src/common/interfaces/user-active.interface';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService, private readonly jwtService: JwtService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly jwtService: JwtService,
+  ) {}
 
   @Post('register')
   @Auth(Role.ADMINISTRADOR, Role.AUXILIAR)
@@ -35,10 +46,21 @@ export class AuthController {
   async refreshToken(@Body('refreshToken') token: string) {
     try {
       const payload = await this.jwtService.verifyAsync(token);
+
+      // Validar si el usuario aún existe
+      const user = await this.authService.findById(payload.user.dpi);
+      if (!user) throw new UnauthorizedException('Usuario no encontrado');
+
+      // Opcional: verificar si el refresh token está revocado en DB
+      // if (await this.authService.isRefreshTokenRevoked(token)) {
+      //   throw new UnauthorizedException('Refresh token revocado');
+      // }
+
       const newAccessToken = await this.jwtService.signAsync(
         { user: payload.user, rol: payload.rol },
         { expiresIn: '30m' },
       );
+
       return { accessToken: newAccessToken };
     } catch (error) {
       throw new UnauthorizedException('Refresh token no válido');

@@ -1,8 +1,14 @@
 ---
 import Sistema from '../../layouts/sistema.astro';
-import WelcomeMessage from '../../components/MesajeInicio';
+import CalendarioSistema from '../../components/CalendarioSistema.jsx';
+import PanelMenu from '../../components/PanelMenu.jsx';
 ---
 
-<Sistema title="Menu Principal">
-
+<Sistema title="Inicio del Sistema">
+  <section class="p-6 lg:p-10 bg-gray-100 min-h-screen flex justify-center">
+    <div class="grid grid-cols-1 lg:grid-cols-[600px_480px] gap-8 mx-auto">
+      <CalendarioSistema client:load />
+      <PanelMenu client:load />
+    </div>
+  </section>
 </Sistema>

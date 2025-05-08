@@ -76,14 +76,14 @@ export class UsuarioService {
 
   async createUsuario(createUsuarioDto: CreateUsuarioDto) {
     const nombreUsuario = this.generateUsername(createUsuarioDto.nombre_completo);
+  
+    // Buscar usuario por DPI (clave única)
     const usuarioExistente = await this.usuarioRepository.findOne({
-      where: { nombre_usuario: nombreUsuario },
+      where: { dpi: createUsuarioDto.dpi },
+      relations: ['residencia', 'grado', 'poblacion', 'comando'],
     });
   
-    if (usuarioExistente) {
-      throw new HttpException('El usuario ya existe en la base de datos.', 409);
-    }
-  
+    // Buscar entidades relacionadas
     const residencia = await this.departamentoRepository.findOne({ where: { codigo_departamento: createUsuarioDto.residencia } });
     const grado = await this.gradoRepository.findOne({ where: { codigo_grado: createUsuarioDto.grado } });
     const poblacion = await this.poblacionRepository.findOne({ where: { codigo_poblacion: createUsuarioDto.poblacion } });
@@ -92,31 +92,51 @@ export class UsuarioService {
     if (!residencia) {
       throw new HttpException('Departamento no encontrado.', HttpStatus.NOT_FOUND);
     }
-  
     if (!grado) {
       throw new HttpException('Grado no encontrado.', HttpStatus.NOT_FOUND);
     }
-  
     if (!poblacion) {
       throw new HttpException('Población no encontrada.', HttpStatus.NOT_FOUND);
     }
-
     if (!comando) {
       throw new HttpException('Comando no encontrado.', HttpStatus.NOT_FOUND);
     }
   
+    // Si ya existe y está inactivo, reactivar
+    if (usuarioExistente && usuarioExistente.estado === false) {
+      usuarioExistente.nombre_completo = createUsuarioDto.nombre_completo;
+      usuarioExistente.telefono = createUsuarioDto.telefono;
+      usuarioExistente.rol = createUsuarioDto.rol;
+      usuarioExistente.residencia = residencia;
+      usuarioExistente.grado = grado;
+      usuarioExistente.poblacion = poblacion;
+      usuarioExistente.comando = comando;
+      usuarioExistente.password = await bcryptjs.hash(createUsuarioDto.password, 10);
+      usuarioExistente.nombre_usuario = nombreUsuario;
+      usuarioExistente.estado = true;
+  
+      return this.usuarioRepository.save(usuarioExistente);
+    }
+  
+    // Si ya existe y está activo, lanzar error
+    if (usuarioExistente && usuarioExistente.estado === true) {
+      throw new HttpException('El usuario ya existe en la base de datos.', 409);
+    }
+  
+    // Crear nuevo usuario si no existe
     const newUsuario = this.usuarioRepository.create({
-      estado: true,
       ...createUsuarioDto,
       nombre_usuario: nombreUsuario,
-      residencia: residencia,
-      grado: grado,
-      poblacion: poblacion,
-      comando: comando,
+      residencia,
+      grado,
+      poblacion,
+      comando,
+      estado: true,
     });
   
     return this.usuarioRepository.save(newUsuario);
   }
+  
 
   async updateUsuario(dpi: string, updateUsuarioDto: UpdateUsuarioDto) {
     const usuarioExistente = await this.usuarioRepository.findOne({

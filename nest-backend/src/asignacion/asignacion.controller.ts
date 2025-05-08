@@ -42,12 +42,13 @@ export class AsignacionController {
   }
 
   @Post()
-  @Auth( Role.EVALUADOR, Role.ADMINISTRADOR)
+  @Auth(Role.EVALUADOR, Role.ADMINISTRADOR)
   createAsignacion(
     @Body() newAsignacion: CreateAsignacionDto,
-  ): Promise<Asignacion> {
+  ): Promise<Asignacion[]> {
     return this.asignacionService.createAsignacion(newAsignacion);
   }
+  
 
   @Put(':codigo_asignacion')
   @Auth(Role.ADMINISTRADOR, Role.EVALUADOR)
@@ -55,15 +56,12 @@ export class AsignacionController {
     @Param('codigo_asignacion') codigo_asignacion: number,
     @Body() updateAsignacion: UpdateAsignacionDto,
   ): Promise<Asignacion> {
-    const asignacion = await this.asignacionService.updateAsignacion(
+    return this.asignacionService.updateAsignacion(
       codigo_asignacion,
       updateAsignacion,
     );
-    if (asignacion instanceof HttpException) {
-      throw asignacion;
-    }
-    return asignacion;
   }
+  
 
   @Patch(':codigo_asignacion/estado')
   @Auth(Role.ADMINISTRADOR, Role.EVALUADOR)

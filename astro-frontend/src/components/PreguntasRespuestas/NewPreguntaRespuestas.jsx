@@ -3,6 +3,7 @@ import { useForm, useFieldArray } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import { FileText, CheckCircle, Edit3 } from "lucide-react";
 import TipoPregunta from "./TipoPregunta";
 import { createPregunta, updatePregunta } from "./PreguntaRespuesta.api";
 
@@ -18,12 +19,12 @@ export function NewPreguntaRespuestas({
     formState: { errors },
     reset,
     setValue,
-
   } = useForm({
     defaultValues: {
       respuestas: [{ respuesta: "", esCorrecta: false }],
     },
   });
+
 
   const resetTipoPreguntaRef = React.useRef(null);
   
@@ -161,143 +162,110 @@ export function NewPreguntaRespuestas({
   }
 });
 
+const InputWithIcon = React.forwardRef(
+  ({ icon: Icon, id, placeholder, type = "text", className = "", ...props }, ref) => (
+    <div className={`relative w-full`}>
+      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
+        <Icon size={16} />
+      </div>
+      <input
+        id={id}
+        type={type}
+        placeholder={placeholder}
+        className={`bg-[#f3f1ef] border border-gray-300 text-sm rounded-xl focus:ring-primary focus:border-primary block w-full px-10 py-2.5 ${className}`}
+        ref={ref}
+        {...props}
+      />
+    </div>
+  )
+);
+
 
   return (
     <div>
       <ToastContainer />
-      <form className="grid grid-cols-1 gap-4 mt-2" onSubmit={onSubmit}>
-        <div className="mt-4 col-span-2">
-          <label
-            htmlFor="pregunta"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            Pregunta
-          </label>
-          <input
-            type="text"
+      <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="mt-4 col-span-2">
+          <label className="mb-1 block text-sm font-medium text-gray-700">Pregunta</label>
+          <InputWithIcon
+            icon={Edit3}
             id="pregunta"
-            className="bg-[#F7FAFF] h-[38px] w-full mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: ¿Cuál es la misión del EMDN?"
             {...register("pregunta", { required: "*La Pregunta es requerida" })}
           />
-          {errors.pregunta && (
-            <p className="text-red-900 text-sm">{errors.pregunta.message}</p>
-          )}
+          {errors.pregunta && <p className="text-sm text-red-600 mt-1">{errors.pregunta.message}</p>}
         </div>
 
-        <div className="mt-2">
-          <label
-            htmlFor="tipo_pregunta"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            Tipo de Pregunta
-          </label>
-          <TipoPregunta register={register} errors={errors} setValue={setValue}
-            resetSelectRef={resetTipoPreguntaRef}    />
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">Tipo de Pregunta</label>
+          <TipoPregunta
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            resetSelectRef={resetTipoPreguntaRef}
+          />
         </div>
 
-        <div className="mt-2">
-          <label
-            htmlFor="punteo"
-            className="block font-page text-[16px] font-semibold text-primary"
-          >
-            Punteo o Valor de la Pregunta
-          </label>
-          <input
-            type="number"
+        <div>
+          <label className="mb-1 block text-sm font-medium text-gray-700">Punteo</label>
+          <InputWithIcon
+            icon={FileText}
             id="punteo"
-            className="bg-[#F7FAFF] h-[38px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="1, 2, 0.5, etc."
+            type="number"
+            placeholder="Ej. 1, 2, 0.5"
             step="0.1"
             {...register("punteo", {
-              required: "*El Punteo es requerido",
-              min: { value: 0, message: "*El punteo no puede ser negativo" },
+              required: "*El punteo es requerido",
+              min: { value: 0, message: "*No puede ser negativo" },
             })}
           />
-          {errors.punteo && (
-            <p className="text-red-900 text-sm">{errors.punteo.message}</p>
-          )}
+          {errors.punteo && <p className="text-sm text-red-600 mt-1">{errors.punteo.message}</p>}
         </div>
 
-        <div className="col-span-2 mt-4">
-          <h3 className="text-[18px] font-page font-bold text-primary mb-2">
-            Respuestas
-          </h3>
-          <div>
-            {fields.map((answer, index) => (
-              <div key={answer.id} className="flex items-center mb-4">
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">Respuestas</label>
+          {fields.map((item, index) => (
+           <div key={item.id} className="flex items-center mb-3 w-full space-x-2 ">
+              <InputWithIcon
+                icon={CheckCircle}
+                placeholder="Texto de la respuesta"
+                {...register(`respuestas.${index}.respuesta`, {
+                  required: "*Respuesta requerida",
+                })}
+              />
+              <label className="inline-flex items-center">
                 <input
-                  type="text"
-                  id={`respuesta-${index}`}
-                  {...register(`respuestas[${index}].respuesta`, {
-                    required: "*La respuesta es requerida",
-                  })}
-                  className="bg-[#F7FAFF] h-[38px] w-full rounded-sm shadow-sm border border-primary pl-3 font-page mr-2"
-                  placeholder="Ejemplo: Misión del EMDN, Verdadero, Falso, etc."
+                  type="checkbox"
+                  {...register(`respuestas.${index}.esCorrecta`)}
+                  className="form-checkbox h-5 w-5 text-green-600"
                 />
-                <label className="inline-flex items-center mr-2">
-                  <input
-                    type="checkbox"
-                    id={`esCorrecta-${index}`}
-                    {...register(`respuestas[${index}].esCorrecta`)}
-                    className="form-checkbox h-5 w-5 text-primary"
-                  />
-                  <span className="ml-2 text-sm font-bold text-primary">
-                    Correcta
-                  </span>
-                </label>
-                {fields.length > 1 && (
-                  <button
-                    type="button"
-                    onClick={() => remove(index)}
-                    className="text-red-500 hover:text-red-700"
-                  >
-                    <FaTrash size={16} />
-                  </button>
-                )}
-              </div>
-            ))}
-          </div>
+                <span className="ml-1 text-sm text-green-800 font-semibold">Correcta</span>
+              </label>
+              {fields.length > 1 && (
+                <button type="button" onClick={() => remove(index)} className="text-red-500">
+                  <FaTrash />
+                </button>
+              )}
+            </div>
+          ))}
           {fields.length < 3 && (
             <button
               type="button"
               onClick={() => append({ respuesta: "", esCorrecta: false })}
-              className="mt-2 flex items-center font-bold text-primary hover:text-primary-dark"
+              className="mt-1 flex items-center text-[#5673E0] font-medium hover:text-blue-900"
             >
-              <FaPlus size={16} className="mr-1" />
-              Agregar Respuesta
+              <FaPlus className="mr-1" /> Agregar Respuesta
             </button>
           )}
         </div>
 
-        <div className="flex justify-center">
-          {id ? (
-            <div className="flex justify-end space-x-4 mb-3 ml-[730px] w-full">
-              <button
-                type="submit"
-                className="bg-[#0f763d] mt-2 font-bold font-page mb-2 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#0f763d] hover:border-[#0f763d]"
-              >
-                Actualizar
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
-              >
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-center ml-[335px] w-full">
-              <button
-                type="submit"
-                className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
-              >
-                Crear Pregunta
-              </button>
-              {toastMessage && <div>{toastMessage}</div>}
-            </div>
-          )}
+        <div className="md:col-span-2 flex justify-center mt-2 mb-6">
+          <button
+            type="submit"
+            className={`bg-[#1a1a1a] text-white py-3 w-[220px] rounded-full font-semibold hover:bg-[#333] transition mt-2`}
+          >
+            {id ? "Actualizar Pregunta" : "Crear Pregunta"}
+          </button>
         </div>
       </form>
     </div>

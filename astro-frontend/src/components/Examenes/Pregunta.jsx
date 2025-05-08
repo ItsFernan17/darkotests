@@ -8,7 +8,14 @@ function Pregunta({ register, errors, setValue, getValues, name }) {
   const [selectedPreguntas, setSelectedPreguntas] = useState([]);
 
   useEffect(() => {
-    // Asegurarnos de actualizar el valor de las preguntas en el formulario cuando cambien las preguntas seleccionadas.
+    register(name, {
+      required: "*Seleccione al menos una pregunta",
+      validate: (value) => value?.length > 0 || "*Debe seleccionar mínimo una pregunta",
+    });
+  }, [register, name]);
+
+  useEffect(() => {
+    // Actualiza el valor del formulario cuando cambia la selección
     setValue(name, selectedPreguntas.map((p) => p.codigo_pregunta));
   }, [selectedPreguntas, setValue, name]);
 
@@ -21,42 +28,44 @@ function Pregunta({ register, errors, setValue, getValues, name }) {
     const currentValues = getValues(name) || [];
 
     if (isChecked) {
-      setSelectedPreguntas([...selectedPreguntas, pregunta]);
-      setValue(name, [...currentValues, pregunta.codigo_pregunta]);
+      const updated = [...selectedPreguntas, pregunta];
+      setSelectedPreguntas(updated);
+      setValue(name, updated.map((p) => p.codigo_pregunta), { shouldValidate: true });
     } else {
-      const filteredPreguntas = selectedPreguntas.filter(
+      const updated = selectedPreguntas.filter(
         (item) => item.codigo_pregunta !== pregunta.codigo_pregunta
       );
-      setSelectedPreguntas(filteredPreguntas);
-      setValue(
-        name,
-        currentValues.filter((value) => value !== pregunta.codigo_pregunta)
-      );
+      setSelectedPreguntas(updated);
+      setValue(name, updated.map((p) => p.codigo_pregunta), { shouldValidate: true });
     }
   };
 
   const isPreguntaSelected = (pregunta) =>
-    selectedPreguntas.some((selected) => selected.codigo_pregunta === pregunta.codigo_pregunta);
+    selectedPreguntas.some((p) => p.codigo_pregunta === pregunta.codigo_pregunta);
 
-  if (loading) return <p>Cargando preguntas...</p>;
-  if (error) return <p>Error al cargar preguntas.</p>;
+  if (loading) return <p className="text-sm text-gray-600">Cargando preguntas...</p>;
+  if (error) return <p className="text-sm text-red-600">Error al cargar preguntas.</p>;
 
   return (
-    <div className="relative w-full">
-      <p className="text-[16px] font-page font-semibold text-primary mt-3 mb-3">
+    <div className="relative w-full font-page">
+      <label className="block text-[16px] font-semibold text-primary mb-2">
         Seleccione una o varias Preguntas
-      </p>
+      </label>
 
       <div
-        className="bg-[#F7FAFF] h-[38px] w-full mt-1 rounded-sm shadow-sm border border-primary pl-3 pr-3 flex items-center justify-between cursor-pointer"
+        className="bg-[#F3F1EF] h-[40px] w-full rounded-md border border-gray-300 pl-3 pr-3 flex items-center justify-between cursor-pointer"
         onClick={toggleDropdown}
       >
-        <span className="font-page text-gray-700">Preguntas</span>
+        <span className="text-gray-700">
+          {selectedPreguntas.length > 0
+            ? `${selectedPreguntas.length} seleccionada(s)`
+            : "Preguntas disponibles"}
+        </span>
         {isOpen ? <FaChevronUp /> : <FaChevronDown />}
       </div>
 
       {isOpen && (
-        <div className="absolute bg-white border border-primary w-full mt-2 rounded-sm shadow-lg z-10 max-h-48 overflow-y-auto">
+        <div className="absolute bg-white border border-primary w-full mt-1 rounded-md shadow-lg z-10 max-h-48 overflow-y-auto">
           {data?.map((pregunta) => (
             <div
               key={pregunta.codigo_pregunta}
@@ -65,14 +74,13 @@ function Pregunta({ register, errors, setValue, getValues, name }) {
               <input
                 type="checkbox"
                 id={`pregunta-${pregunta.codigo_pregunta}`}
-                value={pregunta.codigo_pregunta}
                 checked={isPreguntaSelected(pregunta)}
                 onChange={(e) => handleCheckboxChange(e, pregunta)}
                 className="form-checkbox h-5 w-5 text-primary mr-2"
               />
               <label
                 htmlFor={`pregunta-${pregunta.codigo_pregunta}`}
-                className="text-sm font-page"
+                className="text-sm"
               >
                 {pregunta.descripcion}
               </label>
@@ -82,24 +90,24 @@ function Pregunta({ register, errors, setValue, getValues, name }) {
       )}
 
       {selectedPreguntas.length > 0 && (
-        <div>
-          <label className="block text-[18px] font-page font-bold mt-6 mb-2 text-primary">
+        <div className="mt-4">
+          <label className="block text-[15px] font-medium text-primary mb-2">
             Preguntas Seleccionadas
           </label>
-          {selectedPreguntas.map((pregunta, index) => (
+          {selectedPreguntas.map((pregunta) => (
             <input
-              key={index}
+              key={pregunta.codigo_pregunta}
               type="text"
               value={pregunta.descripcion}
               readOnly
-              className="bg-[#F7FAFF] h-[38px] w-full mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page mb-2"
+              className="bg-[#f3f1ef] h-[38px] w-full mb-2 rounded-md border border-gray-300 pl-3 text-sm"
             />
           ))}
         </div>
       )}
 
-      {errors.preguntas && (
-        <p className="text-red-900 text-sm mb-0">{errors.preguntas.message}</p>
+      {errors?.[name] && (
+        <p className="text-sm text-red-600 mt-1">{errors[name].message}</p>
       )}
     </div>
   );

@@ -1,17 +1,39 @@
 ---
 import Sistema from "../../../layouts/sistema.astro";
-import { ViewUsuarios } from '../../../components/Usuarios/ViewUsuario';
+import { ViewUsuarios } from "../../../components/Usuarios/ViewUsuario";
 ---
 
-<Sistema title="Gestionar Usuarios">
-  <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
-    <div class="mt-1 h-8"></div>
-  </div>
-  <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+<Sistema title="Gestionar Usuarios" bgColor="bg-[#f3f3f5]">
+  <h1
+    class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3 ml-[155px] mt-10"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-[42px] h-[42px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="userGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f2b8bc"></stop>
+          <stop offset="50%" stop-color="#aeb8f0"></stop>
+          <stop offset="100%" stop-color="#dab5e9"></stop>
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#userGradient)"
+        d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5Zm0 11c3.33 0 10 1.67 10 5v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2c0-3.33 6.67-5 10-5Z"
+      ></path>
+    </svg>
     Usuarios Registrados en el Sistema
   </h1>
-  <p class=" text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-    Para buscar algún usuario en específico, ingresa cualquiera de los datos registrados, Ej. DPI o Nombres.
+  <div
+    class="h-1 w-[900px] mt-2  ml-[155px] bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+  >
+  </div>
+  <p class="text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+    Para buscar algún usuario en específico, ingresa cualquiera de los datos
+    registrados, Ej. DPI o Nombres.
   </p>
   <div class="max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
     <ViewUsuarios client:load />

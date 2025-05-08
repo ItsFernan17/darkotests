@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createTipoExamen, updateTipoExamen } from "./TipoExamen.api";
 import Empleo from "./Empleo";
+import { FileText } from "lucide-react";
 
 export function NewTipoExamen({
   codigo_tipoE = null,
@@ -18,21 +19,19 @@ export function NewTipoExamen({
     setValue,
   } = useForm();
 
-  const [toastMessage, setToastMessage] = useState(null);
-
   const resetSelectRef = React.useRef(null);
 
   useEffect(() => {
     const fetchTipoExamenData = async () => {
       if (codigo_tipoE) {
         try {
-          const token = localStorage.getItem('accessToken');
+          const token = localStorage.getItem("accessToken");
           const tipoExamenResponse = await fetch(
             `http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}`,
             {
               headers: {
-                'Authorization': `Bearer ${token}`,
-                'Content-Type': 'application/json',
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
               },
             }
           );
@@ -54,130 +53,115 @@ export function NewTipoExamen({
     fetchTipoExamenData();
   }, [codigo_tipoE, reset]);
 
-
   const onSubmit = handleSubmit(async (dataTipoExamen) => {
-    console.log(dataTipoExamen);
-    
     if (codigo_tipoE) {
       try {
         await updateTipoExamen(codigo_tipoE, {
           descripcion: dataTipoExamen.descripcion,
           ceom: dataTipoExamen.ceom,
-          usuario_modifica: localStorage.getItem('usuario'), 
+          usuario_modifica: localStorage.getItem("usuario"),
         });
-  
+
         toast.success("Tipo de examen actualizado exitosamente!", {
           autoClose: 1500,
         });
-  
+
         setTimeout(() => {
-          onUserSaved(); 
+          onUserSaved();
           onClose();
           resetSelectRef.current();
         }, 1500);
-  
       } catch (error) {
         toast.error(`Error al actualizar el tipo de examen: ${error.message}`);
       }
-  
     } else {
       try {
         await createTipoExamen({
           descripcion: dataTipoExamen.descripcion,
           ceom: dataTipoExamen.ceom,
-          usuario_ingreso: localStorage.getItem('usuario'),
+          usuario_ingreso: localStorage.getItem("usuario"),
         });
-  
+
         toast.success("Tipo de examen creado exitosamente!", {
           autoClose: 2500,
         });
-  
       } catch (error) {
         toast.error(`Error al crear el tipo de examen: ${error.message}`);
-  
       } finally {
         reset();
         resetSelectRef.current();
       }
     }
   });
-  
-  
+
+  const inputClass =
+    "bg-[#f3f1ef] border border-gray-300 text-sm rounded-xl focus:ring-primary focus:border-primary block w-full px-10 py-2.5";
+  const labelClass = "mb-1 block text-sm font-medium text-gray-700";
+  const iconClass =
+    "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400";
+
+  const InputWithIcon = React.forwardRef(
+    ({ icon: Icon, id, placeholder, ...props }, ref) => (
+      <div className="relative">
+        <div className={iconClass}>
+          <Icon size={16} />
+        </div>
+        <input
+          id={id}
+          placeholder={placeholder}
+          className={inputClass}
+          ref={ref}
+          {...props}
+        />
+      </div>
+    )
+  );
 
   return (
     <div>
       <ToastContainer />
       <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
         onSubmit={onSubmit}
       >
-        <div className="flex space-x-4 mt-4">
-          <div>
-            <label
-              htmlFor="ceom"
-              className="block font-page text-[16px] font-semibold text-primary"
-            >
-              CEOM
-            </label>
-            <Empleo
-              register={register}
-              errors={errors}
-              setValue={setValue}
-              resetSelectRef={resetSelectRef}
-            />
-          </div>
-
-          <div>
-            <label
-              htmlFor="descripcion"
-              className="block font-page text-[16px] ml-5 font-semibold text-primary"
-            >
-              Descripción
-            </label>
-            <input
-              type="text"
-              id="descripcion"
-              className="bg-[#F7FAFF] h-[38px] w-[318px] mt-1 ml-5 rounded-sm shadow-sm border border-primary pl-3 font-page"
-              placeholder="Descripción del tipo de examen"
-              {...register("descripcion", {
-                required: "*La descripción es requerida",
-              })}
-            />
-            {errors.descripcion && (
-              <p className="text-red-900 ml-5 text-sm">
-                {errors.descripcion.message}
-              </p>
-            )}
-          </div>
+        <div className="mt-[2px]">
+          <label htmlFor="ceom" className={labelClass}>
+            CEOM
+          </label>
+          <Empleo
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            resetSelectRef={resetSelectRef}
+          />
         </div>
-        <div className="col-span-full flex justify-center">
-          {codigo_tipoE ? (
-            <div className="flex justify-end space-x-4 mb-3 w-full">
-              <button
-                type="submit"
-                className="bg-[#0f763d] mt-2 font-bold font-page mb-2 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#0f763d] hover:border-[#0f763d]"
-              >
-                Actualizar
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
-              >
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-center w-full">
-              <button
-                type="submit"
-                className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
-              >
-                Crear Tipo de Examen
-              </button>
-              {toastMessage && <div>{toastMessage}</div>}
-            </div>
+
+        <div>
+          <label htmlFor="descripcion" className={labelClass}>
+            Descripción
+          </label>
+          <InputWithIcon
+            icon={FileText}
+            id="descripcion"
+            placeholder="Descripción del tipo de examen"
+            {...register("descripcion", {
+              required: "*La descripción es requerida",
+            })}
+          />
+          {errors.descripcion && (
+            <p className="text-sm text-red-600 mt-1">
+              {errors.descripcion.message}
+            </p>
           )}
+        </div>
+
+        <div className="col-span-full flex justify-center mt-2 mb-6">
+          <button
+            type="submit"
+            className="bg-[#1a1a1a] text-white py-3 w-[200px]  rounded-full font-semibold hover:bg-[#333] transition mt-2"
+          >
+            {codigo_tipoE ? "Actualizar Tipo Examen" : "Crear Tipo Examen"}
+          </button>
         </div>
       </form>
     </div>

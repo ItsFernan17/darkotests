@@ -1,25 +1,62 @@
 ---
 import Sistema from "../../../layouts/sistema.astro";
-import {NewPreguntaRespuestas} from "../../../components/PreguntasRespuestas/NewPreguntaRespuestas";
+import { NewPreguntaRespuestas } from "../../../components/PreguntasRespuestas/NewPreguntaRespuestas";
 ---
 
-<Sistema title="Nueva Pregunta con Respuestas">
-    <div class="mx-auto mt-10 h-auto w-full max-w-4xl px-4">
-      <h1 class="font-bold text-[35px] text-primary font-page text-left">
-        Pregunta y Respuestas
-      </h1>
-      <p class="font-page font-normal text-primary text-[20px] mt-3 text-left">
-        Complete el formulario a continuación para registrar una nueva pregunta con sus respuestas.
-      </p>
-      <div class="bg-white w-full h-auto font-page rounded-md shadow-md mt-5 mb-5">
-        <div class="px-6 md:px-10 lg:px-20">
-          <h1 class="font-bold text-primary text-[20px] pt-5">
-            Información de la Pregunta
-          </h1>
-          <NewPreguntaRespuestas client:load />
-        </div>
-      </div>
-      <div class="mt-10 h-8"></div>
+<Sistema title="Nueva Pregunta de Examen" bgColor="bg-[#f3f3f5]">
+  <div class="mx-auto mt-10 h-auto w-full max-w-4xl px-4">
+    <h1
+      class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        class="w-[42px] h-[42px]"
+      >
+        <defs>
+          <linearGradient id="questionMarkGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f2b8bc"></stop>
+            <stop offset="50%" stop-color="#aeb8f0"></stop>
+            <stop offset="100%" stop-color="#dab5e9"></stop>
+          </linearGradient>
+        </defs>
+        <circle cx="12" cy="12" r="10" fill="url(#questionMarkGradient)"
+        ></circle>
+        <text
+          x="12"
+          y="16"
+          text-anchor="middle"
+          font-size="12"
+          font-family="Arial, sans-serif"
+          fill="#fff"
+          font-weight="bold"
+        >
+          ?
+        </text>
+      </svg>
+
+      Registrar Pregunta de Examen
+    </h1>
+
+    <div
+      class="h-1 w-108 mt-2 bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+    >
     </div>
-  </Sistema>
-  
+    <p class="font-page font-normal text-primary text-[20px] mt-3 text-left">
+      Complete el formulario a continuación para registrar una nueva pregunta
+      con sus respuestas.
+    </p>
+    <div
+      class="bg-white w-full h-auto font-page rounded-md shadow-md mt-5 mb-5"
+    >
+      <div class="px-6 md:px-10 lg:px-20">
+        <h1 class="font-bold text-primary text-[20px] pt-5">
+          Información de la Pregunta
+        </h1>
+        <NewPreguntaRespuestas client:load />
+      </div>
+    </div>
+    <div class="mt-10 h-8"></div>
+  </div>
+</Sistema>

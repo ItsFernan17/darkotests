@@ -15,7 +15,7 @@ export class UsuarioController {
   }
 
   @Get(':id')
-  @Auth(Role.ADMINISTRADOR, Role.AUXILIAR, Role.EVALUADOR)
+  @Auth(Role.ADMINISTRADOR, Role.AUXILIAR, Role.EVALUADOR, Role.EVALUADO)
   getUsuarioId(@Param('id') dpi: string) {
     return this.usuarioService.findByDPI(dpi);
   }

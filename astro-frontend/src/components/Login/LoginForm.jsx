@@ -1,5 +1,5 @@
 import { FaUser, FaLock } from "react-icons/fa";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi";
@@ -12,6 +12,14 @@ export function LoginForm() {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+
+  // 🔐 Limpieza si la sesión anterior fue cerrada manualmente o por cierre de pestaña
+  useEffect(() => {
+    if (sessionStorage.getItem("closedByUser") === "true") {
+      localStorage.clear();
+      sessionStorage.removeItem("closedByUser");
+    }
+  }, []);
 
   const getRoleFromJWT = (token) => {
     try {

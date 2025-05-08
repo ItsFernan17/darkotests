@@ -12,6 +12,8 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { NewUsuario } from "./NewUsuario";
 import { desactiveUsuario } from "./Usuario.api";
+import { X } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function ViewUsuarios() {
   const [filterText, setFilterText] = useState("");
@@ -20,35 +22,29 @@ export function ViewUsuarios() {
   const [selectedUser, setSelectedUser] = useState(null);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
-  const [userRole, setUserRole] = useState(null); // Role of the logged-in user
+  const [userRole, setUserRole] = useState(null);
 
   function getToken() {
     return localStorage.getItem("accessToken");
   }
 
   useEffect(() => {
-    // Get the role of the logged-in user from localStorage
     const storedUserRole = localStorage.getItem("role");
     setUserRole(storedUserRole);
   }, []);
 
   const fetchUsuarios = async () => {
     try {
-      const token = getToken(); // Obtener el token de localStorage
-
+      const token = getToken();
       const response = await fetch("http://localhost:3000/api/v1/usuario", {
-        headers: {
-          Authorization: `Bearer ${token}`, // Agregar el token en el encabezado
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
-
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-
       const usuarios = await response.json();
-      setData(usuarios); // Actualizamos el estado de la tabla
-      setLoading(false); // Desactivamos el estado de carga
+      setData(usuarios);
+      setLoading(false);
     } catch (error) {
       console.error("Error fetching data: ", error);
       setLoading(false);
@@ -63,122 +59,92 @@ export function ViewUsuarios() {
     (item) =>
       (item.dpi && item.dpi.toLowerCase().includes(filterText.toLowerCase())) ||
       (item.nombre_completo &&
-        item.nombre_completo.toLowerCase().includes(filterText.toLowerCase())) ||
+        item.nombre_completo
+          .toLowerCase()
+          .includes(filterText.toLowerCase())) ||
       (item.nombre_usuario &&
         item.nombre_usuario.toLowerCase().includes(filterText.toLowerCase()))
   );
 
   const handleSelectedRowsChange = ({ selectedRows }) => {
-    if (selectedRows.length > 0) {
-      setSelectedUser(selectedRows[0]);
-    } else {
-      setSelectedUser(null);
-    }
+    setSelectedUser(selectedRows.length > 0 ? selectedRows[0] : null);
   };
 
   const handleEditClick = () => {
-    if (selectedUser) {
-      setModalIsOpen(true);
-    }
+    if (selectedUser) setModalIsOpen(true);
   };
 
   const handleDeleteClick = async () => {
     if (selectedUser) {
       await desactiveUsuario(selectedUser.dpi);
-      setDeleteModalIsOpen(false); // Cerrar modal después de eliminar
-      setSelectedUser(null); // Deseleccionamos el usuario
-      fetchUsuarios(); // Recargar datos después de eliminar
+      setDeleteModalIsOpen(false);
+      setSelectedUser(null);
+      fetchUsuarios();
     }
   };
 
   const handleCloseModal = () => {
-    setModalIsOpen(false); // Cerrar modal
-    setSelectedUser(null); // Deseleccionar usuario
+    setModalIsOpen(false);
+    setSelectedUser(null);
   };
 
-    // Exportar a Excel
-    const exportToExcel = () => {
-      if (filteredData.length > 0) {
-        const exportData = filteredData.map(
-          ({
-            dpi,
-            nombre_completo,
-            nombre_usuario,
-            telefono,
-            rol,
-            residencia,
-            comando,
-            grado,
-            poblacion,
-          }) => ({
-            DPI: dpi,
-            Nombre: nombre_completo,
-            Usuario: nombre_usuario,
-            Telefono: telefono,
-            Rol: rol,
-            Residencia: residencia?.nombre_departamento || "N/A",
-            Comando: comando?.nombre_comando || "N/A",
-            Grado: grado?.nombre_grado || "N/A",
-            Poblacion: poblacion?.nombre_poblacion || "N/A",
-          })
-        );
-        const worksheet = XLSX.utils.json_to_sheet(exportData);
-        const workbook = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios");
-        XLSX.writeFile(workbook, "usuarios.xlsx");
-      } else {
-        alert("No hay datos para exportar");
-      }
-    };
-  
-    // Exportar a PDF
-    const exportToPDF = () => {
-      if (filteredData.length > 0) {
-        const exportData = filteredData.map(
-          ({
-            dpi,
-            nombre_completo,
-            nombre_usuario,
-            telefono,
-            rol,
-            residencia,
-            comando,
-            grado,
-            poblacion,
-          }) => [
-            dpi,
-            nombre_completo,
-            nombre_usuario,
-            telefono,
-            rol,
-            residencia?.nombre_departamento || "N/A",
-            comando?.nombre_comando || "N/A",
-            grado?.nombre_grado || "N/A",
-            poblacion?.nombre_poblacion || "N/A",
-          ]
-        );
-        const doc = new jsPDF();
-        doc.autoTable({
-          head: [
-            [
-              "DPI",
-              "Nombre",
-              "Usuario",
-              "Telefono",
-              "Rol",
-              "Residencia",
-              "Comando Militar",
-              "Grado Militar",
-              "Poblacion Militar",
-            ],
-          ],
-          body: exportData,
-        });
-        doc.save("usuarios.pdf");
-      } else {
-        alert("No hay datos para exportar");
-      }
-    };
+  const exportToExcel = () => {
+    if (filteredData.length > 0) {
+      const exportData = filteredData.map(
+        ({
+          dpi,
+          nombre_completo,
+          nombre_usuario,
+          telefono,
+          rol,
+          residencia,
+        }) => ({
+          DPI: dpi,
+          Nombre: nombre_completo,
+          Usuario: nombre_usuario,
+          Telefono: telefono,
+          Rol: rol,
+          Residencia: residencia?.nombre_departamento || "N/A",
+        })
+      );
+      const worksheet = XLSX.utils.json_to_sheet(exportData);
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, "Usuarios");
+      XLSX.writeFile(workbook, "usuarios.xlsx");
+    } else {
+      alert("No hay datos para exportar");
+    }
+  };
+
+  const exportToPDF = () => {
+    if (filteredData.length > 0) {
+      const exportData = filteredData.map(
+        ({
+          dpi,
+          nombre_completo,
+          nombre_usuario,
+          telefono,
+          rol,
+          residencia,
+        }) => [
+          dpi,
+          nombre_completo,
+          nombre_usuario,
+          telefono,
+          rol,
+          residencia?.nombre_departamento || "N/A",
+        ]
+      );
+      const doc = new jsPDF();
+      doc.autoTable({
+        head: [["DPI", "Nombre", "Usuario", "Telefono", "Rol", "Residencia"]],
+        body: exportData,
+      });
+      doc.save("usuarios.pdf");
+    } else {
+      alert("No hay datos para exportar");
+    }
+  };
 
   const columns = [
     {
@@ -217,24 +183,6 @@ export function ViewUsuarios() {
       sortable: true,
       className: "font-page",
     },
-    {
-      name: "Comando Militar",
-      selector: (row) => row.comando.nombre_comando || "",
-      sortable: true,
-      className: "font-page",
-    },
-    {
-      name: "Grado Militar",
-      selector: (row) => row.grado.nombre_grado || "",
-      sortable: true,
-      className: "font-page",
-    },
-    {
-      name: "Poblacion Militar",
-      selector: (row) => row.poblacion.nombre_poblacion || "",
-      sortable: true,
-      className: "font-page",
-    },
   ];
 
   if (loading) return <div className="text-center font-page">Cargando...</div>;
@@ -250,7 +198,7 @@ export function ViewUsuarios() {
             type="text"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="border  bg-[#F7FAFF] p-2 pl-10 w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 font-page"
+            className="border  bg-white p-2 pl-10 w-full rounded-2xl focus:outline-none focus:ring focus:border-blue-300 font-page"
             placeholder="Buscar usuario..."
           />
         </div>
@@ -282,38 +230,44 @@ export function ViewUsuarios() {
 
       {/* Mostrar acciones si hay un usuario seleccionado */}
       {selectedUser && (
-        <div className="flex items-center bg-primary text-white p-2 rounded-md mb-4">
-          <span className="mr-4 font-page ml-7">
-            Seleccionado: {selectedUser.nombre_usuario}
-          </span>
-          {/* Deshabilitar edición si el usuario actual es auxiliar y el seleccionado es admin */}
-          <button
-            onClick={handleEditClick}
-            className={`flex items-center text-primary bg-[#FFFFFF] px-4 py-2 ml-[760px] rounded-[10px] mr-2 ${
-              selectedUser.rol === "admin" && userRole === "auxiliar"
-                ? "cursor-not-allowed opacity-50"
-                : ""
-            }`}
-            disabled={selectedUser.rol === "admin" && userRole === "auxiliar"}
-          >
-            <FaEdit className="size-5" />
-          </button>
-          {/* Deshabilitar eliminación si el usuario actual es auxiliar y el seleccionado es admin */}
-          <button
-            onClick={() => setDeleteModalIsOpen(true)}
-            className={`flex items-center text-primary bg-[#ED8080] px-4 py-2 rounded-[10px] ${
-              selectedUser.rol === "admin" && userRole === "auxiliar"
-                ? "cursor-not-allowed opacity-50"
-                : ""
-            }`}
-            disabled={selectedUser.rol === "admin" && userRole === "auxiliar"}
-          >
-            <FaTrashAlt className="size-5" />
-          </button>
+        <div className="flex items-center h-14 justify-between bg-white border border-gray-200 shadow-sm rounded-xl p-4 mb-6">
+          <div className="text-gray-800 text-base font-medium">
+            <span className="ml-2">
+              👤 <strong>Seleccionado:</strong> {selectedUser.nombre_completo}
+            </span>
+          </div>
+          <div className="flex space-x-3">
+            <button
+              onClick={handleEditClick}
+              className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-colors
+        ${
+          selectedUser.rol === "admin" && userRole === "auxiliar"
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-emerald-600 text-white hover:bg-emerald-700"
+        }`}
+              disabled={selectedUser.rol === "admin" && userRole === "auxiliar"}
+            >
+              <FaEdit className="size-4" />
+              Editar
+            </button>
+
+            <button
+              onClick={() => setDeleteModalIsOpen(true)}
+              className={`flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg transition-colors
+        ${
+          selectedUser.rol === "admin" && userRole === "auxiliar"
+            ? "bg-gray-100 text-gray-400 cursor-not-allowed"
+            : "bg-red-500 text-white hover:bg-red-600"
+        }`}
+              disabled={selectedUser.rol === "admin" && userRole === "auxiliar"}
+            >
+              <FaTrashAlt className="size-4" />
+              Eliminar
+            </button>
+          </div>
         </div>
       )}
 
-      {/* Componente de la tabla */}
       <div className="relative z-10">
         <DataTable
           columns={columns}
@@ -346,7 +300,7 @@ export function ViewUsuarios() {
               style: {
                 backgroundColor: "#FFFFFF", // Fila clara
                 "&:hover": {
-                  backgroundColor: "#E7EBF8 !important", // Fila al hacer hover
+                  backgroundColor: "#ebdeef !important", // Fila al hacer hover
                 },
                 minHeight: "48px", // Altura mínima de las filas
               },
@@ -375,8 +329,8 @@ export function ViewUsuarios() {
               pageButtonsStyle: {
                 fontSize: "14px !important",
                 fontWeight: "bold",
-                border: "3px Solid #142957",
-                backgroundColor: "#142957",
+                border: "3px Solid #4f6bed",
+                backgroundColor: "#4f6bed",
                 borderRadius: "15px",
                 padding: "5px",
                 margin: "0px 2px",
@@ -389,54 +343,86 @@ export function ViewUsuarios() {
 
       {/* Modal de edición */}
       {modalIsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-white w-[700px] rounded-lg shadow-lg">
-            {/* Modal Header */}
-            <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
-              <h2 className="font-page font-semibold items-center text-[25px]">
-                Actualizar Usuario
-              </h2>
-              <img
-                src="/EMDN1.png" // Optional: Replace this with your actual logo path
-                alt="Logo"
-                className="h-14"
-              />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white w-full max-w-xl rounded-2xl shadow-lg"
+          >
+            {/* Encabezado con imagen */}
+            <div
+              className="relative h-32 flex items-end px-6 py-4 rounded-t-2xl overflow-hidden animate-zoomOut"
+              style={{
+                backgroundImage: "url('/mod.webp')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="relative z-10 flex justify-between items-center w-full">
+                <h2 className="text-white text-3xl font-semibold flex items-center gap-2">
+                  Actualizar Registro
+                </h2>
+              </div>
+              <button
+                onClick={handleCloseModal}
+                className="absolute top-3 right-3 z-10 text-white hover:text-red-300 transition duration-150"
+                aria-label="Cerrar modal"
+              >
+                <X size={22} />
+              </button>
             </div>
 
-            {/* Modal Body */}
-            <div className="px-6">
+            {/* Contenido del modal */}
+            <div className="p-6 bg-white">
               <NewUsuario
                 usuario={selectedUser.dpi}
                 onClose={handleCloseModal}
                 onUserSaved={fetchUsuarios}
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
 
       {/* Modal de eliminación */}
       {deleteModalIsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-white w-[500px] rounded-lg shadow-lg">
-            <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
-              <h2 className="font-page font-semibold items-center text-[25px]">
-                Confirmación de Eliminación
-              </h2>
-              <img
-                src="/EMDN1.png" // Optional: Replace this with your actual logo path
-                alt="Logo"
-                className="h-14"
-              />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
+          >
+            {/* Encabezado con imagen y superposición */}
+            <div
+              className="relative h-28 flex items-end px-6 py-4 rounded-t-2xl overflow-hidden"
+              style={{
+                backgroundImage: "url('/delete.webp')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black/50" />
+              <div className="relative z-10 flex justify-between items-center w-full">
+                <h2 className="text-white text-3xl font-semibold flex items-center gap-2">
+                  Eliminar Registro
+                </h2>
+              </div>
             </div>
-            <div className="px-6 py-4 text-center">
-              <p className="text-lg mb-4">
-                ¿Estás seguro de eliminar este registro?
+
+            {/* Contenido del modal */}
+            <div className="p-6 text-center bg-white">
+              <p className="mb-6 text-gray-800 text-base">
+                ¿Estás seguro de que deseas eliminar este usuario?
               </p>
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center gap-4">
                 <button
                   onClick={handleDeleteClick}
-                  className="bg-[#ED8080]  text-[#090000] px-4 py-2 rounded-md shadow transition duration-300 ease-in-out border hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
+                  className="bg-red-600 hover:bg-red-700 text-white px-5 py-2 rounded-lg transition"
                 >
                   Eliminar
                 </button>
@@ -445,13 +431,13 @@ export function ViewUsuarios() {
                     setDeleteModalIsOpen(false);
                     setSelectedUser(null);
                   }}
-                  className="bg-primary text-white px-4 py-2 rounded-md shadow transition duration-300 ease-in-out border hover:bg-white hover:text-primary hover:border-primary"
+                  className="bg-gray-100 hover:bg-gray-200 text-gray-800 px-5 py-2 rounded-lg transition"
                 >
                   Cancelar
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>
