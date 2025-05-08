@@ -13,6 +13,7 @@ export class SerieService {
         private serieRepository: Repository<Serie>,
         @InjectRepository(Usuario)
         private readonly usuarioRepository: Repository<Usuario>,
+        
     ) {}
 
     async findAll(){

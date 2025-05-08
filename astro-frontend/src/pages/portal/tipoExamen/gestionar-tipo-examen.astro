@@ -1,19 +1,41 @@
 ---
 import Sistema from "../../../layouts/sistema.astro";
-import { ViewTipoExamen } from '../../../components/TipoExamen/ViewTipoExamen';
+import { ViewTipoExamen } from "../../../components/TipoExamen/ViewTipoExamen";
 ---
 
-<Sistema title="Gestión de Tipos de Examen">
-    <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
-      <div class="mt-1 h-8"></div>
-    </div>
-    <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-      Tipos de Examen Registrados en el Sistema
-    </h1>
-    <p class="text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-      Para buscar un tipo de examen específico, ingresa la descripción o CEOM.
-    </p>
-    <div class="max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
-      <ViewTipoExamen client:load />
-    </div>
+<Sistema title="Gestionar Empleos" bgColor="bg-[#f3f3f5]">
+  <h1
+    class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3 ml-[155px] mt-10"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-[42px] h-[42px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="tipoExamenGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f2b8bc"></stop>
+          <stop offset="50%" stop-color="#aeb8f0"></stop>
+          <stop offset="100%" stop-color="#dab5e9"></stop>
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#tipoExamenGradient)"
+        d="M6 2a2 2 0 0 0-2 2v16.01c0 1.1.9 1.99 2 1.99h12c1.1 0 2-.89 2-1.99V6l-6-4H6Zm7 1.5L18.5 8H14a1 1 0 0 1-1-1V3.5ZM8 12h8v2H8v-2Zm0 4h5v2H8v-2Zm0-8h8v2H8V8Z"
+      ></path>
+    </svg>
+
+    Tipos de Examen Registrados en el Sistema
+  </h1>
+  <div
+    class="h-1 w-[900px] mt-2 ml-[155px] bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+  >
+  </div>
+  <p class="text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+    Para buscar un tipo de examen específico, ingresa la descripción o CEOM.
+  </p>
+  <div class="max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
+    <ViewTipoExamen client:load />
+  </div>
 </Sistema>

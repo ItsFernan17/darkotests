@@ -1,18 +1,41 @@
 ---
 import Sistema from "../../../layouts/sistema.astro";
-import { ViewSerie } from '../../../components/SeriesExamen/ViewSerieExamen';
+import { ViewSerie } from "../../../components/SeriesExamen/ViewSerieExamen";
 ---
 
-<Sistema title="Gestionar Series de Examen">
-  <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
-    <div class="mt-1 h-8"></div>
-  </div>
-  <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-    Series de Examen
+<Sistema title="Gestionar Series de Examen" bgColor="bg-[#f3f3f5]">
+  <h1
+    class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3 ml-[155px] mt-10"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-[42px] h-[42px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="serieExamenGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f2b8bc"></stop>
+          <stop offset="50%" stop-color="#aeb8f0"></stop>
+          <stop offset="100%" stop-color="#dab5e9"></stop>
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#serieExamenGradient)"
+        d="M4 5h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Zm0 5h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Zm0 5h16a1 1 0 0 1 1 1v2a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1v-2a1 1 0 0 1 1-1Z"
+      ></path>
+    </svg>
+
+    Series de Examen Registrados en el Sistema
   </h1>
-  <p class=" text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-    Para buscar alguna serie introduce la serie o la instrucción del examen.</p>
-  <div class=" max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
+  <div
+    class="h-1 w-[900px] mt-2 ml-[155px] bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+  >
+  </div>
+  <p class="text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+    Para buscar alguna serie introduce la serie o la instrucción del examen.
+  </p>
+  <div class="max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
     <ViewSerie client:load />
   </div>
 </Sistema>

@@ -14,7 +14,9 @@ function Serie({ register, errors, setValue, seriesIndex, resetSelectRef }) {
 
   const handleSelectChange = (option) => {
     setSelectedOption(option);
-    setValue(`series[${seriesIndex}].serie`, option?.value || "0", { shouldValidate: true });
+    setValue(`series[${seriesIndex}].serie`, option?.value || "0", {
+      shouldValidate: true,
+    });
   };
 
   const resetSelect = () => {
@@ -26,7 +28,8 @@ function Serie({ register, errors, setValue, seriesIndex, resetSelectRef }) {
     setIsClient(true);
     register(`series[${seriesIndex}].serie`, {
       required: "*Seleccione una serie de examen",
-      validate: (value) => value !== "0" || "*Seleccione una serie válida",
+      validate: (value) =>
+        value !== "0" || "*Seleccione una serie válida",
     });
   }, [register, setValue, seriesIndex]);
 
@@ -37,42 +40,41 @@ function Serie({ register, errors, setValue, seriesIndex, resetSelectRef }) {
   }, [resetSelectRef]);
 
   const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: "#F7FAFF",
-      height: "34px",
+    control: (base) => ({
+      ...base,
+      backgroundColor: "#f3f1ef",
+      height: "40px",
       width: "100%",
-      marginTop: "0.25rem",
-      borderRadius: "0.125rem",
-      boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-      borderColor: "#142957",
-      paddingTop: "0px",
-      paddingBottom: "0px",
-      fontFamily: "Poppins",
-      display: "flex",
-      alignItems: "center",
+      borderRadius: "0.75rem",
+      borderColor: "#d1d5db",
+      boxShadow: "none",
+      paddingLeft: "0.25rem",
+      paddingRight: "0.25rem",
+      fontSize: "0.875rem",
+      fontFamily: "Karla, sans-serif",
     }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: "34px",
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0 0.5rem",
+    }),
+    placeholder: (base) => ({
+      ...base,
+      color: "#6b7280",
+    }),
+    indicatorSeparator: () => ({
+      display: "none",
+    }),
+    dropdownIndicator: (base) => ({
+      ...base,
       padding: "0 8px",
-      display: "flex",
-      alignItems: "center",
     }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: "34px",
-    }),
-    menuList: (provided) => ({
-      ...provided,
-      maxHeight: "150px",
-      overflowY: "auto",
+    menuList: (base) => ({
+      ...base,
+      maxHeight: "160px",
     }),
   };
 
-  if (!isClient) {
-    return null;
-  }
+  if (!isClient) return null;
 
   return (
     <>
@@ -85,9 +87,8 @@ function Serie({ register, errors, setValue, seriesIndex, resetSelectRef }) {
         isClearable
         styles={customStyles}
       />
-
       {errors?.series?.[seriesIndex]?.serie && (
-        <p className="text-red-900 text-sm mb-0">
+        <p className="text-sm text-red-600 mt-1">
           {errors.series[seriesIndex].serie.message}
         </p>
       )}

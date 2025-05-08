@@ -1,17 +1,43 @@
 ---
 import Sistema from "../../../layouts/sistema.astro";
-import {NewUsuario} from "../../../components/Usuarios/NewUsuario";
+import { NewUsuario } from "../../../components/Usuarios/NewUsuario";
 ---
 
-<Sistema title="Nuevos Usuarios">
+<Sistema title="Nuevos Usuarios" bgColor="bg-[#f3f3f5]">
   <div class="mx-auto mt-10 h-auto w-full max-w-4xl px-4">
-    <h1 class="font-bold text-[35px] text-primary font-page text-left">
-      Usuarios del Sistema
+    <h1 class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-[42px] h-[42px]"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <defs>
+          <linearGradient id="userGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f2b8bc" />
+            <stop offset="50%" stop-color="#aeb8f0" />
+            <stop offset="100%" stop-color="#dab5e9" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#userGradient)"
+          d="M12 2a5 5 0 0 1 5 5v1a5 5 0 0 1-10 0V7a5 5 0 0 1 5-5Zm0 11c3.33 0 10 1.67 10 5v2a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1v-2c0-3.33 6.67-5 10-5Z"
+        />
+      </svg>
+      Registrar Usuario
     </h1>
+    
+    <div
+      class="h-1 w-108 mt-2 bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+    >
+    </div>
+
     <p class="font-page font-normal text-primary text-[20px] mt-3 text-left">
       Complete el formulario a continuación para registrar un nuevo usuario.
     </p>
-    <div class="bg-white w-full h-auto font-page rounded-md shadow-md mt-5 mb-5">
+    <div
+      class="bg-white w-full h-auto font-page rounded-md shadow-md mt-5 mb-5"
+    >
       <div class="px-6 md:px-10 lg:px-20">
         <h1 class="font-bold text-primary text-[20px] pt-5">
           Información Personal

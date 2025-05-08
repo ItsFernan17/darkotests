@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Departamentos from "../Departamentos";
-import Grado from "../Grado";
-import Poblacion from "../Poblacion";
-import Comando from "../Comando";
 import { createUsuario, updateUsuario } from "./Usuario.api";
 import Roles from "./Roles";
+import { User, Phone, Lock, FileText } from "lucide-react";
 
 export function NewUsuario({
   usuario = null,
@@ -23,80 +21,45 @@ export function NewUsuario({
   } = useForm();
 
   const [toastMessage, setToastMessage] = useState(null);
-
   const resetDepartamentoRef = React.useRef(null);
-  const resetGradoRef = React.useRef(null);
-  const resetPoblacionRef = React.useRef(null);
-  const resetComandoRef = React.useRef(null);
   const resetRolesRef = React.useRef(null);
 
-  function getToken() {
-    return localStorage.getItem("accessToken");
-  }
-  
   useEffect(() => {
     const fetchUsuarioData = async () => {
       if (usuario) {
         try {
-          const token = getToken();
-  
-          const usuarioResponse = await fetch(
+          const token = localStorage.getItem("accessToken");
+          const res = await fetch(
             `http://localhost:3000/api/v1/usuario/${usuario}`,
             {
-              headers: {
-                'Authorization': `Bearer ${token}`
-              }
+              headers: { Authorization: `Bearer ${token}` },
             }
           );
-          
-          if (usuarioResponse.ok) {
-            const usuarioData = await usuarioResponse.json();
+          if (res.ok) {
+            const data = await res.json();
             reset({
-              dpi: usuarioData.dpi,
-              nombre_completo: usuarioData.nombre_completo,
-              telefono: usuarioData.telefono,
+              dpi: data.dpi,
+              nombre_completo: data.nombre_completo,
+              telefono: data.telefono,
             });
           } else {
             toast.error("Error al cargar los datos del usuario");
           }
-        } catch (error) {
+        } catch {
           toast.error("Error al cargar los datos del usuario");
         }
       }
     };
-  
     fetchUsuarioData();
   }, [usuario, reset]);
 
-
   const handleErrors = (error) => {
-    if (error.message.includes("usuario ya existe")) {
-      toast.error("Error: El usuario con este DPI ya existe", {
-        autoClose: 2500,
-      });
-    } else if (error.message.includes("nombre_completo")) {
-      toast.error(
-        "Error: El nombre completo debe tener mínimo 5 caracteres",
-        { autoClose: 2500 }
-      );
-    } else if (error.message.includes("telefono")) {
-      toast.error("Error: El teléfono debe tener mínimo 8 caracteres", {
-        autoClose: 2500,
-      });
-    } else if (error.message.includes("contraseña")) {
-      toast.error("Error: La contraseña debe tener mínimo 8 caracteres", {
-        autoClose: 2500,
-      });
-    } else if (error.message.includes("datos inválidos")) {
-      toast.error(
-        "Error: Datos inválidos, revise la información ingresada",
-        { autoClose: 2500 }
-      );
-    } else {
-      toast.error("Error al crear el usuario, intente nuevamente", {
-        autoClose: 2500,
-      });
-    }
+    const msg = error.message;
+    if (msg.includes("usuario ya existe")) toast.error("DPI ya registrado");
+    else if (msg.includes("nombre_completo"))
+      toast.error("Nombre demasiado corto");
+    else if (msg.includes("telefono")) toast.error("Teléfono inválido");
+    else if (msg.includes("contraseña")) toast.error("Contraseña débil");
   };
 
   const onSubmit = handleSubmit(async (dataUsuario) => {
@@ -129,9 +92,6 @@ export function NewUsuario({
           onClose();
           reset();
           resetDepartamentoRef.current();
-          resetGradoRef.current();
-          resetPoblacionRef.current();
-          resetComandoRef.current();
           resetRolesRef.current();
         }, 1500);
   
@@ -192,9 +152,6 @@ export function NewUsuario({
   
           reset();
           resetDepartamentoRef.current();
-          resetGradoRef.current();
-          resetPoblacionRef.current();
-          resetComandoRef.current();
           resetRolesRef.current();
         }
       } catch (error) {
@@ -203,146 +160,122 @@ export function NewUsuario({
     }
   });
 
+  const inputClass =
+    "bg-[#f3f1ef] border border-gray-300 text-sm rounded-xl focus:ring-primary focus:border-primary block w-full px-10 py-2.5";
+  const labelClass = "mb-1 block text-sm font-medium text-gray-700";
+  const iconClass =
+    "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400";
+
+  const InputWithIcon = React.forwardRef(
+    ({ icon: Icon, id, placeholder, ...props }, ref) => (
+      <div className="relative">
+        <div className={iconClass}>
+          <Icon size={16} />
+        </div>
+        <input
+          id={id}
+          placeholder={placeholder}
+          className={inputClass}
+          ref={ref}
+          {...props}
+        />
+      </div>
+    )
+  );
+
   return (
     <div>
       <ToastContainer />
       <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
         onSubmit={onSubmit}
+        className="grid grid-cols-1 md:grid-cols-2 gap-6"
       >
-        <div className="mt-4">
-          <label
-            htmlFor="dpi"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
+        <div>
+          <label htmlFor="dpi" className={labelClass}>
             DPI
           </label>
-          <input
-            type="text"
+          <InputWithIcon
+            icon={FileText}
             id="dpi"
-            className="bg-[#F7FAFF] h-[38px] w-[320px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="1234123451234"
-            disabled={!!usuario}
+            placeholder="1234567891234"
             {...register("dpi", {
-              required: "*DPI es requerido",
-              minLength: {
-                value: 13,
-                message: "*El DPI debe tener 13 dígitos",
-              },
-              maxLength: {
-                value: 13,
-                message: "*El DPI debe tener 13 dígitos",
-              },
-              pattern: {
-                value: /^[0-9]+$/,
-                message: "*El DPI solo debe contener números",
-              },
+              required: "DPI es requerido",
+              minLength: { value: 13, message: "Debe tener 13 dígitos" },
+              maxLength: { value: 13, message: "Debe tener 13 dígitos" },
+              pattern: { value: /^[0-9]+$/, message: "Solo números" },
             })}
+            disabled={!!usuario}
           />
           {errors.dpi && (
-            <p className="text-red-900 text-sm mb-0">{errors.dpi.message}</p>
+            <p className="text-sm text-red-600 mt-1">{errors.dpi.message}</p>
           )}
         </div>
 
-        <div className="mt-4">
-          <label
-            htmlFor="nombre"
-            className="block font-page text-[16px] font-semibold text-primary"
-          >
+        <div>
+          <label htmlFor="nombre_completo" className={labelClass}>
             Nombre Completo
           </label>
-          <input
-            type="text"
-            id="nombre"
-            className="bg-[#F7FAFF] h-[38px] w-[320px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="Nombres y Apellidos"
+          <InputWithIcon
+            icon={User}
+            id="nombre_completo"
+            placeholder="Nombre y Apellido"
             {...register("nombre_completo", {
-              required: "*Los Nombres y Apellidos son requeridos",
-              validate: (value) => {
-                const parts = value.trim().split(" ");
-                return (
-                  parts.length >= 2 ||
-                  "*Debe incluir al menos nombre y apellido"
-                );
-              },
-              minLength: {
-                value: 5,
-                message: "*El nombre completo debe tener al menos 5 caracteres",
-              },
+              required: "Requerido",
+              minLength: { value: 5, message: "Mínimo 5 caracteres" },
             })}
           />
           {errors.nombre_completo && (
-            <p className="text-red-900 text-sm mb-0">
+            <p className="text-sm text-red-600 mt-1">
               {errors.nombre_completo.message}
             </p>
           )}
         </div>
 
-        <div className="mt-2">
-          <label
-            htmlFor="telefono"
-            className="block font-page text-[16px] font-semibold text-primary"
-          >
-            Número Telefónico
+        <div>
+          <label htmlFor="telefono" className={labelClass}>
+            Teléfono
           </label>
-          <input
-            type="text"
+          <InputWithIcon
+            icon={Phone}
             id="telefono"
-            className="bg-[#F7FAFF] h-[38px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="1234-5678"
+            placeholder="12345678"
             {...register("telefono", {
-              required: "*El Teléfono es requerido",
-              minLength: {
-                value: 8,
-                message: "*El Teléfono debe tener al menos 8 dígitos",
-              },
-              maxLength: {
-                value: 10,
-                message: "*El Teléfono no debe exceder los 10 dígitos",
-              },
-              pattern: {
-                value: /^[0-9]+$/,
-                message: "*El Teléfono solo debe contener números",
-              },
+              required: "Teléfono requerido",
+              minLength: { value: 8, message: "Mínimo 8 dígitos" },
+              maxLength: { value: 10, message: "Máximo 10 dígitos" },
+              pattern: { value: /^[0-9]+$/, message: "Solo números" },
             })}
           />
           {errors.telefono && (
-            <p className="text-red-900 text-sm">{errors.telefono.message}</p>
+            <p className="text-sm text-red-600 mt-1">
+              {errors.telefono.message}
+            </p>
           )}
         </div>
 
-        <div className="mt-2">
-          <label
-            htmlFor="contrasena"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            {usuario ? "Nueva Contraseña" : "Contraseña"}
+        <div>
+          <label htmlFor="password" className={labelClass}>
+            Contraseña
           </label>
-          <input
+          <InputWithIcon
+            icon={Lock}
+            id="password"
+            placeholder="********"
             type="password"
-            id="contrasena"
-            className="bg-[#F7FAFF] h-[38px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="ejemploNo1"
             {...register("password", {
-              required: "*La Contraseña es requerida",
-              minLength: {
-                value: 8,
-                message: "*La Contraseña debe tener al menos 8 caracteres",
-              },
+              required: "Requerida",
+              minLength: { value: 8, message: "Mínimo 8 caracteres" },
             })}
           />
           {errors.password && (
-            <p className="text-red-900 text-sm">{errors.password.message}</p>
+            <p className="text-sm text-red-600 mt-1">
+              {errors.password.message}
+            </p>
           )}
         </div>
 
-        <div className="mt-2">
-          <label
-            htmlFor="roles"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            {usuario ? "Rol del Usuario Actual" : "Rol del Usuario"}
-          </label>
+        <div>
+          <label className={labelClass}>Rol</label>
           <Roles
             register={register}
             errors={errors}
@@ -350,14 +283,8 @@ export function NewUsuario({
             resetSelectRef={resetRolesRef}
           />
         </div>
-
-        <div className="mt-2">
-          <label
-            htmlFor="departamento"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            {usuario ? "Departamento Actual" : "Departamento"}
-          </label>
+        <div>
+          <label className={labelClass}>Departamento</label>
           <Departamentos
             register={register}
             errors={errors}
@@ -366,79 +293,13 @@ export function NewUsuario({
           />
         </div>
 
-        <div className="mt-2">
-          <label
-            htmlFor="grado"
-            className="block text-[16px] font-page font-semibold text-primary"
+        <div className="col-span-full flex justify-center mt-6 mb-6">
+          <button
+            type="submit"
+            className=" bg-[#1a1a1a] text-white py-3 w-[200px]  rounded-full font-semibold hover:bg-[#333] transition mt-2"
           >
-            {usuario ? "Grado Actual" : "Grado"}
-          </label>
-          <Grado
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            resetSelectRef={resetGradoRef}
-          />
-        </div>
-
-        <div className="mt-2">
-          <label
-            htmlFor="poblacion"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            {usuario ? "Población Actual" : "Población"}
-          </label>
-          <Poblacion
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            resetSelectRef={resetPoblacionRef}
-          />
-        </div>
-
-        <div className="mt-2">
-          <label
-            htmlFor="comando"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            {usuario ? "Comando Actual" : "Comando"}
-          </label>
-          <Comando
-            register={register}
-            errors={errors}
-            setValue={setValue}
-            resetSelectRef={resetComandoRef}
-          />
-        </div>
-
-        <div className="col-span-full flex justify-center">
-          {usuario ? (
-            <div className="flex justify-end space-x-4 mb-3 w-full">
-              <button
-                type="submit"
-                className="bg-[#0f763d] mt-2 font-bold font-page mb-2 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#0f763d] hover:border-[#0f763d]"
-              >
-                Actualizar
-              </button>
-              <button
-                onClick={onClose}
-                type="button"
-                className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
-              >
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-center w-full">
-              <button
-                type="submit"
-                className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
-              >
-                Crear Usuario
-              </button>
-              {toastMessage && <div>{toastMessage}</div>}
-            </div>
-          )}
+            {usuario ? "Actualizar Usuario" : "Crear Usuario"}
+          </button>
         </div>
       </form>
     </div>

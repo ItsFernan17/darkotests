@@ -2,28 +2,28 @@ import React, { useState, useEffect } from "react";
 import { useFetch } from "../../useFetch";
 import Select from "react-select";
 
-function Examenes({ register, errors, setValue, resetSelectRef }) {
+function Examenes({ register, errors, setValue, resetSelectRef, examenesFiltrados = [] })  {
   const { data } = useFetch("http://localhost:3000/api/v1/examen");
   const [selectedOption, setSelectedOption] = useState(null);
-  const [examenData, setExamenData] = useState(null);
   const [isClient, setIsClient] = useState(false);
+  const [examenData, setExamenData] = useState(null);
 
   const options = data?.map((examen) => ({
     value: examen.codigo_examen,
-    label: `${examen.motivo_examen?.nombre_motivo}, ${examen.tipo_examen?.description}`,
+    label: `${examen.motivo_examen?.nombre_motivo || "Motivo N/D"} - ${examen.tipo_examen?.description || "Tipo N/D"}`,
   }));
 
   const handleSelectChange = (option) => {
     setSelectedOption(option);
+    const selected = data.find((ex) => ex.codigo_examen === option?.value);
     setValue("examen", option?.value || "0", { shouldValidate: true });
-    const selectedExamen = data.find(examen => examen.codigo_examen === option?.value);
-    setExamenData(selectedExamen);
+    setExamenData(selected);
   };
 
   const resetSelect = () => {
     setSelectedOption(null);
-    setValue("examen", "0", { shouldValidate: false });
     setExamenData(null);
+    setValue("examen", "0", { shouldValidate: false });
   };
 
   useEffect(() => {
@@ -41,60 +41,41 @@ function Examenes({ register, errors, setValue, resetSelectRef }) {
   }, [resetSelectRef]);
 
   const customStyles = {
-    control: (provided) => ({
-      ...provided,
-      backgroundColor: '#F7FAFF',
-      height: '34px',
-      width: '320px',
-      marginTop: '0.25rem',
-      borderRadius: '0.125rem',
-      boxShadow: '0 1px 3px rgba(0, 0, 0, 0.1)',
-      borderColor: '#142957',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'flex-start',
+    control: (base) => ({
+      ...base,
+      backgroundColor: "#f3f1ef",
+      height: "40px",
+      width: "100%",
+      borderRadius: "0.75rem",
+      borderColor: "#d1d5db",
+      boxShadow: "none",
+      paddingLeft: "0.25rem",
+      paddingRight: "0.25rem",
+      fontSize: "0.875rem",
+      fontFamily: "Karla, sans-serif",
     }),
-    valueContainer: (provided) => ({
-      ...provided,
-      height: '100%',
-      padding: '0 8px',
-      display: 'flex',
-      alignItems: 'center',
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
+    valueContainer: (base) => ({
+      ...base,
+      padding: "0 0.5rem",
     }),
-    singleValue: (provided) => ({
-      ...provided,
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
-      display: 'flex',
-      alignItems: 'center',
-      height: '100%',
+    placeholder: (base) => ({
+      ...base,
+      color: "#6b7280",
     }),
-    indicatorsContainer: (provided) => ({
-      ...provided,
-      height: '100%',
-      display: 'flex',
-      alignItems: 'center',
+    indicatorSeparator: () => ({
+      display: "none",
     }),
-    menuList: (provided) => ({
-      ...provided,
-      maxHeight: '150px',
-      overflowY: 'auto',
+    dropdownIndicator: (base) => ({
+      ...base,
+      padding: "0 8px",
     }),
-    option: (provided) => ({
-      ...provided,
-      whiteSpace: 'nowrap',
-      overflow: 'hidden',
-      textOverflow: 'ellipsis',
+    menuList: (base) => ({
+      ...base,
+      maxHeight: "160px",
     }),
   };
 
-  if (!isClient) {
-    return null;
-  }
+  if (!isClient) return null;
 
   return (
     <>
@@ -109,7 +90,7 @@ function Examenes({ register, errors, setValue, resetSelectRef }) {
       />
 
       {errors.examen && (
-        <p className="text-red-900 text-sm mb-0">{errors.examen.message}</p>
+        <p className="text-sm text-red-600 mt-1">{errors.examen.message}</p>
       )}
     </>
   );

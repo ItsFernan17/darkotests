@@ -4,11 +4,35 @@ import Sistema from "../../../layouts/sistema.astro";
 ---
 
 
-<Sistema title="Nuevos Empleos">
+<Sistema title="Nuevos Empleos" bgColor="bg-[#f3f3f5]">
     <div class="mx-auto mt-10 h-auto w-full max-w-4xl px-4">
-      <h1 class="font-bold text-[35px] text-primary font-page text-left">
-        Crear Nuevo Empleo
+      <h1 class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3">
+        <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-[42px] h-[42px]"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <defs>
+          <linearGradient id="empleoGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f2b8bc" />
+            <stop offset="50%" stop-color="#aeb8f0" />
+            <stop offset="100%" stop-color="#dab5e9" />
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#empleoGradient)"
+          d="M10 2h4a2 2 0 0 1 2 2v2h3a2 2 0 0 1 2 2v2H3V8a2 2 0 0 1 2-2h3V4a2 2 0 0 1 2-2Zm0 2v2h4V4h-4ZM3 10h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8Zm6 3v2h6v-2H9Z"
+        />
+      </svg>
+      
+        Registrar Empleo
       </h1>
+      <div
+      class="h-1 w-108 mt-2 bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+    >
+    </div>
+
       <p class="font-page font-normal text-primary text-[20px] mt-3 text-left">
         Complete el formulario a continuación para registrar un nuevo empleo disponible.
       </p>

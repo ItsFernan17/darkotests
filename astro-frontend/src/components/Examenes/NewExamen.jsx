@@ -1,20 +1,39 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import { useForm, useFieldArray } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaPlus, FaTrash } from "react-icons/fa";
+import { CalendarDays, FileText, Percent } from "lucide-react";
 import Pregunta from "./Pregunta";
 import TipoExamen from "./TipoExamen";
-import Serie from "./Series";
-import { createExamen } from "./Examen.api";
-import { updateExamen } from "./Examen.api";
 import TipoMotivo from "./TipoMotivo";
+import Serie from "./Series";
+import { createExamen, updateExamen } from "./Examen.api";
 
-export function NewExamen({
-  codigo_examen = null,
-  onClose = null,
-  onUserSaved = null,
-}) {
+// Estilos reutilizables
+const inputClass =
+  "bg-[#f3f1ef] border border-gray-300 text-sm rounded-xl focus:ring-primary focus:border-primary block w-full px-10 py-2.5";
+const labelClass = "mb-1 block text-sm font-medium text-gray-700";
+const iconClass =
+  "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400";
+
+// Input con ícono
+const InputWithIcon = forwardRef(({ icon: Icon, id, placeholder, ...props }, ref) => (
+  <div className="relative">
+    <div className={iconClass}>
+      <Icon size={16} />
+    </div>
+    <input
+      id={id}
+      placeholder={placeholder}
+      className={inputClass}
+      ref={ref}
+      {...props}
+    />
+  </div>
+));
+
+export function NewExamen({ codigo_examen = null, onClose = null, onUserSaved = null }) {
   const {
     register,
     handleSubmit,
@@ -29,45 +48,10 @@ export function NewExamen({
     },
   });
 
-  const resetTipoExamenRef = React.useRef(null);
-  const resetMotivoExamenRef = React.useRef(null);
+  const resetTipoExamenRef = useRef(null);
+  const resetMotivoExamenRef = useRef(null);
 
-  function getToken() {
-    return localStorage.getItem('accessToken'); // Obtener el token del localStorage
-  }
-  
-  useEffect(() => {
-    const fetchExamenData = async () => {
-      if (codigo_examen) {
-        try {
-          const token = getToken(); // Obtener el token
-  
-          const examenResponse = await fetch(
-            `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`,
-            {
-              headers: {
-                'Authorization': `Bearer ${token}`, // Agregar el token en la cabecera
-                'Content-Type': 'application/json', // Especificar el tipo de contenido
-              },
-            }
-          );
-  
-          if (examenResponse.ok) {
-            const examenData = await examenResponse.json();
-            reset({
-              fecha: examenData ? examenData.fecha_evaluacion : "",
-              punteo: examenData ? examenData.punteo_maximo : "",
-            });
-          }
-        } catch (error) {
-          toast.error("Error al cargar los datos del examen");
-        }
-      }
-    };
-  
-    fetchExamenData();
-  }, [codigo_examen, reset]);
-  
+  const [toastMessage, setToastMessage] = useState(null);
 
   const {
     fields: seriesFields,
@@ -78,118 +62,103 @@ export function NewExamen({
     name: "series",
   });
 
-  const [toastMessage, setToastMessage] = useState(null);
+  const getToken = () => localStorage.getItem("accessToken");
+
+  useEffect(() => {
+    const fetchExamenData = async () => {
+      if (codigo_examen) {
+        try {
+          const token = getToken();
+          const response = await fetch(
+            `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`,
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+                "Content-Type": "application/json",
+              },
+            }
+          );
+          if (response.ok) {
+            const data = await response.json();
+            reset({
+              fecha: data.fecha_evaluacion,
+              punteo: data.punteo_maximo,
+            });
+          } else {
+            throw new Error("No se pudo cargar el examen");
+          }
+        } catch (error) {
+          toast.error("Error al cargar los datos del examen");
+        }
+      }
+    };
+    fetchExamenData();
+  }, [codigo_examen, reset]);
+  
 
   const onSubmit = handleSubmit(async (dataExamen) => {
-    if (codigo_examen) {
-      try {
-        // Crear el JSON para la actualización
-        const updateExamenData = {
-          tipo_examen: parseInt(dataExamen.tipo_examen, 10),
-          fecha_evaluacion: dataExamen.fecha,
-          motivo: parseInt(dataExamen.motivo, 10),
-          punteo_maximo: parseFloat(dataExamen.punteo),
-          estado: true,
-          usuario_ingreso: localStorage.usuario, // Ajustar el usuario de ingreso si es dinámico
-          series: dataExamen.series.map((serie) => ({
-            serie: Number(serie.serie),
-            preguntas: serie.preguntas.map((pregunta) => ({
-              pregunta: Number(pregunta), // Convertir cada pregunta a número
-            })),
-          })),
-        };
-
-        // Llamar a la función para actualizar el examen
-        await updateExamen(codigo_examen, updateExamenData);
-
-        toast.success("Examen actualizado exitosamente!", { autoClose: 1500 });
-        setTimeout(() => {
-          onUserSaved();
-          onClose();
-          resetMotivoExamenRef.current();
-          resetTipoExamenRef.current();
-        }, 1500);
-      } catch (error) {
-        toast.error("Error al actualizar el examen, intente nuevamente");
-        console.error("Error al actualizar el examen:", error);
+    try {
+      if (dataExamen.series.some((s) => s.preguntas.length === 0)) {
+        toast.error("Cada serie debe tener al menos una pregunta");
+        return;
       }
-    } else {
-      try {
-        // Validación para asegurarse de que cada serie tenga al menos una pregunta seleccionada
-        if (dataExamen.series.some((serie) => serie.preguntas.length === 0)) {
-          toast.error("Debes seleccionar al menos una pregunta por serie");
-          return;
-        }
 
-        // Crear el examen (si no existe un codigo_examen)
-        await createExamen({
-          tipo_examen: parseInt(dataExamen.tipo_examen, 10),
-          fecha_evaluacion: dataExamen.fecha,
-          motivo: parseInt(dataExamen.motivo, 10),
-          punteo_maximo: parseFloat(dataExamen.punteo),
-          estado: true,
-          usuario_ingreso: localStorage.usuario,
-          series: dataExamen.series.map((serie) => ({
-            serie: Number(serie.serie),
-            preguntas: serie.preguntas.map((pregunta) => ({
-              pregunta: Number(pregunta),
-            })),
+      const examenPayload = {
+        tipo_examen: parseInt(dataExamen.tipo_examen, 10),
+        fecha_evaluacion: dataExamen.fecha,
+        motivo: parseInt(dataExamen.motivo, 10),
+        punteo_maximo: parseFloat(dataExamen.punteo),
+        estado: true,
+        usuario_ingreso: localStorage.usuario,
+        series: dataExamen.series.map((serie) => ({
+          serie: Number(serie.serie),
+          preguntas: serie.preguntas.map((pregunta) => ({
+            pregunta: Number(pregunta),
           })),
-        });
+        })),
+      };
 
-        toast.success("Examen creado exitosamente!");
-        reset();
-        resetMotivoExamenRef.current();
-        resetTipoExamenRef.current();
-      } catch (error) {
-        console.error("Error al crear el examen:", error);
-        toast.error("Error al crear el examen, intente nuevamente");
-      } finally {
-        reset();
-        resetMotivoExamenRef.current();
-        resetTipoExamenRef.current();
+      if (codigo_examen) {
+        await updateExamen(codigo_examen, examenPayload);
+        toast.success("Examen actualizado exitosamente", { autoClose: 1500 });
+      } else {
+        await createExamen(examenPayload);
+        toast.success("Examen creado exitosamente", { autoClose: 1500 });
       }
+
+      setTimeout(() => {
+        onUserSaved?.();
+        onClose?.();
+        reset();
+        resetTipoExamenRef.current?.();
+        resetMotivoExamenRef.current?.();
+      }, 1500);
+    } catch (error) {
+      console.error(error);
+      toast.error("Error al guardar el examen. Intenta de nuevo.");
     }
   });
 
   return (
     <div>
       <ToastContainer />
-      <form className="gap-4 mt-2" onSubmit={onSubmit}>
-        <div className="grid grid-cols-2 gap-4 mt-4">
-          {/* Fecha de Evaluación */}
-          <div className="col-span-1">
-            <label
-              htmlFor="fecha"
-              className="block text-[16px] font-page font-semibold text-primary"
-            >
-              Fecha de Evaluación
-            </label>
-            <input
+      <form onSubmit={onSubmit} className="grid gap-6">
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Fecha Evaluación */}
+          <div>
+            <label htmlFor="fecha" className={labelClass}>Fecha de Evaluación</label>
+            <InputWithIcon
+              icon={CalendarDays}
+              id="fecha"
               type="date"
-              name="datetime"
-              id="datetime"
-              className="bg-[#F7FAFF] h-[38px] w-[320px] mt-1 rounded-sm border border-primary pl-3 font-page"
-              placeholder="Ejemplo: 2024/12/31"
-              {...register("fecha", {
-                required: "*Fecha de Evaluación es requerida",
-              })}
+              {...register("fecha", { required: "*La fecha es obligatoria" })}
             />
-            {errors.fecha && (
-              <p className="text-red-900 text-sm mb-0">
-                {errors.fecha.message}
-              </p>
-            )}
+            {errors.fecha && <p className="text-sm text-red-600 mt-1">{errors.fecha.message}</p>}
           </div>
 
-          {/* Tipo de Examen */}
-          <div className="col-span-1">
-            <label
-              htmlFor="tipo_examen"
-              className="block text-[16px] font-page font-semibold text-primary"
-            >
-              Tipo de Examen
-            </label>
+          {/* Tipo Examen */}
+          <div>
+            <label htmlFor="tipo_examen" className={labelClass}>Tipo de Examen</label>
             <TipoExamen
               register={register}
               errors={errors}
@@ -198,14 +167,9 @@ export function NewExamen({
             />
           </div>
 
-          {/* Motivo del Examen */}
-          <div className="col-span-1">
-            <label
-              htmlFor="motivo"
-              className="block text-[16px] font-page font-semibold text-primary"
-            >
-              Motivo del Examen
-            </label>
+          {/* Motivo */}
+          <div>
+            <label htmlFor="motivo" className={labelClass}>Motivo del Examen</label>
             <TipoMotivo
               register={register}
               errors={errors}
@@ -214,75 +178,46 @@ export function NewExamen({
             />
           </div>
 
-          {/* Punteo Máximo del Examen */}
-          <div className="col-span-1">
-            <label
-              htmlFor="punteo"
-              className="block font-page text-[16px] font-semibold text-primary"
-            >
-              Punteo Máximo del Examen
-            </label>
-            <input
-              type="number"
+          {/* Punteo Máximo */}
+          <div>
+            <label htmlFor="punteo" className={labelClass}>Punteo Máximo</label>
+            <InputWithIcon
+              icon={Percent}
               id="punteo"
-              className="bg-[#F7FAFF] h-[38px] w-[320px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-              placeholder="100, 60, 50, 20, etc."
+              type="number"
+              placeholder="Ej: 100"
               step="0.1"
               {...register("punteo", {
-                required: "*El Punteo es requerido",
-                valueAsNumber: true, // Convierte automáticamente el valor a número
-                validate: (value) =>
-                  !isNaN(value) || "*El punteo debe ser un número",
-                min: { value: 0, message: "*El punteo no puede ser negativo" },
-                max: {
-                  value: 100,
-                  message: "*El punteo no puede ser mayor a 100",
-                },
+                required: "*El punteo es obligatorio",
+                valueAsNumber: true,
+                min: { value: 0, message: "*Debe ser mayor o igual a 0" },
+                max: { value: 100, message: "*Máximo permitido: 100" },
               })}
             />
-            {errors.punteo && (
-              <p className="text-red-900 text-sm">{errors.punteo.message}</p>
-            )}
+            {errors.punteo && <p className="text-sm text-red-600 mt-1">{errors.punteo.message}</p>}
           </div>
         </div>
 
-        {/* Sección de Series */}
-        <div className="col-span-full mt-4">
-          <h3 className="text-[20px] font-page font-bold text-primary">
-            Series del Examen
-          </h3>
-          {seriesFields.map((seriesItem, seriesIndex) => (
-            <div key={seriesItem.id} className="w-full relative mt-4">
-              {/* Línea horizontal de separación para series */}
-              {seriesIndex > 0 && (
-                <hr className="my-6 border-t border-gray-300" />
-              )}
-
-              <div className="flex items-center justify-between">
-                <label className="block text-[18px] font-page font-semibold text-primary">
-                  Serie No. {seriesIndex + 1}
-                </label>
-              </div>
+        {/* Series y Preguntas */}
+        <div className="mt-4">
+          <h3 className="text-lg font-semibold text-primary mb-2">Series del Examen</h3>
+          {seriesFields.map((item, index) => (
+            <div key={item.id} className="mb-6 border rounded-xl p-4 shadow-sm bg-[#f9f9f9]">
+              <h4 className="font-bold mb-3">Serie {index + 1}</h4>
 
               <Serie
                 register={register}
-                name={`series[${seriesIndex}].serie`}
+                name={`series[${index}].serie`}
                 errors={errors}
-                className="w-full"
-                seriesIndex={seriesIndex}
+                seriesIndex={index}
                 setValue={setValue}
               />
 
-              {/* Sección de Preguntas dentro de cada Serie */}
-              <div className="mt-7 w-full">
-                <label className="text-[18px] font-page font-bold text-primary">
-                  Preguntas
-                </label>
-
-                {/* Componente Pregunta con checkbox */}
+              <div className="mt-4">
+                <label className="block font-medium mb-1">Preguntas</label>
                 <Pregunta
                   register={register}
-                  name={`series[${seriesIndex}].preguntas`}
+                  name={`series[${index}].preguntas`}
                   errors={errors}
                   control={control}
                   setValue={setValue}
@@ -290,60 +225,37 @@ export function NewExamen({
                 />
               </div>
 
-              {/* Botón para eliminar la serie, no se muestra en la Serie 1 */}
-              {seriesIndex > 0 && (
-                <div className="flex justify-end">
+              {index > 0 && (
+                <div className="flex justify-end mt-3">
                   <button
                     type="button"
-                    onClick={() => removeSeries(seriesIndex)}
-                    className="text-red-500 hover:text-red-700 flex items-center mt-4"
+                    onClick={() => removeSeries(index)}
+                    className="text-red-600 hover:text-red-800 text-sm flex items-center gap-1"
                   >
-                    <FaTrash className="mr-1" />
-                    Eliminar Serie
+                    <FaTrash /> Eliminar Serie
                   </button>
                 </div>
               )}
             </div>
           ))}
+
+          <button
+            type="button"
+            onClick={() => appendSeries({ serie: "", preguntas: [] })}
+            className="text-primary font-bold flex items-center mt-2"
+          >
+            <FaPlus className="mr-1" /> Agregar Serie
+          </button>
         </div>
 
-        <button
-          type="button"
-          onClick={() => appendSeries({ serie: "", preguntas: [] })}
-          className="text-primary font-bold w-auto flex items-center mt-4"
-        >
-          <FaPlus className="mr-1" />
-          Agregar Serie
-        </button>
-
-        <div className="col-span-full flex justify-center">
-          {codigo_examen ? (
-            <div className="flex justify-end space-x-4 mb-3 w-full">
-              <button
-                type="submit"
-                className="bg-[#0f763d] mt-2 font-bold font-page mb-2 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#0f763d] hover:border-[#0f763d]"
-              >
-                Actualizar
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
-              >
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-center w-full">
-              <button
-                type="submit"
-                className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
-              >
-                Crear Examen
-              </button>
-              {toastMessage && <div>{toastMessage}</div>}
-            </div>
-          )}
+        {/* Botones */}
+        <div className="col-span-full flex justify-center mt-2 mb-6">
+          <button
+            type="submit"
+            className="bg-[#1a1a1a] text-white py-3 w-[200px] rounded-full font-semibold hover:bg-[#333] transition"
+          >
+            {codigo_examen ? "Actualizar Examen" : "Crear Examen"}
+          </button>
         </div>
       </form>
     </div>

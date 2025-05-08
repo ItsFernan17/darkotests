@@ -369,108 +369,108 @@ export const initialData: SeedData = {
       nombre_grado: 'General de División'
     }
   ],
-  motivo:[
+  motivo: [
     {
       "codigo_motivo": 101,
       "estado": true,
-      "nombre_motivo": "Alta"
+      "nombre_motivo": "Ingreso a la Institución"
     },
     {
       "codigo_motivo": 102,
       "estado": true,
-      "nombre_motivo": "Ascenso"
+      "nombre_motivo": "Promoción Laboral"
     },
     {
       "codigo_motivo": 103,
       "estado": true,
-      "nombre_motivo": "Cambio de Plaza"
+      "nombre_motivo": "Cambio de Puesto"
     },
     {
       "codigo_motivo": 104,
       "estado": true,
-      "nombre_motivo": "Curso CIORA"
+      "nombre_motivo": "Capacitación Especializada A"
     },
     {
       "codigo_motivo": 105,
       "estado": true,
-      "nombre_motivo": "Curso Francotirador"
+      "nombre_motivo": "Capacitación Especializada B"
     },
     {
       "codigo_motivo": 106,
       "estado": true,
-      "nombre_motivo": "Curso Galonista Profesional"
+      "nombre_motivo": "Curso de Formación Profesional"
     },
     {
       "codigo_motivo": 107,
       "estado": true,
-      "nombre_motivo": "Curso Kabil"
+      "nombre_motivo": "Entrenamiento de Alta Exigencia"
     },
     {
       "codigo_motivo": 108,
       "estado": true,
-      "nombre_motivo": "Curso Liderazgo"
+      "nombre_motivo": "Curso de Liderazgo"
     },
     {
       "codigo_motivo": 109,
       "estado": true,
-      "nombre_motivo": "Curso Sargento Mayor CP"
+      "nombre_motivo": "Curso de Nivel Avanzado"
     },
     {
       "codigo_motivo": 110,
       "estado": true,
-      "nombre_motivo": "Desvinculacion"
+      "nombre_motivo": "Retiro o Baja de la Institución"
     },
     {
       "codigo_motivo": 201,
       "estado": true,
-      "nombre_motivo": "Especifica"
+      "nombre_motivo": "Evaluación Técnica"
     },
     {
       "codigo_motivo": 202,
       "estado": true,
-      "nombre_motivo": "Psicologica"
+      "nombre_motivo": "Evaluación Psicológica"
     },
     {
       "codigo_motivo": 203,
       "estado": true,
-      "nombre_motivo": "Meom"
+      "nombre_motivo": "Evaluación Médica"
     },
     {
       "codigo_motivo": 204,
       "estado": true,
-      "nombre_motivo": "Especifica y Psicologica"
+      "nombre_motivo": "Técnica y Psicológica"
     },
     {
       "codigo_motivo": 205,
       "estado": true,
-      "nombre_motivo": "Especifica y Meom"
+      "nombre_motivo": "Técnica y Médica"
     },
     {
       "codigo_motivo": 206,
       "estado": true,
-      "nombre_motivo": "Psicologica y Específico"
+      "nombre_motivo": "Psicológica y Técnica"
     },
     {
       "codigo_motivo": 207,
       "estado": true,
-      "nombre_motivo": "Psicologica y Meom"
+      "nombre_motivo": "Psicológica y Médica"
     },
     {
       "codigo_motivo": 208,
       "estado": true,
-      "nombre_motivo": "Especifica, Psicologica y Meom"
+      "nombre_motivo": "Técnica, Psicológica y Médica"
     },
     {
       "codigo_motivo": 209,
       "estado": true,
-      "nombre_motivo": "Licencia de conducir falsa"
+      "nombre_motivo": "Documento Falsificado"
     },
     {
       "codigo_motivo": 210,
       "estado": true,
       "nombre_motivo": "No Aplica"
     }
-  ],
+  ],  
   comando: [
     {
       codigo_comando: 1,
@@ -933,56 +933,56 @@ export const initialData: SeedData = {
       comando: 33
     }
   ],
-  tipo_pregunta:[
+  tipo_pregunta: [
     {
-      codigo_tipo_pregunta: 1,
-      estado: true,
-      descripcion: 'Falso/Verdadero'
+      "codigo_tipo_pregunta": 1,
+      "estado": true,
+      "descripcion": "Verdadero o Falso"
     },
     {
-      codigo_tipo_pregunta: 2,
-      estado: true,
-      descripcion: 'Separación de palabras'
+      "codigo_tipo_pregunta": 2,
+      "estado": true,
+      "descripcion": "Ortografía y Separación de Palabras"
     },
     {
-      codigo_tipo_pregunta: 3,
-      estado: true,
-      descripcion: 'Abreviaturas'
+      "codigo_tipo_pregunta": 3,
+      "estado": true,
+      "descripcion": "Identificación de Abreviaturas"
     },
     {
-      codigo_tipo_pregunta: 4,
-      estado: true,
-      descripcion: 'Selección múltiple'
+      "codigo_tipo_pregunta": 4,
+      "estado": true,
+      "descripcion": "Selección Múltiple"
     },
     {
-      codigo_tipo_pregunta: 5,
-      estado: true,
-      descripcion: 'Interrogantes'
+      "codigo_tipo_pregunta": 5,
+      "estado": true,
+      "descripcion": "Preguntas Abiertas"
     },
     {
-      codigo_tipo_pregunta: 6,
-      estado: true,
-      descripcion: 'Archivo'
+      "codigo_tipo_pregunta": 6,
+      "estado": true,
+      "descripcion": "Análisis de Documento o Archivo"
     },
     {
-      codigo_tipo_pregunta: 7,
-      estado: true,
-      descripcion: 'Análisis'
+      "codigo_tipo_pregunta": 7,
+      "estado": true,
+      "descripcion": "Resolución de Casos o Análisis Crítico"
     },
     {
-      codigo_tipo_pregunta: 8,
-      estado: true,
-      descripcion: 'Lógica'
+      "codigo_tipo_pregunta": 8,
+      "estado": true,
+      "descripcion": "Razonamiento Lógico"
     },
     {
-      codigo_tipo_pregunta: 9,
-      estado: true,
-      descripcion: 'Geometría'
+      "codigo_tipo_pregunta": 9,
+      "estado": true,
+      "descripcion": "Problemas de Geometría"
     },
     {
-      codigo_tipo_pregunta: 10,
-      estado: true,
-      descripcion: 'Otros'
+      "codigo_tipo_pregunta": 10,
+      "estado": true,
+      "descripcion": "Otro Tipo de Pregunta"
     }
-  ]
+  ]  
 };

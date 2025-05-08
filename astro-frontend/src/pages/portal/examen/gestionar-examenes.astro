@@ -1,18 +1,41 @@
 ---
 import Sistema from "../../../layouts/sistema.astro";
-import { ViewExamen } from '../../../components/Examenes/ViewExamen';
+import { ViewExamen } from "../../../components/Examenes/ViewExamen";
 ---
 
-<Sistema title="Gestionar Examenes">
-  <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
-    <div class="mt-1 h-8"></div>
-  </div>
-  <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+<Sistema title="Gestionar Examenes" bgColor="bg-[#f3f3f5]">
+  <h1
+    class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3 ml-[155px] mt-10"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-[42px] h-[42px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="pencilCircleGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f2b8bc"></stop>
+          <stop offset="50%" stop-color="#aeb8f0"></stop>
+          <stop offset="100%" stop-color="#dab5e9"></stop>
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#pencilCircleGradient)"
+        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+   10-4.48 10-10S17.52 2 12 2Zm3.54 6.46a1 1 0 0 1 1.41 1.41l-6.6 6.6a1 1 0 0 1-.5.27l-2.6.65a.5.5 0 0 1-.61-.61l.65-2.6a1 1 0 0 1 .27-.5l6.6-6.6ZM9.21 15h.58l5.79-5.79-.58-.58L9.21 14.42V15Z"
+      ></path>
+    </svg>
     Examenes Registrados en el Sistema
   </h1>
-  <p class=" text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-    Para buscar algun examen en especifico ingresa la Fecha de Evaluacion</p>
-  <div class=" max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
+  <div
+    class="h-1 w-[900px] mt-2 ml-[155px] bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+  >
+  </div>
+  <p class="text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
+    Para buscar algun examen en especifico ingresa la Fecha de Evaluacion
+  </p>
+  <div class="max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">
     <ViewExamen client:load />
   </div>
 </Sistema>

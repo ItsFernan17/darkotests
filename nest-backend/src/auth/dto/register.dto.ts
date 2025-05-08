@@ -1,5 +1,5 @@
 import { Transform } from "class-transformer";
-import { IsEnum, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from "class-validator";
+import { IsEnum, IsNotEmpty, IsNumber, IsOptional, IsString, MaxLength, MinLength } from "class-validator";
 import { Role } from "../../common/enums/rol.enum";
 
 export class RegisterDto{
@@ -34,18 +34,18 @@ export class RegisterDto{
     password: string;
 
     @IsNumber()
-    @IsNotEmpty( {message: 'El grado es requerido'})
-    grado: number;
+    @IsOptional()
+    grado?: number | null;
 
     @IsNumber()
-    @IsNotEmpty( {message: 'La poblacion es requerida'})
-    poblacion: number;
+    @IsOptional()
+    poblacion?: number | null
 
     @IsNumber()
     @IsNotEmpty( {message: 'La residencia es requerida'})
     residencia: number;
 
     @IsNumber()
-    @IsNotEmpty( {message: 'El comando es requerido'})
-    comando: number;
+    @IsOptional()
+    comando?: number | null
 }

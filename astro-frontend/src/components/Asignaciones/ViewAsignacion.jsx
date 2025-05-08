@@ -12,6 +12,12 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 import { NewAsignacion } from "./NewAsigancion";
 import { desactiveAsignacion } from "./Asignaciones.api";
+import { motion } from "framer-motion";
+import { X } from "lucide-react";
+import { logoBase64 } from "../../constants/logoBase64";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
+pdfMake.vfs = pdfFonts.vfs;
 
 export function ViewAsignacion() {
   const [filterText, setFilterText] = useState("");
@@ -22,7 +28,7 @@ export function ViewAsignacion() {
   const [deleteModalIsOpen, setDeleteModalIsOpen] = useState(false);
   const [userRole, setUserRole] = useState(null);
   const [userDPI, setUserDPI] = useState(null);
-
+  const [toggleCleared, setToggleCleared] = useState(false);
 
   useEffect(() => {
     const role = localStorage.getItem("role");
@@ -59,19 +65,21 @@ export function ViewAsignacion() {
   }, []);
 
   const filteredData = Array.isArray(data)
-  ? data.filter((item) => {
-      if (userRole === "evaluado") {
-        const motivoExamen = typeof item.examen?.motivo_examen?.nombre_motivo === "string"
-          ? item.examen.motivo_examen.nombre_motivo.toLowerCase()
-          : "";
-        return motivoExamen.includes(filterText.toLowerCase());
-      } else if (userRole === "evaluador" || userRole === "admin") {
-        return item.evaluado?.nombre_completo?.toLowerCase().includes(filterText.toLowerCase());
-      }
-      return false;
-    })
-  : [];
-
+    ? data.filter((item) => {
+        if (userRole === "evaluado") {
+          const motivoExamen =
+            typeof item.examen?.motivo_examen?.nombre_motivo === "string"
+              ? item.examen.motivo_examen.nombre_motivo.toLowerCase()
+              : "";
+          return motivoExamen.includes(filterText.toLowerCase());
+        } else if (userRole === "evaluador" || userRole === "admin") {
+          return item.evaluado?.nombre_completo
+            ?.toLowerCase()
+            .includes(filterText.toLowerCase());
+        }
+        return false;
+      })
+    : [];
 
   const handleSelectedRowsChange = ({ selectedRows }) => {
     if (selectedRows.length > 0) {
@@ -96,7 +104,6 @@ export function ViewAsignacion() {
     }
   };
 
-
   const handleSaveAndRedirect = (codigoExamen, codigoAsignacion) => {
     if (codigoExamen && codigoAsignacion) {
       localStorage.setItem("codigo_examen", codigoExamen);
@@ -105,6 +112,11 @@ export function ViewAsignacion() {
     } else {
       alert("Código de examen o asignación no válido");
     }
+  };
+
+  const handleCloseModal = () => {
+    setModalIsOpen(false);
+    setSelectedAsignacion(null);
   };
 
   const exportToExcel = () => {
@@ -176,27 +188,29 @@ export function ViewAsignacion() {
       sortable: true,
       className: "font-page",
     },
-    ...(userRole === "evaluado" ? [
-      {
-        name: "Acciones",
-        cell: (row) => (
-          <button
-            onClick={() =>
-              handleSaveAndRedirect(
-                row.examen.codigo_examen,
-                row.codigo_asignacion
-              )
-            }
-            className={`text-[#0f763d] px-4 py-2 rounded ${row.punteo === null ? "" : "opacity-50 cursor-not-allowed"}`}
-            disabled={row.punteo !== null}
-          >
-            {row.punteo === null ? "Ir al Examen" : "Examen completado"}
-          </button>
-        ),
-        ignoreRowClick: true,
-      },
-    ] : []),
-    
+    ...(userRole === "evaluado"
+      ? [
+          {
+            name: "Acciones",
+            cell: (row) => (
+              <button
+                onClick={() =>
+                  handleSaveAndRedirect(
+                    row.examen.codigo_examen,
+                    row.codigo_asignacion
+                  )
+                }
+                className={`text-[#0f763d] px-4 py-2 rounded ${row.punteo === null ? "" : "opacity-50 cursor-not-allowed"}`}
+                disabled={row.punteo !== null}
+              >
+                {row.punteo === null ? "Ir al Examen" : "Examen completado"}
+              </button>
+            ),
+            ignoreRowClick: true,
+          },
+        ]
+      : []),
+
     {
       name: "Certificación",
       cell: (row) => (
@@ -216,68 +230,142 @@ export function ViewAsignacion() {
     },
   ];
 
-  if (loading) return <div className="text-center font-page">Cargando...</div>;
-
   const handleGeneratePDF = async (codigoAsignacion) => {
     try {
-      const token = localStorage.getItem('accessToken');
-      const response = await fetch(`http://localhost:3000/api/v1/asignacion/${codigoAsignacion}/datos`, {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-  
+      const token = localStorage.getItem("accessToken");
+      const response = await fetch(
+        `http://localhost:3000/api/v1/asignacion/${codigoAsignacion}/datos`,
+        {
+          method: "GET",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
       if (!response.ok) {
         throw new Error(`Error: ${response.status} - ${response.statusText}`);
       }
-  
+
       const asignacion = await response.json();
-  
+
       if (asignacion.punteo === null) {
         alert("Este examen no tiene punteo registrado.");
         return;
       }
-  
-      const doc = new jsPDF();
-      const imgData = '/EMDN1.png'; 
-  
-      doc.addImage(imgData, 'PNG', 90, 10, 40, 30); 
-      doc.setFontSize(20);
-      doc.setFont("helvetica", "bold");
-      doc.text("Estado Mayor de la Defensa Nacional", 105, 50, { align: "center" });
-      doc.setFontSize(16);
-      doc.setFont("helvetica", "semibold");
-      doc.text("Dirección de Personal Del Estado Mayor de la Defensa Nacional", 105, 60, { align: "center" });
-      doc.setLineWidth(0.5);
-      doc.rect(10, 70, 190, 160);
-      doc.setFontSize(14);
-      doc.setFont("helvetica", "bold");
-      doc.text("Datos del Evaluado", 15, 80);
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "normal");
-      doc.text(`Nombre Completo: ${asignacion.evaluado.nombre_completo}`, 15, 90);
-      doc.text(`DPI: ${asignacion.evaluado.dpi}`, 15, 100);
-      doc.text(`Teléfono: ${asignacion.evaluado.telefono}`, 15, 110);
-      doc.text(`Grado: ${asignacion.evaluado.grado}`, 15, 120);
-      doc.text(`Población: ${asignacion.evaluado.poblacion}`, 15, 130);
-      doc.text(`Residencia: ${asignacion.evaluado.residencia}`, 15, 140);
-      doc.text(`Comando: ${asignacion.evaluado.comando}`, 15, 150);
-      doc.setLineWidth(0.2);
-      doc.line(10, 155, 200, 155);
-      doc.setFontSize(14);
-      doc.setFont("helvetica", "bold");
-      doc.text("Datos del Examen", 15, 165);
-      doc.setFontSize(12);
-      doc.setFont("helvetica", "normal");
-      doc.text(`Código Examen: ${asignacion.examen.codigo_examen}`, 15, 175);
-      doc.text(`Fecha de Evaluación: ${asignacion.examen.fecha_evaluacion}`, 15, 185);
-      doc.text(`Punteo Máximo: ${asignacion.examen.punteo_maximo}`, 15, 195);
-      doc.text(`Punteo Obtenido: ${asignacion.punteo}`, 15, 205);
-      doc.text(`Motivo Examen: ${asignacion.examen.motivo_examen}`, 15, 215);
-      doc.text(`Tipo de Examen: ${asignacion.examen.tipo_examen}`, 15, 225);
-  
-      doc.save(`Constancia_Examen_${asignacion.evaluado.nombre_completo}.pdf`);
+
+        const docDefinition = {
+          pageSize: 'LETTER',
+          pageMargins: [40, 60, 40, 80],
+          content: [
+            {
+              image: logoBase64, // logo centrado
+              width: 200,
+              alignment: 'center',
+              margin: [0, 0, 0, 10],
+            },
+            {
+              text: 'Laboratorio de Evaluaciones – DarkoTests',
+              alignment: 'center',
+              bold: true,
+              fontSize: 13,
+              margin: [0, 0, 0, 5],
+            },
+            {
+              text: 'CONSTANCIA DE EVALUACIÓN',
+              alignment: 'center',
+              color: '#D32F2F',
+              bold: true,
+              fontSize: 14,
+              margin: [0, 0, 0, 10],
+            },
+            {
+              text:
+                'Mediante la presente, se hace constar que el evaluado ha cumplido satisfactoriamente con el proceso de evaluación estipulado por el sistema oficial de DarkoTests. Dicho proceso se ha desarrollado bajo lineamientos técnicos y metodológicos que garantizan la objetividad de los resultados, mismos que reflejan el rendimiento alcanzado conforme a los criterios establecidos para el tipo de examen aplicado.',
+              alignment: 'justify',
+              fontSize: 11,
+              lineHeight: 1.5,
+              margin: [0, 0, 0, 20],
+            },
+            {
+              text: 'DATOS DEL EVALUADO',
+              style: 'seccion',
+            },
+            {
+              columns: [
+                { text: `Nombre Completo: ${asignacion.evaluado.nombre_completo}`, width: '50%' },
+                { text: `DPI: ${asignacion.evaluado.dpi}`, width: '50%' },
+              ],
+            },
+            {
+              columns: [
+                { text: `Teléfono: ${asignacion.evaluado.telefono}`, width: '50%' },
+                { text: `Residencia: ${asignacion.evaluado.residencia}`, width: '50%' },
+              ],
+              margin: [0, 0, 0, 15],
+            },
+            {
+              text: 'RESULTADOS DE LA EVALUACIÓN',
+              style: 'seccion',
+            },
+            {
+              table: {
+                widths: ['*', '*'],
+                body: [
+                  ['Fecha de Evaluación', asignacion.examen.fecha_evaluacion],
+                  ['Punteo Máximo', asignacion.examen.punteo_maximo],
+                  ['Punteo Obtenido', asignacion.punteo],
+                  ['Motivo del Examen', asignacion.examen.motivo_examen],
+                  ['Tipo de Examen', asignacion.examen.tipo_examen],
+                ],
+              },
+              layout: 'fullGrid', // todos los bordes
+              margin: [0, 0, 0, 20],
+            },
+            {
+              text: `Promedio General: ${(
+                (asignacion.punteo / asignacion.examen.punteo_maximo) *
+                100
+              ).toFixed(2)}%`,
+              bold: true,
+              alignment: 'right',
+              fontSize: 12,
+              margin: [0, 0, 0, 20],
+            },
+            {
+              text: `Fecha de emisión: ${new Date().toLocaleDateString()}`,
+              fontSize: 10,
+              italics: true,
+              margin: [0, 0, 0, 40],
+            },
+            {
+              qr: `https://darkotests.com/verificar-certificado/${asignacion.evaluado.dpi}`,
+              alignment: 'center',
+              fit: 100,
+            },
+            {
+              text: 'Esta constancia tiene validez hasta el 31/12/2025.',
+              alignment: 'center',
+              fontSize: 9,
+              italics: true,
+              margin: [0, 10, 0, 0],
+            },
+          ],
+          styles: {
+            seccion: {
+              fontSize: 12,
+              bold: true,
+              margin: [0, 10, 0, 8],
+              color: '#333',
+            },
+          },
+        };
+        
+        
+
+      pdfMake
+        .createPdf(docDefinition)
+        .download(`Certificado_${asignacion.evaluado.nombre_completo}.pdf`);
     } catch (error) {
       console.error("Error al generar el PDF:", error);
       alert("Error al generar el PDF. Intente nuevamente.");
@@ -295,57 +383,62 @@ export function ViewAsignacion() {
             type="text"
             value={filterText}
             onChange={(e) => setFilterText(e.target.value)}
-            className="border bg-[#F7FAFF] p-2 pl-10 w-full rounded-md focus:outline-none focus:ring focus:border-blue-300 font-page"
+            className="border bg-white p-2 pl-10 w-full rounded-2xl focus:outline-none focus:ring font-page"
             placeholder="Buscar asignación..."
           />
         </div>
 
-        {userRole !== "evaluado" && (
-          <div className="flex ml-4 items-center translate-x-[550px] space-x-3">
-            <span className="font-page font-semibold text-[16px] text-primary">
-              Exportar en:
-            </span>
-
-            <button
-              className="bg-[#0f763d] text-white border border-[#0f763d] p-2 rounded flex justify-center items-center"
-              onClick={exportToExcel}
-            >
-              <FaFileExcel className="size-5" />
-            </button>
-
-            <button
-              className="bg-[#da1618] text-white p-2 rounded flex justify-center items-center"
-              onClick={exportToPDF}
-            >
-              <FaFilePdf className="size-5" />
-            </button>
-          </div>
-        )}
+        <div className="flex ml-4 items-center translate-x-[550px] space-x-3">
+          <span className="font-page font-semibold text-[16px] text-primary">
+            Exportar en:
+          </span>
+          <button
+            className="bg-[#0f763d] text-white border p-2 rounded"
+            onClick={exportToExcel}
+          >
+            <FaFileExcel />
+          </button>
+          <button
+            className="bg-[#da1618] text-white p-2 rounded"
+            onClick={exportToPDF}
+          >
+            <FaFilePdf />
+          </button>
+        </div>
       </div>
 
-      {selectedAsignacion && (
-        <div className="flex items-center bg-primary text-white p-2 rounded-md mb-4">
-          <span className="mr-4 font-page ml-7">
-            Seleccionado: {selectedAsignacion.evaluado.nombre_completo}
-          </span>
-          {userRole !== "evaluado" && (
-            <>
-              <button
-                onClick={handleEditClick}
-                className="flex items-center text-primary bg-[#FFFFFF] px-4 py-2 ml-[760px] rounded-[10px] mr-2"
-              >
-                <FaEdit className="size-5" />
-              </button>
-              <button
-                onClick={() => setDeleteModalIsOpen(true)}
-                className="flex items-center text-primary bg-[#ED8080] px-4 py-2 rounded-[10px]"
-              >
-                <FaTrashAlt className="size-5" />
-              </button>
-            </>
-          )}
-        </div>
-      )}
+{selectedAsignacion && (
+  <div className="flex items-center h-14 justify-between bg-white border shadow-sm rounded-xl p-4 mb-6">
+    <div className="text-gray-800 text-base font-medium">
+      <span className="ml-2">
+        📝 <strong>Seleccionado:</strong>{" "}
+        {selectedAsignacion.evaluado.nombre_completo}
+      </span>
+    </div>
+
+    {(!selectedAsignacion.punteo || selectedAsignacion.punteo === 0) ? (
+      <div className="flex space-x-3">
+        <button
+          onClick={handleEditClick}
+          className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700"
+        >
+          <FaEdit className="size-4" /> Editar
+        </button>
+        <button
+          onClick={() => setDeleteModalIsOpen(true)}
+          className="flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600"
+        >
+          <FaTrashAlt className="size-4" /> Eliminar
+        </button>
+      </div>
+    ) : (
+      <div className="text-sm text-gray-600 italic px-4 py-2 rounded-lg">
+        Ya fue examinado. No se permite editar ni eliminar esta asignación.
+      </div>
+    )}
+  </div>
+)}
+
 
       <div className="relative z-10">
         <DataTable
@@ -356,17 +449,20 @@ export function ViewAsignacion() {
           paginationRowsPerPageOptions={[5]}
           highlightOnHover
           noDataComponent={<div className="font-page">No hay registros</div>}
-          selectableRows={userRole !== "evaluado"}
+          selectableRows
           onSelectedRowsChange={handleSelectedRowsChange}
           paginationComponentOptions={{
             rowsPerPageText: "Mostrando",
             rangeSeparatorText: "de",
           }}
           selectableRowsSingle
+          selectableRowSelected={(row) =>
+            selectedAsignacion?.codigo_asignacion === row.codigo_asignacion
+          }
           customStyles={{
             headCells: {
               style: {
-                color: "#142957",
+                color: "#142957", // Texto blanco
                 fontSize: "14px",
                 fontWeight: "bold",
                 textAlign: "center",
@@ -374,25 +470,25 @@ export function ViewAsignacion() {
             },
             rows: {
               style: {
-                backgroundColor: "#FFFFFF",
+                backgroundColor: "#FFFFFF", // Fila clara
                 "&:hover": {
-                  backgroundColor: "#E7EBF8 !important",
+                  backgroundColor: "#ebdeef !important", // Fila al hacer hover
                 },
-                minHeight: "48px",
+                minHeight: "48px", // Altura mínima de las filas
               },
             },
             cells: {
               style: {
-                paddingLeft: "10px",
+                paddingLeft: "10px", // Espaciado en celdas
                 paddingRight: "10px",
                 fontSize: "14px",
-                color: "#142957",
+                color: "#142957", // Gris oscuro para el texto
               },
             },
             pagination: {
               style: {
-                backgroundColor: "none",
-                padding: "10px",
+                backgroundColor: "none", // Fondo claro para la paginación (equivalente a bg-gray-100)
+                padding: "10px", // Añade algo de padding
                 fontSize: "14px !important",
                 color: "#142957 !important",
                 fontWeight: "bold",
@@ -405,8 +501,8 @@ export function ViewAsignacion() {
               pageButtonsStyle: {
                 fontSize: "14px !important",
                 fontWeight: "bold",
-                border: "3px Solid #142957",
-                backgroundColor: "#142957",
+                border: "3px Solid #4f6bed",
+                backgroundColor: "#4f6bed",
                 borderRadius: "15px",
                 padding: "5px",
                 margin: "0px 2px",
@@ -417,59 +513,93 @@ export function ViewAsignacion() {
         />
       </div>
 
+      {/* Modal de edición */}
       {modalIsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-white w-[700px] rounded-lg shadow-lg">
-            <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
-              <h2 className="font-page font-semibold items-center text-[25px]">
-                Actualizar Asignación
-              </h2>
-              <img src="/EMDN1.png" alt="Logo" className="h-14" />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            exit={{ scale: 0.9, opacity: 0 }}
+            transition={{ duration: 0.25 }}
+            className="bg-white w-full max-w-xl rounded-2xl shadow-lg"
+          >
+            <div
+              className="relative h-32 flex items-end px-6 py-4 rounded-t-2xl overflow-hidden"
+              style={{
+                backgroundImage: "url('/mod.webp')",
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+              }}
+            >
+              <div className="absolute inset-0 bg-black/40" />
+              <div className="relative z-10 flex justify-between items-center w-full">
+                <h2 className="text-white text-3xl font-semibold flex items-center gap-2">
+                  Actualizar Registro
+                </h2>
+              </div>
+              <button
+                onClick={handleCloseModal}
+                className="absolute top-3 right-3 z-10 text-white hover:text-red-300 transition duration-150"
+                aria-label="Cerrar modal"
+              >
+                <X size={22} />
+              </button>
             </div>
 
-            <div className="px-6">
+            <div className="p-6 bg-white">
               <NewAsignacion
                 codigo_asignacion={selectedAsignacion.codigo_asignacion}
-                onClose={() => setModalIsOpen(false)}
-                onUserSaved={fetchAsignaciones}
+                onClose={() => {
+                  setModalIsOpen(false);
+                  setSelectedAsignacion(null);
+                }}
+                onUserSaved={() => {
+                  fetchAsignaciones();
+                  setSelectedAsignacion(null); // <- Aquí también puedes limpiar
+                }}
               />
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
 
-      {deleteModalIsOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-70 flex justify-center items-center z-50">
-          <div className="bg-white w-[500px] rounded-lg shadow-lg">
-            <div className="w-full flex items-center justify-between bg-primary text-white py-3 px-5 rounded-t-md">
-              <h2 className="font-page font-semibold items-center text-[25px]">
-                Confirmación de Eliminación
+      {/* Modal de eliminación */}
+      {deleteModalIsOpen && selectedAsignacion && (
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-sm flex justify-center items-center z-50">
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            className="w-full max-w-md bg-white rounded-2xl shadow-xl overflow-hidden"
+          >
+            <div
+              className="relative h-28 bg-cover bg-center"
+              style={{ backgroundImage: "url('/delete.webp')" }}
+            >
+              <div className="absolute inset-0 bg-black/50" />
+              <h2 className="relative z-10 text-white text-3xl font-semibold p-4">
+                Eliminar Asignación
               </h2>
-              <img src="/EMDN1.png" alt="Logo" className="h-14" />
             </div>
-            <div className="px-6 py-4 text-center">
-              <p className="text-lg mb-4">
+            <div className="p-6 text-center">
+              <p className="mb-6 text-gray-800 text-base">
                 ¿Estás seguro de eliminar esta asignación?
               </p>
-              <div className="flex justify-center space-x-4">
+              <div className="flex justify-center gap-4">
                 <button
                   onClick={handleDeleteClick}
-                  className="bg-[#ED8080] text-[#090000] px-4 py-2 rounded-md shadow transition duration-300 ease-in-out border hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
+                  className="bg-red-600 text-white px-5 py-2 rounded-lg"
                 >
                   Eliminar
                 </button>
                 <button
-                  onClick={() => {
-                    setDeleteModalIsOpen(false);
-                    setSelectedAsignacion(null);
-                  }}
-                  className="bg-primary text-white px-4 py-2 rounded-md shadow transition duration-300 ease-in-out border hover:bg-white hover:text-primary hover:border-primary"
+                  onClick={() => setDeleteModalIsOpen(false)}
+                  className="bg-gray-200 text-gray-800 px-5 py-2 rounded-lg"
                 >
                   Cancelar
                 </button>
               </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       )}
     </div>

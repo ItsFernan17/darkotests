@@ -14,7 +14,7 @@ import { PreguntaService } from 'src/pregunta/pregunta.service';
 import { Serie } from 'src/serie/model/serie.entity';
 import { PreguntaRespuesta } from 'src/pregunta-respuesta/model/pregunta-respuesta.entity';
 import { Motivo } from 'src/seed-db/motivo/model/motivo.entity';
-
+import { SerieService } from 'src/serie/serie.service';
 
 @Injectable()
 export class ExamenMasterService {
@@ -40,6 +40,7 @@ export class ExamenMasterService {
         private motivoRepository: Repository<Motivo>,
         private readonly serieExamenService: SerieExamenService,
         private readonly preguntasService: PreguntaService,
+        private readonly serieService: SerieService,
 
     ){}
 

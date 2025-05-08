@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { createAsignacionExamen, updateAsignacionExamen } from "./Series.api"; // Asegúrate de tener las funciones de la API correspondientes
+import { createAsignacionExamen, updateAsignacionExamen } from "./Series.api";
+import { FileText, Info } from "lucide-react";
 
 export function NewSerie({ codigo_serie = null, onClose = null, onUserSaved = null }) {
   const {
@@ -12,6 +13,12 @@ export function NewSerie({ codigo_serie = null, onClose = null, onUserSaved = nu
     reset,
   } = useForm();
 
+  const inputClass =
+  "bg-[#f3f1ef] border border-gray-300 text-sm rounded-xl focus:ring-primary focus:border-primary block w-full px-10 py-2.5";
+const labelClass = "mb-1 block text-sm font-medium text-gray-700";
+const iconClass =
+  "absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400";
+  
   const [toastMessage, setToastMessage] = useState(null);
 
   useEffect(() => {
@@ -109,95 +116,62 @@ export function NewSerie({ codigo_serie = null, onClose = null, onUserSaved = nu
     }
   };
 
+  const InputWithIcon = React.forwardRef(({ icon: Icon, id, placeholder, ...props }, ref) => (
+    <div className="relative">
+      <div className={iconClass}>
+        <Icon size={16} />
+      </div>
+      <input
+        id={id}
+        placeholder={placeholder}
+        className={inputClass}
+        ref={ref}
+        {...props}
+      />
+    </div>
+  ));
+
+
   return (
     <div>
       <ToastContainer />
-      <form
-        className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-2"
-        onSubmit={onSubmit}
-      >
-        <div className="mt-4">
-          <label
-            htmlFor="serie"
-            className="block text-[16px] font-page font-semibold text-primary"
-          >
-            Serie
-          </label>
-          <input
-            type="text"
+      <form onSubmit={onSubmit} className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div>
+          <label htmlFor="serie" className={labelClass}>Serie</label>
+          <InputWithIcon
+            icon={FileText}
             id="serie"
-            className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm border border-primary pl-3 font-page"
             placeholder="Ejemplo: Serie II"
             {...register("serie", {
               required: "*La serie es requerida",
-              minLength: {
-                value: 3,
-                message: "*La serie debe tener al menos 3 caracteres",
-              },
-              pattern: {
-                value: /^[A-Za-z0-9\s]+$/,
-                message: "*La serie solo debe contener letras, números y espacios",
-              },
+              minLength: { value: 3, message: "*Debe tener al menos 3 caracteres" },
+              pattern: { value: /^[A-Za-z0-9\s]+$/, message: "*Solo letras, números y espacios" },
             })}
           />
-          {errors.serie && (
-            <p className="text-red-900 text-sm mb-0">{errors.serie.message}</p>
-          )}
+          {errors.serie && <p className="text-sm text-red-600 mt-1">{errors.serie.message}</p>}
         </div>
 
-        <div className="mt-4">
-          <label
-            htmlFor="instrucciones"
-            className="block font-page text-[16px] font-semibold text-primary"
-          >
-            Instrucciones
-          </label>
-          <input
-            type="text"
+        <div>
+          <label htmlFor="instrucciones" className={labelClass}>Instrucciones</label>
+          <InputWithIcon
+            icon={Info}
             id="instrucciones"
-            className="bg-[#F7FAFF] h-[34px] w-[318px] mt-1 rounded-sm shadow-sm border border-primary pl-3 font-page"
-            placeholder="Escribe las instrucciones para la serie"
+            placeholder="Instrucciones para esta serie"
             {...register("instrucciones", {
-              required: "*Las instrucciones son requeridas",
-              minLength: {
-                value: 10,
-                message: "*Las instrucciones deben tener al menos 10 caracteres",
-              },
+              required: "*Instrucciones requeridas",
+              minLength: { value: 10, message: "*Mínimo 10 caracteres" },
             })}
           />
-          {errors.instrucciones && (
-            <p className="text-red-900 text-sm mb-0">{errors.instrucciones.message}</p>
-          )}
+          {errors.instrucciones && <p className="text-sm text-red-600 mt-1">{errors.instrucciones.message}</p>}
         </div>
 
-        <div className="col-span-full flex justify-center">
-          {codigo_serie ? (
-            <div className="flex justify-end space-x-4 mb-3 w-full">
-              <button
-                type="submit"
-                className="bg-[#0f763d] mt-2 font-bold font-page mb-2 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#0f763d] hover:border-[#0f763d]"
-              >
-                Actualizar
-              </button>
-              <button
-                type="button"
-                onClick={onClose}
-                className="bg-[#ED8080] mt-2 font-bold font-page mb-2 text-[#090000] border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out h-[35px] w-[150px] md:w-[120px] hover:bg-white hover:text-[#090000] hover:border-[#ED8080]"
-              >
-                Cancelar
-              </button>
-            </div>
-          ) : (
-            <div className="flex justify-center w-full">
-              <button
-                type="submit"
-                className="bg-[#142957] mt-2 font-normal font-page mb-10 text-white border-2 border-transparent rounded-[10px] text-[16px] cursor-pointer transition duration-300 ease-in-out  h-[40px] md:w-[300px]  hover:bg-white hover:text-primary hover:border-primary"
-              >
-                Crear Serie
-              </button>
-              {toastMessage && <div>{toastMessage}</div>}
-            </div>
-          )}
+        <div className="col-span-full flex justify-center mt-2 mb-6">
+          <button
+            type="submit"
+            className="bg-[#1a1a1a] text-white py-3 w-[200px] rounded-full font-semibold hover:bg-[#333] transition"
+          >
+            {codigo_serie ? "Actualizar Serie" : "Crear Serie"}
+          </button>
         </div>
       </form>
     </div>

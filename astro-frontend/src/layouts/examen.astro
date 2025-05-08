@@ -1,47 +1,219 @@
 ---
-
-
 interface Props {
-	title: string;
+  title: string;
+  bgColor?: string;
 }
 
-const { title } = Astro.props;
-
+const { title, bgColor = "bg-[#F5F5F5]" } = Astro.props;
 ---
 
 <!doctype html>
 <html lang="es">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="description" content="Astro description" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/icono_usuario.png" />
-		<meta name="generator" content={Astro.generator} />
-		<link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-		 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-		<title>{title}</title>
-	</head>
-	<body class="bg-[#F5F5F5] w-full h-full absolute">
-        <div class="flex items-center w-full h-auto  text-white md:px-9 bg-primary drop-shadow-md justify-between">
-            <div class="flex items-center space-x-8">
-                <a href="/portal/menu-sistema">
-                    <img
-                      src="/logotipo.png"
-                      alt="Logo Ministerio de la Defensa"
-                      class="w-48 transition-all"
-                    />
-                  </a>
-            </div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="DarkoTests - Plataforma de evaluación" />
+    <meta name="generator" content={Astro.generator} />
+
+    <!-- Íconos claro/oscuro -->
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icono-dark.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icono-light.svg"
+      media="(prefers-color-scheme: dark)"
+    />
+
+    <!-- Tipografía moderna -->
+    <link href="https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap" rel="stylesheet">
+
+    <!-- Boxicons -->
+    <link
+      href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css"
+      rel="stylesheet"
+    />
+
+    <title>{title}</title>
+  </head>
+
+  <body class={`min-h-screen w-full ${bgColor}`}>
+    <!-- Encabezado estilo DarkoTests -->
+    <!-- Logo centrado en la parte superior -->
+    <div class="w-full flex justify-center pt-10">
+      <div class="flex items-center gap-3">
+        <div class="w-14 h-14 flex items-center justify-center">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            class="w-full h-full"
+          >
+            <path
+              d="M21 12C21 7.03 16.97 3 12 3C9.05 3 6.47 4.64 5.1 7"
+              stroke="#5673E0"
+              stroke-width="2.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M3 12C3 16.97 7.03 21 12 21C14.95 21 17.53 19.36 18.9 17"
+              stroke="#FF6F61"
+              stroke-width="2.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M9 12.5L11 14.5L15 10"
+              stroke="#2D2C36"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
+          </svg>
         </div>
-		<div class="">
-			<div class="h-2 flex">
-				<div class="flex-1 bg-[#069CF1]"></div>
-				<div class="flex-1 bg-white"></div>
-				<div class="flex-1 bg-[#069CF1]"></div>
-				</div>
-			<div class="mt-4 ml-[200px] mr-[200px]">
-                <slot/>
-            </div>
-		</div>
-	</body>
+        <h1
+          class="text-3xl sm:text-4xl font-extrabold text-[#2d2c36] tracking-tight"
+        >
+          DarkoTests
+        </h1>
+      </div>
+    </div>
+  </body>
+
+  <!-- FIGURAS GEOMÉTRICAS DE FONDO -->
+  <!-- Superior izquierda -->
+  <svg
+    class="absolute top-[2%] left-[4%] w-20 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="50" fill="#FF6F61"></circle>
+  </svg>
+
+  <svg
+    class="absolute top-[6%] left-[14%] w-14 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <rect width="60" height="60" fill="#9C27B0" transform="rotate(15 30 30)"
+    ></rect>
+  </svg>
+
+  <svg
+    class="absolute top-[4%] left-[25%] w-10 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <polygon points="50,0 100,100 0,100" fill="#5673E0"></polygon>
+  </svg>
+
+  <!-- Superior derecha -->
+  <svg
+    class="absolute top-[5%] right-[8%] w-16 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="40" fill="#9C27B0"></circle>
+  </svg>
+
+  <svg
+    class="absolute top-[2%] right-[18%] w-12 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <rect width="50" height="50" fill="#FF6F61" transform="rotate(25 25 25)"
+    ></rect>
+  </svg>
+
+  <!-- Centro izquierda -->
+  <svg
+    class="absolute top-[30%] left-[6%] w-16 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <polygon points="50,0 100,100 0,100" fill="#FF6F61"></polygon>
+  </svg>
+
+  <svg
+    class="absolute top-[45%] left-[10%] w-12 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="35" fill="#5673E0"></circle>
+  </svg>
+
+  <svg
+    class="absolute top-[60%] left-[6%] w-10 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <rect width="50" height="50" fill="#9C27B0" transform="rotate(40 25 25)"
+    ></rect>
+  </svg>
+
+  <!-- Centro derecha -->
+  <svg
+    class="absolute top-[30%] right-[6%] w-16 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <polygon points="0,0 100,0 50,100" fill="#FF6F61"></polygon>
+  </svg>
+
+  <svg
+    class="absolute top-[48%] right-[10%] w-14 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="35" fill="#5673E0"></circle>
+  </svg>
+
+  <svg
+    class="absolute top-[62%] right-[8%] w-10 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <rect width="60" height="60" fill="#9C27B0" transform="rotate(30 30 30)"
+    ></rect>
+  </svg>
+
+  <!-- Inferior izquierda -->
+  <svg
+    class="absolute bottom-[8%] left-[4%] w-14 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="30" fill="#5673E0"></circle>
+  </svg>
+
+  <svg
+    class="absolute bottom-[4%] left-[18%] w-12 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <polygon points="0,0 100,0 50,100" fill="#FF6F61"></polygon>
+  </svg>
+
+  <!-- Inferior derecha -->
+  <svg
+    class="absolute bottom-[6%] right-[4%] w-14 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="30" fill="#9C27B0"></circle>
+  </svg>
+
+  <svg
+    class="absolute bottom-[3%] right-[16%] w-12 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <rect width="60" height="60" fill="#FF6F61" transform="rotate(35 30 30)"
+    ></rect>
+  </svg>
+
+  <!-- Centro inferior (centrado) -->
+  <svg
+    class="absolute bottom-[10%] left-[50%] -translate-x-1/2 w-16 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <polygon points="50,0 100,100 0,100" fill="#5673E0"></polygon>
+  </svg>
+
+  <svg
+    class="absolute bottom-[6%] left-[50%] -translate-x-1/2 w-10 opacity-10 z-0"
+    viewBox="0 0 100 100"
+  >
+    <circle cx="50" cy="50" r="25" fill="#9C27B0"></circle>
+  </svg>
+
+  <!-- Contenido principal -->
+  <main class="w-full max-w-7xl mx-auto px-4 py-10">
+    <slot />
+  </main>
 </html>

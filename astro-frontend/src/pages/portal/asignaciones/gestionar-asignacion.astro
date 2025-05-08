@@ -3,13 +3,35 @@ import Sistema from "../../../layouts/sistema.astro";
 import { ViewAsignacion } from '../../../components/Asignaciones/ViewAsignacion';
 ---
 
-<Sistema title="Gestión de Asignaciones">
-    <div class="mx-auto mt-1 h-auto w-full max-w-4xl px-4">
-      <div class="mt-1 h-8"></div>
-    </div>
-    <h1 class="font-bold text-[35px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
-      Asignaciones registradas en el Sistema
-    </h1>
+<Sistema title="Gestionar Asignaciones" bgColor="bg-[#f3f3f5]">
+  <h1
+    class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3 ml-[155px] mt-10"
+  >
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      class="w-[42px] h-[42px]"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <defs>
+        <linearGradient id="empleoGradient" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f2b8bc"></stop>
+          <stop offset="50%" stop-color="#aeb8f0"></stop>
+          <stop offset="100%" stop-color="#dab5e9"></stop>
+        </linearGradient>
+      </defs>
+      <path
+        fill="url(#empleoGradient)"
+        d="M10 2h4a2 2 0 0 1 2 2v2h3a2 2 0 0 1 2 2v2H3V8a2 2 0 0 1 2-2h3V4a2 2 0 0 1 2-2Zm0 2v2h4V4h-4ZM3 10h18v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-8Zm6 3v2h6v-2H9Z"
+      ></path>
+    </svg>
+
+    Asignaciones Registradas en el Sistema
+  </h1>
+  <div
+    class="h-1 w-[900px] mt-2 ml-[155px] bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+  >
+  </div>
     <p class=" text-[20px] text-primary mr-32 ml-40 mb-3 mt-7 font-page text-left">
       Para buscar alguna asignación en especifico ingresa el nombre del evaluado.</p>
     <div class=" max-h-[60vh] mr-32 ml-32 px-4 bg-background rounded-md">

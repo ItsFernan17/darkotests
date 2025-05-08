@@ -1,22 +1,27 @@
+import { IsOptional, IsNumber } from 'class-validator';
 
 export class CreateUsuarioDto {
-    dpi: string;
+  dpi: string;
 
-    nombre_completo: string;
+  nombre_completo: string;
 
-    telefono: string;
+  telefono: string;
 
-    rol: string;
+  rol: string;
 
-    password: string;
+  password: string;
 
-    grado: number;
+  residencia: number;
 
-    poblacion: number;
+  @IsOptional()
+  @IsNumber()
+  grado?: number | null;
 
-    residencia: number;
+  @IsOptional()
+  @IsNumber()
+  poblacion?: number | null;
 
-    comando: number;
-
-
+  @IsOptional()
+  @IsNumber()
+  comando?: number | null;
 }

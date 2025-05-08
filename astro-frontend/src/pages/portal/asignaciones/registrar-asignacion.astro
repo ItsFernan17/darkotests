@@ -4,32 +4,52 @@ import Sistema from "../../../layouts/sistema.astro";
 import { FaClipboardList } from "react-icons/fa";
 ---
 
-<Sistema title="Nueva Asignacion">
-  <div class="mx-auto mt-10 w-full max-w-6xl px-4 font-page text-primary">
+<Sistema title="Nuevos Asignación" bgColor="bg-[#f3f3f5]">
+  <div class="mx-auto mt-10 h-auto w-full max-w-4xl px-4">
+    <h1
+      class="font-bold text-[45px] text-primary font-page text-left flex items-center gap-3"
+    >
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-[42px] h-[42px]"
+        viewBox="0 0 24 24"
+        fill="none"
+      >
+        <defs>
+          <linearGradient id="pencilCircleGradient" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#f2b8bc"></stop>
+            <stop offset="50%" stop-color="#aeb8f0"></stop>
+            <stop offset="100%" stop-color="#dab5e9"></stop>
+          </linearGradient>
+        </defs>
+        <path
+          fill="url(#pencilCircleGradient)"
+          d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10
+         10-4.48 10-10S17.52 2 12 2Zm3.54 6.46a1 1 0 0 1 1.41 1.41l-6.6 6.6a1 1 0 0 1-.5.27l-2.6.65a.5.5 0 0 1-.61-.61l.65-2.6a1 1 0 0 1 .27-.5l6.6-6.6ZM9.21 15h.58l5.79-5.79-.58-.58L9.21 14.42V15Z"
+        ></path>
+      </svg>
 
-    <!-- Encabezado general -->
-    <header class="mb-12">
-      <div class="flex items-center gap-3 mb-2">
-        <FaClipboardList className="text-[#5673E0] w-8 h-8" />
-        <h1 class="text-[38px] font-extrabold tracking-tight">
-          Asignaciones para Exámenes
+      Registrar Nuevo Examen
+    </h1>
+
+    <div
+      class="h-1 w-108 mt-2 bg-gradient-to-r from-[#f2b8bc] via-[#aeb8f0] to-[#dab5e9] rounded-full shadow-md"
+    >
+    </div>
+
+    <p class="font-page font-normal text-primary text-[20px] mt-3 text-left">
+      Seleccione el examen y el evaluado para registrar una nueva asignación.
+    </p>
+    <div
+      class="bg-white w-full h-auto font-page rounded-md shadow-md mt-5 mb-5"
+    >
+      <div class="px-6 md:px-10 lg:px-20">
+        <h1 class="font-bold text-primary text-[20px] pt-5">
+          Información del Examen
         </h1>
+        <NewAsignacion client:load />
       </div>
-      <p class="text-gray-500 text-lg">
-        Gestione eficientemente las asignaciones de exámenes por usuario y nivel.
-      </p>
-      <div class="mt-4 w-20 h-1 bg-[#5673E0] rounded-full"></div>
-    </header>
-
-    <!-- Bloque de formulario -->
-    <section class="bg-white border border-gray-200 rounded-2xl shadow-md p-8 md:p-12 transition-all hover:shadow-lg">
-      <h2 class="text-2xl font-semibold text-gray-800 mb-6 border-b pb-3 border-gray-100">
-        Crear Nueva Asignación
-      </h2>
-
-      <NewAsignacion client:load />
-    </section>
-
-    <div class="h-24"></div>
+    </div>
+    <div class="mt-10 h-8"></div>
   </div>
 </Sistema>
