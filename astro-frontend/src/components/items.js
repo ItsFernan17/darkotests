@@ -13,7 +13,7 @@ export const ListaMenu = [
   },
   {
     name: "Preguntas Frecuentes",
-    href: "/faq",
+    href: "/preguntas-respuestas",
   },
   {
     name: "Contactanos",
