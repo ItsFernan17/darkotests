@@ -1,188 +1,67 @@
 ---
 import Publico from "../layouts/publico.astro";
+import FaqAccordion from "../components/FaqAccordion.jsx";
 ---
 
-<Publico title="DarkoTests - Preguntas y Respuestas">
-      <section class="bg-white py-16 px-6 md:px-16 flex flex-col md:flex-row items-center justify-between gap-10">
-        <!-- Texto -->
-        <div class="max-w-xl text-center md:text-left">
-          <h2 class="text-4xl font-bold text-gray-900 mb-4">
-            Preguntas y respuestas en vivo
-          </h2>
-          <p class="text-lg text-gray-700 mb-6">
-            Esta sección de DarkoTest está diseñada para resolver tus dudas. Aquí encontrarás preguntas frecuentes junto con sus respuestas, pensadas para ayudarte a entender y utilizar la plataforma con facilidad.
-          </p>
-          <button class="bg-black text-white px-6 py-3 rounded-full text-lg font-medium hover:bg-gray-800 transition">
-            Registrarse
-          </button>
-          <p class="mt-2 text-sm text-gray-500">No necesitas tarjeta de crédito</p>
-        </div>
-      
-        <!-- Imagen -->
-        <div class="relative w-full max-w-md">
-          <img src="/preguntas1.webp" alt="Presentación interactiva" class="w-full h-auto" />
-        </div>
-      </section>
+<Publico title="Preguntas Frecuentes - DarkoTest">
+  <section class="w-full bg-[#f6f5f4] py-20 px-6 font-sans">
+    <div
+      class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12 items-center"
+    >
+      <!-- Texto -->
+      <div class="text-left">
+        <h1
+          class="text-4xl md:text-5xl font-extrabold text-[#1d1d1f] mb-6 leading-tight"
+        >
+          Resolvemos tus dudas más comunes
+        </h1>
+        <p class="text-xl text-[#444] leading-relaxed mb-8">
+          Aquí encontrarás respuestas claras y rápidas a las preguntas más
+          frecuentes sobre nuestra plataforma de evaluación. Todo lo que
+          necesitas saber, en un solo lugar.
+      </div>
 
-      <section class="w-full py-16 px-6 bg-white text-[#2d2c36]">
-        <div class="max-w-6xl mx-auto text-center mb-12">
-          <h2 class="text-3xl md:text-5xl font-bold mb-4">
-            Lista de preguntas y respuestas, video tutoriales para el uso correcto del sistema.
-          </h2>
-          <p class="text-base md:text-lg text-gray-600">
-            Usa DarkoTest para organizar sesiones interactivas de preguntas y respuestas, 
-             ("pregúntame cualquier cosa"), donde los 
-            participantes pueden enviar sus dudas en tiempo real.
-          </p>
-        </div>
-      
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-          <div class="flex justify-center">
-            <img
-              src="/preguntas2.webp"
-              alt="Ejemplo de pregunta"
-              class="rounded-lg shadow-lg max-w-full"
-            />
-          </div>
-      
-          <div>
-            <h3 class="text-2xl md:text-3xl font-semibold mb-4">
-              Mejora tu presentación con preguntas y respuestas
-            </h3>
-            <p class="text-base md:text-lg text-gray-700">
-              Haz que las sesiones en DarkoTest sean más atractivas permitiendo que tu audiencia haga preguntas directamente al presentador, de forma anónima o pública.
-              Puedes agregar una sección de preguntas a tus contenidos, o habilitar la opción para que el público pregunte en todo momento. Combínalo con herramientas de moderación si lo deseas.
-            </p>
-          </div>
-        </div>
-      </section>
-      
-      <section class="w-full py-16 px-6 bg-white text-[#2d2c36]">
-  <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-10 items-center">
-    {/* Texto a la izquierda */}
-    <div>
-      <h2 class="text-3xl md:text-4xl font-bold mb-6 leading-snug">
-        Crea una mejor experiencia para tu audiencia con preguntas y respuestas
-      </h2>
-      <p class="text-base md:text-lg text-gray-700 leading-relaxed">
-        Brinda a cada uno de los miembros del público la oportunidad de que su pregunta sea escuchada.
-        Tu audiencia puede votar a favor de las preguntas cuyas respuestas también quieren conocer.
-        Las preguntas se hacen de forma anónima, creando un entorno abierto y seguro.
-        <br /><br />
-        La función de preguntas del público puede ser increíblemente útil en grupos reducidos, especialmente cuando se habla de temas delicados. 
-        Durante reuniones y talleres, esta opción puede brindarle a tu audiencia la oportunidad de participar activamente.
-        <br /><br />
-        Esta función es útil para profesionales de RR.HH. y otras personas que realicen talleres o sesiones con grupos pequeños.
-      </p>
-    </div>
-
-    {/* Imagen a la derecha */}
-    <div class="flex justify-center">
-      <div class="bg-[#0057FF] p-6 rounded-xl">
+      <!-- Imagen ilustrativa -->
+      <div class="flex justify-center">
         <img
-          src="/preguntas3.webp"
-          alt="Interfaz de preguntas"
-          class="rounded-md shadow-lg max-w-full"
+          src="/faq.webp"
+          alt="Ilustración de ayuda interactiva"
+          class="h-[300px] rounded-xl shadow-md"
         />
       </div>
     </div>
-  </div>
-      </section>
+  </section>
 
-      <section class="w-full py-20 px-6 bg-white text-[#2d2c36] text-center">
-  <div class="max-w-3xl mx-auto mb-8">
-    <h2 class="text-3xl md:text-4xl font-bold mb-4">¿Necesitas más ayuda?</h2>
-    <p class="text-base md:text-lg text-gray-600">
-      En el video a continuación, Oscar detalla todo lo que necesitas saber sobre cómo organizar tu propia sesión de preguntas y respuestas para tu reunión general, asamblea municipal o AMA.
-    </p>
-  </div>
+  <section class="w-full py-20 px-6 bg-white text-[#2d2c36]">
+    <div class="max-w-4xl mx-auto">
+      <h2 class="text-4xl font-bold mb-10">Preguntas frecuentes</h2>
+      <FaqAccordion client:load />
+    </div>
+  </section>
 
-  {/* Video de YouTube */}
-  <div class="max-w-4xl mx-auto aspect-video">
-    <iframe
-      class="w-full h-full rounded-xl shadow-lg"
-       src="https://www.youtube.com/embed/d10gi4CsZaA?start=4"
-      title="Cómo crear una sesión de preguntas y respuestas"
-      frameborder="0"
-      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      allowFullScreen
-    ></iframe>
-  </div>
-      </section>
-
-      <section class="w-full py-20 px-6 bg-white text-[#2d2c36]">
-  <div class="max-w-7xl mx-auto text-center mb-12">
-    <h2 class="text-3xl md:text-4xl font-bold">
-      Descubre lo que hace efectiva una sesión de preguntas en DarkoTest
+<section class="relative w-full bg-[#f9f9fb] text-center font-sans overflow-hidden py-20 px-4">
+  <!-- Contenido central -->
+  <div class="relative z-10 max-w-2xl mx-auto">
+    <h2 class="text-4xl md:text-5xl font-semibold text-[#1d1d1f] mb-4 leading-tight">
+      Implementa DarkoTests en tu institución
     </h2>
-  </div>
-
-  <div class="grid gap-10 md:grid-cols-3 max-w-6xl mx-auto">
-    {/* Tarjeta 1 */}
-    <div class="text-left">
-      <img src="/preguntas4.webp" alt="Cómo formular buenas preguntas" class="rounded-lg mb-4 w-full" />
-      <h3 class="text-xl font-semibold mb-2">Cómo formular buenas preguntas</h3>
-      <p class="text-gray-600 text-sm">
-        Aprende a redactar preguntas abiertas que generen reflexión y participación efectiva.
-      </p>
-    </div>
-
-    {/* Tarjeta 2 */}
-    <div class="text-left">
-      <img src="/preguntas1.webp" alt="Cualidades de un buen facilitador" class="rounded-lg mb-4 w-full" />
-      <h3 class="text-xl font-semibold mb-2">Cualidades de un buen facilitador</h3>
-      <p class="text-gray-600 text-sm">
-        Descubre qué habilidades destacan en quienes gestionan sesiones de preguntas efectivas.
-      </p>
-    </div>
-
-    {/* Tarjeta 3 */}
-    <div class="text-left">
-      <img src="/preguntas5.webp" alt="Consejos para sesiones exitosas" class="rounded-lg mb-4 w-full" />
-      <h3 class="text-xl font-semibold mb-2">Consejos para sesiones exitosas</h3>
-      <p class="text-gray-600 text-sm">
-        Mejora tus sesiones de Q&A con recomendaciones prácticas y simples dentro de DarkoTest.
-      </p>
-    </div>
-  </div>
-      </section>
-
-
-
-
-      <section class="relative w-full bg-[#f7f7fc] text-[#2d2c36] text-center py-20 overflow-hidden">
-  {/* Fondo decorativo curvo */}
-  <div class="absolute bottom-0 left-0 w-full">
-    <svg viewBox="0 0 1440 210" class="w-full h-auto">
-      <path
-        fill="#6b4fc7"
-        fill-opacity="1"
-        d="M0,192L60,181.3C120,171,240,149,360,138.7C480,128,600,128,720,149.3C840,171,960,213,1080,218.7C1200,224,1320,192,1380,176L1440,160V320H0Z"
-      ></path>
-    </svg>
-  </div>
-
-  {/* Contenido */}
-  <div class="relative z-10 max-w-3xl mx-auto">
-    <h2 class="text-3xl md:text-4xl font-bold mb-6">
-      DarkoTest te ofrece mucho más que solo evaluaciones
-    </h2>
-    <p class="text-base md:text-lg mb-8 text-gray-700">
-      
+    <p class="text-lg md:text-xl text-[#444] leading-relaxed mb-6">
+      Ponte en contacto con nosotros para obtener más información sobre nuestros sistemas de evaluación
+      y solicitar una demostración personalizada.
     </p>
-    <a
-      href="/portal/funciones"
-      class="inline-block bg-[#2d2c36] text-white px-6 py-3 rounded-full font-semibold hover:bg-[#444] transition"
-    >
-      Explorar todas las funcionalidades
+    <a href="/contacto" class="inline-block bg-[#1d1d1f] text-white font-semibold text-base rounded-full px-6 py-3 hover:bg-[#333] transition">
+      Habla con nuestro equipo
     </a>
+  </div>
+
+  <!-- Forma decorativa inferior -->
+  <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0 w-[400px] md:w-full h-[300px] opacity-20">
+    <svg viewBox="0 0 600 200" xmlns="http://www.w3.org/2000/svg" class="w-full h-auto">
+      <path d="M0,100 C150,200 450,0 600,100 L600,200 L0,200 Z" fill="#6C4DC4" />
+    </svg>
   </div>
 </section>
 
 
-      
 
-
-
-   
 </Publico>
