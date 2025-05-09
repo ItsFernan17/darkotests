@@ -6,8 +6,8 @@ export const ListaMenu = [
   {
     name: "Sobre nosotros",
     subMenu: [
-      { name: "Misión y Visión", href: "/info" },
-      { name: "Información", href: "/info" },
+      { name: "Misión y Visión", href: "/mision-vision",},
+      { name: "Información", href: "/informacion" },
       { name: "Nuestro Equipo", href: "/equipo" },
     ],
   },
