@@ -35,23 +35,25 @@ const { title } = Astro.props;
 		  </div>		  
 	</body>
 
-	<footer class="bg-[#f9f8f9] text-[#2d2c36] py-10 mt-2 px-6">
-		<div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-3 gap-8 items-start">
-	  
-		  <!-- Logo y Redes Sociales -->
-		  <div class="flex flex-col items-start gap-6">
-			<div class="flex items-center gap-3">
-			  <div class="w-10 h-10">
-				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-full h-full">
-				  <path d="M21 12A9 9 0 1 0 3 12" stroke="#5673E0" stroke-width="2.5" stroke-linecap="round"/>
-				  <path d="M3 12A9 9 0 0 0 12 21" stroke="#FF6F61" stroke-width="2.5" stroke-linecap="round"/>
-				  <path d="M9 12.5L11 14.5L15 10" stroke="#2D2C36" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
-				</svg>
-			  </div>
-			  <h1 class="text-2xl font-bold">DarkoTests</h1>
-			</div>
-	  
-			<div class="flex gap-4 ml-5 pt-1">
+	
+	<footer class="bg-[#f9f8f9] text-[#2d2c36] py-10 px-6">
+  <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-5 gap-8">
+
+    <!-- Logo y Redes Sociales -->
+    <div class="flex flex-col items-start gap-6 col-span-1">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-full h-full">
+            <path d="M21 12A9 9 0 1 0 3 12" stroke="#5673E0" stroke-width="2.5" stroke-linecap="round" />
+            <path d="M3 12A9 9 0 0 0 12 21" stroke="#FF6F61" stroke-width="2.5" stroke-linecap="round" />
+            <path d="M9 12.5L11 14.5L15 10" stroke="#2D2C36" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          </svg>
+        </div>
+        <h1 class="text-2xl font-bold">DarkoTests</h1>
+      </div>
+
+
+	  			<div class="flex gap-4 ml-5 pt-1">
 				{/* Facebook */}
 				<a href="#" aria-label="Facebook" class="p-2 rounded-md hover:opacity-70 transition">
 					<svg xmlns="http://www.w3.org/2000/svg" role="img" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true" class="w-6 h-6 text-white">
@@ -82,28 +84,59 @@ const { title } = Astro.props;
 				  </a>
 				  
 			  </div>
-		  </div>
+
+
 	  
-		  <!-- Menú Detalles -->
-		  <div>
-			<h3 class="text-[16px] font-bold border-b border-black w-[132px] pb-1 mb-4">Detalles</h3>
-			<ul class="space-y-2">
-			  <li><a href="#" class="hover:text-[#5673E0] transition">Legal</a></li>
-			  <li><a href="#" class="hover:text-[#5673E0] transition">Políticas</a></li>
-			  <li><a href="#" class="hover:text-[#5673E0] transition">Accesibilidad</a></li>
-			</ul>
-		  </div>
-	  
-		  <!-- Menú Sobre Nosotros -->
-		  <div>
-			<h3 class="text-[16px] font-bold border-b border-black w-[162px] pb-1 mb-4">Sobre nosotros</h3>
-			<ul class="space-y-2">
-			  <li><a href="#" class="hover:text-[#5673E0] transition">Información de prensa</a></li>
-			  <li><a href="#" class="hover:text-[#5673E0] transition">Equipo</a></li>
-			  <li><a href="#" class="hover:text-[#5673E0] transition">Cultura</a></li>
-			</ul>
-		  </div>
-	  
-		</div>
-	  </footer>	  
+    </div>
+
+    <!-- Funciones -->
+    <div>
+      <h4 class="font-semibold border-b mb-2">Funciones</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="#">Crear exámenes</a></li>
+        <li><a href="#">Asignar evaluaciones</a></li>
+        <li><a href="#">Banco de preguntas</a></li>
+        <li><a href="#">Estadísticas</a></li>
+        <li><a href="#">Control en tiempo real</a></li>
+      </ul>
+    </div>
+
+    <!-- Recursos -->
+    <div>
+      <h4 class="font-semibold border-b mb-2">Recursos</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="#">Guías de uso</a></li>
+        <li><a href="/preguntas-respuestas">Preguntas frecuentes</a></li>
+        <li><a href="#">Soporte técnico</a></li>
+        <li><a href="#">Manual de administrador</a></li>
+      </ul>
+    </div>
+
+    <!-- Detalles -->
+    <div>
+      <h4 class="font-semibold border-b mb-2">Detalles</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="#">Términos y condiciones</a></li>
+        <li><a href="#">Política de privacidad</a></li>
+        <li><a href="#">Accesibilidad</a></li>
+        <li><a href="#">Requisitos del sistema</a></li>
+      </ul>
+    </div>
+
+    <!-- Sobre nosotros -->
+    <div>
+      <h4 class="font-semibold border-b mb-2">Sobre nosotros</h4>
+      <ul class="space-y-1 text-sm">
+        <li><a href="#">Nuestro equipo</a></li>
+        <li><a href="#">Misión y visión</a></li>
+        <li><a href="#">Contáctanos</a></li>
+        <li><a href="#">Sostenibilidad</a></li>
+      </ul>
+    </div>
+
+  </div>
+</footer>
+
+
+
 </html>
