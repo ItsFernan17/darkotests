@@ -1,0 +1,104 @@
+---
+import Publico from "../layouts/publico.astro";
+---
+
+<Publico title="Requisitos Técnicos - DarkoTests">
+  <section class="bg-[#5689e7] text-white py-24 px-6 text-center font-sans">
+    <div class="max-w-3xl mx-auto">
+      <h1 class="text-4xl md:text-5xl font-semibold mb-4">Requisitos Técnicos</h1>
+      <p class="text-lg md:text-xl leading-relaxed">
+        Conoce qué necesitas para utilizar DarkoTests sin inconvenientes. Desde requisitos de red hasta compatibilidad de navegadores, esta guía está diseñada para ayudarte a preparar correctamente tu entorno antes de una evaluación o presentación.
+      </p>
+    </div>
+  </section>
+
+  <section class="py-20 px-6 text-[#2d2c36] font-sans">
+    <div class="max-w-5xl mx-auto space-y-12 text-lg leading-loose">
+
+      <section>
+        <h2 class="text-3xl font-semibold">Requisitos generales</h2>
+        <p>Para utilizar DarkoTests solo necesitas un navegador web actualizado y una conexión a internet estable. Tanto presentadores como evaluados pueden participar desde computadoras, tabletas o dispositivos móviles. No se requiere la instalación de ningún software adicional, ya que toda la plataforma funciona completamente en línea.</p>
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-semibold">Configuración de red recomendada</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Puerto 443 abierto para conexiones seguras (HTTPS).</li>
+          <li>Soporte para WebSockets en redes corporativas.</li>
+          <li>Evitar proxies o firewalls que bloqueen dominios externos requeridos.</li>
+          <li>Permitir tráfico hacia dominios CDN y APIs externas para recursos dinámicos.</li>
+        </ul>
+        <p>Si usas una red corporativa o educativa, consulta con el personal de TI para garantizar el funcionamiento correcto de todas las funcionalidades.</p>
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-semibold">Dominios que deben estar permitidos (whitelist)</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>cdn.darkotests.com (carga de recursos estáticos)</li>
+          <li>api.darkotests.com (conexión a servicios de autenticación y evaluación)</li>
+          <li>images.darkotests.com (visualización de imágenes y recursos visuales)</li>
+          <li>*.giphy.com (acceso a animaciones, opcional)</li>
+          <li>*.intercom.io (chat de soporte técnico en línea)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-semibold">Recomendaciones para ancho de banda</h2>
+        <table class="table-auto w-full border border-gray-300 text-left text-sm">
+          <thead>
+            <tr class="bg-gray-100">
+              <th class="border px-4 py-2">Participantes</th>
+              <th class="border px-4 py-2">Ancho de banda recomendado</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td class="border px-4 py-2">10</td><td class="border px-4 py-2">0.5 Mbit/s</td></tr>
+            <tr><td class="border px-4 py-2">50</td><td class="border px-4 py-2">2.5 Mbit/s</td></tr>
+            <tr><td class="border px-4 py-2">100</td><td class="border px-4 py-2">5 Mbit/s</td></tr>
+            <tr><td class="border px-4 py-2">500</td><td class="border px-4 py-2">15 Mbit/s</td></tr>
+            <tr><td class="border px-4 py-2">1000</td><td class="border px-4 py-2">30 Mbit/s</td></tr>
+          </tbody>
+        </table>
+        <p>Se recomienda verificar la velocidad de tu conexión utilizando herramientas como SpeedTest antes del evento.</p>
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-semibold">Navegadores y sistemas compatibles</h2>
+        <p><strong>Presentadores:</strong></p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Google Chrome v85 o superior</li>
+          <li>Mozilla Firefox v78 o superior</li>
+          <li>Microsoft Edge v85 o superior</li>
+          <li>Safari v14 o superior (actualización recomendada desde macOS)</li>
+        </ul>
+        <p><strong>Evaluados:</strong></p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Android 11 o superior (Google Chrome actualizado)</li>
+          <li>iOS 14 o superior (Safari o navegador compatible)</li>
+          <li>ChromeOS 85 o superior</li>
+        </ul>
+        <p>La plataforma también es compatible con lectores de pantalla y otras herramientas de accesibilidad según las capacidades del navegador.</p>
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-semibold">Consejos generales para eventos grandes</h2>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Utilizar una conexión por cable dedicada para el dispositivo del presentador.</li>
+          <li>Evitar usar la misma red WiFi que los participantes si es posible.</li>
+          <li>Revisar compatibilidad de proyectores y sistemas audiovisuales con antelación.</li>
+          <li>Hacer una prueba del sistema completo (audio, video, red, interacción) al menos un día antes del evento.</li>
+        </ul>
+        <p>La preparación previa garantiza una experiencia fluida tanto para el presentador como para los participantes.</p>
+      </section>
+
+      <section>
+        <h2 class="text-3xl font-semibold">Soporte técnico y autoverificación</h2>
+        <p>DarkoTests ofrece herramientas automáticas para verificar compatibilidad de tu navegador y conexión. También puedes contactar a nuestro equipo técnico si tienes dificultades técnicas o bloqueos por red.</p>
+        <ul class="list-disc pl-6 space-y-2">
+          <li>Realiza una autoprueba desde el menú de configuración de usuario.</li>
+          <li>Contacta a <a href="mailto:soporte@darkotests.com" class="underline text-[#9c56e7]">soporte@darkotests.com</a> para asistencia directa.</li>
+        </ul>
+      </section>
+    </div>
+  </section>
+</Publico>
