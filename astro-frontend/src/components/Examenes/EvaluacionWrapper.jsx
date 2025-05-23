@@ -1,5 +1,4 @@
 import { useState, useEffect } from "react";
-import FaceCheck from "../IA/FaceCheck";
 import { DoExamen } from "./DoExamen";
 
 export function EvaluacionWrapper() {
@@ -13,9 +12,8 @@ export function EvaluacionWrapper() {
     if (!codigo_examen) {
       setIsUnauthorized(true);
       setTimeout(() => {
-        const redirect = userRole === "evaluador"
-          ? "/portal/mis-asignaciones"
-          : "/login";
+        const redirect =
+          userRole === "evaluado" ? "/portal/mis-asignaciones" : "/login";
         window.location.assign(redirect);
       }, 5000);
     }
@@ -46,8 +44,8 @@ export function EvaluacionWrapper() {
             Acceso No Autorizado
           </h2>
           <p className="text-sm text-gray-600 mb-4">
-            No tienes un examen asignado o no cuentas con los permisos necesarios
-            para acceder a esta evaluación.
+            No tienes un examen asignado o no cuentas con los permisos
+            necesarios para acceder a esta evaluación.
           </p>
           <p className="text-sm text-gray-500 mb-6">
             Serás redirigido automáticamente al menú principal.
@@ -60,9 +58,7 @@ export function EvaluacionWrapper() {
 
   return (
     <div className="w-full flex justify-center items-center">
-      {!autorizado
-        ? <FaceCheck onSuccess={() => setAutorizado(true)} />
-        : <DoExamen />}
+      <DoExamen />
     </div>
   );
 }

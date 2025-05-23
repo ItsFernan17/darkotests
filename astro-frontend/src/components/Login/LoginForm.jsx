@@ -1,4 +1,3 @@
-import { FaUser, FaLock } from "react-icons/fa";
 import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
@@ -13,7 +12,6 @@ export function LoginForm() {
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
 
-  // 🔐 Limpieza si la sesión anterior fue cerrada manualmente o por cierre de pestaña
   useEffect(() => {
     if (sessionStorage.getItem("closedByUser") === "true") {
       localStorage.clear();
@@ -33,8 +31,58 @@ export function LoginForm() {
     }
   };
 
+  const subirFotosAlServidor = async (fotos, dpi) => {
+    const keys = {
+      foto_frente: "frente",
+      foto_perfil_derecho: "perfil_derecho",
+      foto_perfil_izquierdo: "perfil_izquierdo",
+    };
+
+    const token = localStorage.getItem("accessToken");
+
+    for (const key in keys) {
+      const url = fotos[key];
+
+      if (typeof url === "string" && url.startsWith("/resources/pictures/")) {
+        const formData = new FormData();
+        formData.append("dpi", dpi);
+        formData.append("tipo", keys[key]);
+
+        try {
+          const blob = await fetch("http://localhost:3000" + url, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }).then((res) => res.blob());
+
+          formData.append("file", blob, `${keys[key]}.jpg`);
+
+          const resUpload = await fetch(
+            "http://localhost:8000/guardar-foto-evaluado/",
+            {
+              method: "POST",
+              body: formData,
+            }
+          );
+
+          if (!resUpload.ok) {
+            console.error(`❌ Falló al subir la foto tipo ${keys[key]}`);
+          } else {
+            console.log(`✅ Foto de tipo ${keys[key]} enviada a FastAPI`);
+          }
+        } catch (error) {
+          console.error(
+            `❌ Error al subir la foto de tipo ${keys[key]}:`,
+            error
+          );
+        }
+      }
+    }
+  };
+
   const handleLogin = async (data) => {
     toast.dismiss();
+
     try {
       const response = await fetch("http://localhost:3000/api/v1/auth/login/", {
         method: "POST",
@@ -42,24 +90,64 @@ export function LoginForm() {
         body: JSON.stringify(data),
       });
 
-      if (response.ok) {
-        const responseData = await response.json();
-        const role = getRoleFromJWT(responseData.accessToken);
-
-        localStorage.setItem("accessToken", responseData.accessToken);
-        localStorage.setItem("refreshToken", responseData.refreshToken);
-        localStorage.setItem("usuario", responseData.usuario);
-        localStorage.setItem("role", role);
-        localStorage.setItem("dpi", responseData.dpi);
-
-        window.location.href =
-          role === "evaluado"
-            ? "/portal/mis-asignaciones"
-            : "/portal/menu-sistema";
-      } else {
+      if (!response.ok) {
         toast.error("Usuario o contraseña incorrectos");
+        return;
+      }
+
+      const responseData = await response.json();
+      const { accessToken, refreshToken, usuario, dpi } = responseData;
+      const role = getRoleFromJWT(accessToken);
+
+      localStorage.setItem("accessToken", accessToken);
+      localStorage.setItem("refreshToken", refreshToken);
+      localStorage.setItem("usuario", usuario);
+      localStorage.setItem("role", role);
+      localStorage.setItem("dpi", dpi);
+
+      if (role === "evaluado") {
+        try {
+          const fotosResp = await fetch(
+            `http://localhost:3000/api/v1/usuario/${dpi}/mis-fotos`,
+            {
+              headers: { Authorization: `Bearer ${accessToken}` },
+            }
+          );
+
+          const fotosData = fotosResp.ok ? await fotosResp.json() : null;
+
+          const camposEsperados = [
+            "foto_frente",
+            "foto_perfil_derecho",
+            "foto_perfil_izquierdo",
+          ];
+
+          const tieneTodasLasFotos =
+            fotosData &&
+            camposEsperados.every((campo) => {
+              const ruta = fotosData[campo];
+              return (
+                typeof ruta === "string" &&
+                ruta.trim() !== "" &&
+                ruta.trim().toLowerCase() !== "null" &&
+                ruta.trim().toLowerCase() !== "undefined"
+              );
+            });
+
+          if (tieneTodasLasFotos) {
+            await subirFotosAlServidor(fotosData, dpi);
+            window.location.href = "/portal/mis-asignaciones";
+          } else {
+            window.location.href = "/portal/mi-identidad";
+          }
+        } catch (error) {
+          window.location.href = "/portal/mi-identidad";
+        }
+      } else {
+        window.location.href = "/portal/menu-sistema";
       }
     } catch (error) {
+      console.error(error);
       toast.error("Ocurrió un error. Inténtalo de nuevo más tarde.");
     }
   };
@@ -125,7 +213,6 @@ export function LoginForm() {
         </div>
       </form>
 
-      {/* Enlaces */}
       <div className="text-center mt-5 text-sm font-medium text-[#1a1a1a]">
         <p className="mb-1">¿Se te olvidó tu contraseña?</p>
       </div>

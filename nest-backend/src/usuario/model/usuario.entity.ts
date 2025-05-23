@@ -30,6 +30,15 @@ export class Usuario {
     @Column({ length: 100, nullable: false, select: false })
     password: string;
 
+@Column({ type: 'varchar', length: 255, nullable: true })
+foto_frente: string;
+
+@Column({ type: 'varchar', length: 255, nullable: true })
+foto_perfil_izquierdo: string;
+
+@Column({ type: 'varchar', length: 255, nullable: true })
+foto_perfil_derecho: string;
+
     @ManyToOne(() => Grado, { nullable: true })
     @JoinColumn({ name: 'grado' })
     grado: Grado;

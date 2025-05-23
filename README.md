@@ -1,30 +1,107 @@
-
 # DarkoTests
 
-## Descripción
+## 🧠 Descripción
 
-Este es el repositorio del sistema **DarkoTests**, una plataforma diseñada para gestionar exámenes y asignaciones de evaluaciones. El sistema incluye un backend construido con **NestJS** y un frontend desarrollado con **Astro** y **React**.
+**DarkoTests** es una plataforma completa para la **gestión de exámenes, asignaciones y validación de identidad** en línea mediante inteligencia artificial. Incluye:
 
-## Características
-
-- **Frontend:** Astro + React  
 - **Backend:** NestJS  
-- **Gestión de exámenes, asignaciones y evaluados**  
-- **Generación de PDF para constancias de exámenes**  
-- **Uso de tecnologías modernas como React Data Tables y Bootstrap**
+- **Frontend:** Astro + React  
+- **Módulo IA:** Verificación facial con **Dlib** para garantizar que el evaluado sea la persona correcta  
+- **Captura automatizada de fotos** desde distintos ángulos (frente, perfil izquierdo y derecho)  
+- **Generación automática de constancias en PDF**
 
-## Requisitos previos
+---
 
-Asegúrate de tener instalados los siguientes requisitos en tu entorno:
+## 🚀 Características
 
-- **Node.js** (v14 o superior)
-- **npm** (v6 o superior)
+- Sistema de autenticación y roles
+- Gestión de exámenes y asignaciones
+- Validación facial continua durante exámenes
+- Captura inteligente de imágenes usando IA
+- Verificación biométrica con Dlib
+- Exportación de resultados en PDF
+- UI moderna con React Data Table y Bootstrap
 
-## Instalación
+---
 
-Sigue estos pasos para instalar y configurar el proyecto en tu entorno local:
+## ⚙️ Requisitos previos
 
-1. Clona este repositorio:
+Asegúrate de tener instalado:
+
+- **Node.js** v14 o superior  
+- **npm** v6 o superior  
+- **Python** 3.9 o superior (solo para el módulo IA)
+
+---
+
+## 💻 Instalación del sistema
+
+1. Clona el repositorio:
 
    ```bash
    git clone https://github.com/tu-usuario/darkotests.git
+   cd darkotests
+   ```
+   
+2. Instala las dependencias del frontend y backend:
+
+   ```bash
+   cd frontend
+   npm install
+
+   cd ../backend
+   npm install
+   ```
+
+   > 💡 Alternativamente, puedes instalar **todas las dependencias desde la carpeta raíz** si tienes configurado un `package.json` con `workspaces` o usando un manejador de monorepos:
+
+   ```bash
+   npm install
+   ```
+
+---
+
+## 🧠 Instalación del módulo IA (Verificación Facial)
+
+Para que la verificación facial funcione correctamente:
+
+### 📁 Carpeta `lib`
+
+En `ml-api/app/lib/` se incluye una versión local de la librería **Dlib** para Python.
+
+Instala Dlib desde esta ruta con el siguiente comando:
+
+```bash
+pip install C:\Users\ejemplo\Documentos\darkotests\ml-api\app\lib
+```
+
+> ⚠️ Reemplaza la ruta anterior con la tuya correspondiente en tu equipo.
+
+---
+
+### 📁 Carpeta `models`
+
+Dentro de la carpeta `ml-api/models/`, debes colocar **manualmente** los siguientes archivos:
+
+| Modelo | Descripción | Enlace de descarga |
+|--------|-------------|--------------------|
+| `dlib_face_recognition_resnet_model_v1.dat` | Modelo ResNet para embeddings faciales | [Descargar](https://acortar.link/1QIGEw) |
+| `shape_predictor_68_face_landmarks.dat` | Modelo de 68 puntos de referencia facial | [Descargar](https://acortar.link/R7p40w) |
+
+> 🔒 Estos archivos son pesados y no se encuentran en el repositorio por defecto.
+
+---
+
+## 🧪 Verificación facial integrada
+
+El sistema incorpora verificación facial en tiempo real mediante cámara web:
+
+- Captura tres fotos desde distintos ángulos.
+- Compara la imagen en vivo contra fotos base con Dlib.
+- Anula automáticamente el examen tras múltiples fallos.
+
+---
+
+## 📄 Licencia
+
+Este proyecto es de uso institucional. Derechos reservados © 2025.

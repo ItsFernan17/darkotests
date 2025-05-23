@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "@types/multer": "^1.4.12",
     "concurrently": "^9.0.1"
   },
   "name": "laboratorio-evaluaciones-web",
@@ -38,8 +39,10 @@
     "react-router": "^6.26.2",
     "react-select": "^5.8.1",
     "react-toastify": "^10.0.6",
+    "react-webcam": "^7.2.0",
     "require-directory": "^2.1.1",
     "rxjs": "^7.8.1",
+    "sharp": "^0.34.2",
     "shell-quote": "^1.8.1",
     "string-width": "^4.2.3",
     "strip-ansi": "^6.0.1",
@@ -53,7 +56,7 @@
     "yargs-parser": "^21.1.1"
   },
   "scripts": {
-    "start": "concurrently \"npm --prefix ./nest-backend run start\" \"npm --prefix ./astro-frontend run dev\""
+    "start": "concurrently \"npm --prefix ./nest-backend run start\" \"npm --prefix ./astro-frontend run dev\" \"uvicorn app.main:app --reload --port 8000 --app-dir ml-api\""
   },
   "keywords": [],
   "author": "",

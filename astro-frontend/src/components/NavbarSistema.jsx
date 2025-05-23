@@ -11,8 +11,31 @@ const Navbar = () => {
   const [userRole, setUserRole] = useState(null);
   const [fullName, setFullName] = useState("");
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
+    const role = localStorage.getItem("role");
+    const dpi = localStorage.getItem("dpi");
+    const token = localStorage.getItem("accessToken");
+
+    // 🔥 Si es un evaluado, elimina las fotos del servidor FastAPI
+    if (role === "evaluado" && dpi) {
+      try {
+        await fetch(`http://localhost:8000/eliminar-fotos-evaluado/${dpi}`, {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`, // opcional si tu backend no lo requiere
+          },
+        });
+        console.log(`🗑️ Fotos eliminadas del evaluado ${dpi}`);
+      } catch (err) {
+        console.error("❌ Error al eliminar las fotos del evaluado:", err);
+      }
+    }
+
+    // 🧼 Limpieza de session/local storage
     localStorage.clear();
+    sessionStorage.setItem("closedByUser", "true");
+
+    // 🚪 Redirigir al login
     window.location.href = "/";
   };
 
@@ -83,7 +106,7 @@ const Navbar = () => {
             </h1>
           </div>
 
-          <ul className="lg:flex hidden gap-x-1 justify-center flex-1 space-x-3">
+          <ul className="lg:flex hidden gap-x-1 justify-center flex-1 space-x-2">
             {ListaMenuSistema.map((lista) => (
               <ItemsMenuDesktopSistema
                 lista={lista}
@@ -94,7 +117,10 @@ const Navbar = () => {
           </ul>
 
           <div className="lg:hidden z-[999]">
-          <MovilMenuSistema ListaMenuSistema={ListaMenuSistema} userRole={userRole} />
+            <MovilMenuSistema
+              ListaMenuSistema={ListaMenuSistema}
+              userRole={userRole}
+            />
           </div>
 
           <div className="relative" ref={userRef}>

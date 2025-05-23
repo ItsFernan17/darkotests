@@ -1,26 +1,74 @@
 import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useFaceMonitoring } from "../../components/Examenes/useFaceMonitoring";
+import { FaceVerifier } from "./FaceVerifier";
 
 export function DoExamen() {
   const [examen, setExamen] = useState(null);
   const [isExamFinished, setIsExamFinished] = useState(false);
   const [totalScore, setTotalScore] = useState(0);
-  const [isUnauthorized, setIsUnauthorized] = useState(false);
   const [isCompletedModalOpen, setIsCompletedModalOpen] = useState(false);
+  const [dpi, setDpi] = useState(null);
+  const [codigoAsignacion, setCodigoAsignacion] = useState(null);
+  useEffect(() => {
+    if (!examen) return;
 
-  const { videoRef, startMonitoring, stopMonitoring, captureOnce } =
-    useFaceMonitoring((msg) => toast.error(`⚠️ ${msg}`));
+    const codigoAsignacion = localStorage.getItem("codigo_asignacion");
+
+    const handleVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        fetch("http://localhost:3000/api/v1/examen/advertencia", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            mensaje: "Intento de cambio de pestaña o ventana.",
+            dpi: localStorage.getItem("dpi"),
+            fecha: new Date().toISOString(),
+            codigo_asignacion: codigoAsignacion,
+          }),
+        });
+
+        toast.warn(
+          "Cambio de pestaña detectado. No se permite salir del examen."
+        );
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [examen]);
+  useEffect(() => {
+    const valorDpi = localStorage.getItem("dpi");
+    if (valorDpi) setDpi(valorDpi);
+
+    const valorAsignacion = localStorage.getItem("codigo_asignacion");
+    if (valorAsignacion) setCodigoAsignacion(valorAsignacion);
+  }, []);
+
+  const handleVisibilityChange = () => {
+    if (document.visibilityState === "hidden") {
+      fetch("http://localhost:3000/api/v1/examen/advertencia", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          mensaje: "Cambió de pestaña o minimizó",
+          dpi: localStorage.getItem("dpi"),
+          fecha: new Date().toISOString(),
+        }),
+      });
+    }
+  };
 
   const handleStartExam = async () => {
-    await startMonitoring();
     const codigo_examen = localStorage.getItem("codigo_examen");
     if (!codigo_examen) {
       toast.error("No se encontró el código del examen.");
       return;
     }
-
+    document.addEventListener("visibilitychange", handleVisibilityChange);
     try {
       const response = await fetch(
         `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`
@@ -33,7 +81,6 @@ export function DoExamen() {
   };
 
   const handleFinishExam = async () => {
-    stopMonitoring();
     const codigo_examen = localStorage.getItem("codigo_examen");
     const codigo_asignacion = localStorage.getItem("codigo_asignacion");
 
@@ -53,7 +100,6 @@ export function DoExamen() {
 
         if (selectedAnswer) {
           const selectedValue = selectedAnswer.value;
-
           const correctAnswer = pregunta.respuestas.find(
             (respuesta) => respuesta.esCorrecta
           );
@@ -91,6 +137,13 @@ export function DoExamen() {
       );
 
       if (response.ok) {
+        // ✅ Eliminar listeners molestos
+        window.onbeforeunload = null;
+        document.removeEventListener(
+          "visibilitychange",
+          handleVisibilityChange
+        );
+
         localStorage.removeItem("codigo_examen");
         localStorage.removeItem("codigo_asignacion");
 
@@ -121,14 +174,13 @@ export function DoExamen() {
       {!examen ? (
         <>
           <div className="relative z-10 flex flex-col items-center w-full px-6">
-            {" "}
             <div className="bg-white w-full max-w-4xl rounded-xl shadow-md border border-[#E3E8F5] px-8 py-6 mb-10">
               <h2 className="text-xl font-semibold text-[#2d2c36] mb-4">
                 Instrucciones Generales
               </h2>
-              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4">
+              <p className="text-sm sm:text-base text-gray-700 leading-relaxed mb-4 text-justify">
                 A continuación, deberá responder cuidadosamente cada pregunta
-                seleccionando la opción correcta.
+                seleccionando la opción que considere correcta.
                 <span className="font-semibold text-[#FF6F61]">
                   {" "}
                   Si cierra esta ventana o abandona el examen, este será anulado
@@ -140,36 +192,67 @@ export function DoExamen() {
               <h3 className="text-base font-semibold text-[#2d2c36] mb-3">
                 Recomendaciones Técnicas
               </h3>
-              <ul className="list-disc list-inside text-sm sm:text-base text-gray-700 space-y-2 pl-2">
-                <li>
-                  Elija un espacio tranquilo, con buena iluminación y sin
-                  interrupciones.
-                </li>
-                <li>
-                  La{" "}
-                  <span className="font-medium text-[#2d2c36]">
-                    cámara debe estar activa
-                  </span>{" "}
-                  cuando el sistema lo solicite. El micrófono no es necesario.
-                </li>
-                <li>
-                  <span className="font-medium text-[#2d2c36]">
-                    No cierre ni abandone esta ventana
-                  </span>{" "}
-                  mientras realiza el examen.
-                </li>
-                <li>
-                  Una vez confirmada su identidad, el sistema le mostrará
-                  automáticamente el contenido de la evaluación.
-                </li>
-                <li>
-                  Este proceso es{" "}
-                  <span className="font-semibold text-[#2d2c36]">
-                    obligatorio
-                  </span>{" "}
-                  para garantizar transparencia y equidad durante la evaluación.
-                </li>
-              </ul>
+
+              <div className=" pl-5">
+                <ul className="list-disc list-outside text-sm sm:text-base text-gray-700 space-y-3 text-justify leading-relaxed">
+                  <li>
+                    Elija un espacio tranquilo, con buena iluminación y sin
+                    interrupciones.
+                  </li>
+                  <li>
+                    La{" "}
+                    <span className="font-medium text-[#2d2c36]">
+                      cámara debe permanecer activa
+                    </span>{" "}
+                    en todo momento durante la evaluación. No se requiere
+                    micrófono.
+                  </li>
+                  <li>
+                    <span className="font-medium text-[#2d2c36]">
+                      No cierre ni minimice esta ventana
+                    </span>{" "}
+                    mientras responde el examen.
+                  </li>
+                  <li>
+                    Colóquese{" "}
+                    <span className="font-medium text-[#2d2c36]">
+                      frente a la cámara de su computadora
+                    </span>
+                    , evitando movimientos bruscos, recostarse, alejarse o
+                    cubrir su rostro. El sistema requiere que su rostro
+                    permanezca visible y centrado.
+                  </li>
+                  <li>
+                    En caso de que{" "}
+                    <span className="font-medium text-[#2d2c36]">
+                      se detecte la cámara obstruida o una imagen borrosa
+                    </span>
+                    , el sistema mostrará un mensaje de advertencia. Si esto
+                    ocurre{" "}
+                    <span className="font-semibold">
+                      tres veces consecutivas
+                    </span>
+                    , se considerará como una conducta irregular o intento de
+                    ocultamiento.
+                  </li>
+                  <li>
+                    <span className="text-[#FF6F61] font-semibold">
+                      Al tercer evento de este tipo, el sistema anulará
+                      automáticamente el examen por sospecha de suplantación de
+                      identidad
+                    </span>{" "}
+                    o incumplimiento de las normas establecidas.
+                  </li>
+                  <li>
+                    Este proceso de verificación facial es{" "}
+                    <span className="font-semibold text-[#2d2c36]">
+                      obligatorio
+                    </span>{" "}
+                    para garantizar transparencia, equidad y autenticidad
+                    durante la evaluación.
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
           <div className="relative z-10 flex flex-col items-center w-full px-6">
@@ -192,8 +275,20 @@ export function DoExamen() {
         </>
       ) : (
         <div className="w-full max-w-[900px] mt-4 space-y-10">
+          {dpi && codigoAsignacion && (
+            <FaceVerifier
+              dpi={dpi}
+              codigoAsignacion={codigoAsignacion}
+              onAnular={() => {
+                setTimeout(() => {
+                  window.location.href = "/portal/mis-asignaciones";
+                }, 5000);
+              }}
+            />
+          )}
+
           {/* Información del Examen */}
-          <div className="bg-white rounded-xl border border-gray-300 shadow-sm p-6">
+          <div className="bg-white bg-opacity-100 rounded-xl border border-gray-300 shadow-sm p-6">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <p className="text-sm text-gray-500 font-medium">
@@ -235,7 +330,7 @@ export function DoExamen() {
             examen.series.map((serie, serieIndex) => (
               <div
                 key={serieIndex}
-                className="bg-white rounded-xl border border-gray-300 shadow-sm p-6"
+                className="bg-white bg-opacity-100 rounded-xl border border-gray-300 shadow-sm p-6"
               >
                 <h3 className="text-xl font-semibold text-gray-800">
                   {serie.serie}
