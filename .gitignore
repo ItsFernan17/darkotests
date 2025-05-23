@@ -14,6 +14,8 @@ ml-api/models/*.ckpt
 ml-api/models/dlib_face_recognition_resnet_model_.dat
 ml-api/models/shape_predictor_68_face_landmarks.dat
 
-# Ignora carpetas __pycache__ dentro de ml-api/app y subdirectorios como lib
+# Ignorar carpetas de caché de Python
+__pycache__/
 ml-api/app/utils/__pycache__/
-ml-api/app/__pycache__/
+*.py[cod]
+ml-api/app/**/__pycache__/
