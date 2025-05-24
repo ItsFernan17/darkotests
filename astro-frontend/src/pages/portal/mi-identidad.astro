@@ -1,5 +1,5 @@
 ---
-import CapturarFotos from '../../components/Login/CapturaFotos';
+import CapturarFotos from "../../components/Login/CapturaFotos";
 ---
 
 <!doctype html>
@@ -9,8 +9,18 @@ import CapturarFotos from '../../components/Login/CapturaFotos';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DarkoTest</title>
 
-    <link rel="icon" type="image/png" href="/icono-dark.svg" media="(prefers-color-scheme: light)" />
-    <link rel="icon" type="image/png" href="/icono-light.svg" media="(prefers-color-scheme: dark)" />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icono-dark.svg"
+      media="(prefers-color-scheme: light)"
+    />
+    <link
+      rel="icon"
+      type="image/png"
+      href="/icono-light.svg"
+      media="(prefers-color-scheme: dark)"
+    />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -20,83 +30,176 @@ import CapturarFotos from '../../components/Login/CapturaFotos';
     />
   </head>
   <body>
-    <main class="min-h-screen w-full bg-[#f3f3f5] relative overflow-hidden flex flex-col items-center justify-center px-4 py-12 font-sans">
-
+    <main
+      class="min-h-screen w-full bg-[#f3f3f5] relative overflow-hidden flex flex-col items-center justify-center px-4 py-12 font-sans"
+    >
       <!-- Figuras decorativas -->
-      <svg class="absolute top-[4%] left-[5%] w-24 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute top-[4%] left-[5%] w-24 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <circle cx="50" cy="50" r="50" fill="#FF6F61"></circle>
       </svg>
 
-      <svg class="absolute top-[8%] right-[10%] w-20 opacity-10 z-0" viewBox="0 0 100 100">
-        <rect width="60" height="60" fill="#9C27B0" transform="rotate(10 30 30)"></rect>
+      <svg
+        class="absolute top-[8%] right-[10%] w-20 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="60" height="60" fill="#9C27B0" transform="rotate(10 30 30)"
+        ></rect>
       </svg>
 
-
-      <svg class="absolute top-[50%] right-[6%] w-16 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute top-[50%] right-[6%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <circle cx="50" cy="50" r="45" fill="#9C27B0"></circle>
       </svg>
 
-      <svg class="absolute bottom-[12%] right-[8%] w-16 opacity-10 z-0" viewBox="0 0 100 100">
-        <rect width="60" height="60" fill="#5673E0" transform="rotate(45 30 30)"></rect>
+      <svg
+        class="absolute bottom-[12%] right-[8%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="60" height="60" fill="#5673E0" transform="rotate(45 30 30)"
+        ></rect>
       </svg>
 
-      <svg class="absolute bottom-[10%] left-[12%] w-20 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute bottom-[10%] left-[12%] w-20 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <polygon points="50,0 100,100 0,100" fill="#FF6F61"></polygon>
       </svg>
 
-      <svg class="absolute top-[60%] left-[5%] w-20 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute top-[60%] left-[5%] w-20 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <circle cx="50" cy="50" r="35" fill="#5673E0"></circle>
       </svg>
 
-      <svg class="absolute top-[15%] left-[70%] w-12 opacity-10 z-0" viewBox="0 0 100 100">
-        <rect width="50" height="50" fill="#FF6F61" transform="rotate(15 25 25)"></rect>
+      <svg
+        class="absolute top-[15%] left-[70%] w-12 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="50" height="50" fill="#FF6F61" transform="rotate(15 25 25)"
+        ></rect>
       </svg>
 
-      <svg class="absolute top-[18%] left-[15%] w-12 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute top-[18%] left-[15%] w-12 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <circle cx="50" cy="50" r="40" fill="#9C27B0"></circle>
       </svg>
 
-      <svg class="absolute top-[35%] right-[2%] w-10 opacity-10 z-0" viewBox="0 0 100 100">
-        <rect width="60" height="60" fill="#5673E0" transform="rotate(30 30 30)"></rect>
+      <svg
+        class="absolute top-[35%] right-[2%] w-10 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="60" height="60" fill="#5673E0" transform="rotate(30 30 30)"
+        ></rect>
       </svg>
 
-      <svg class="absolute bottom-[20%] left-[55%] w-14 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute bottom-[20%] left-[55%] w-14 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <circle cx="50" cy="50" r="30" fill="#5673E0"></circle>
       </svg>
 
-      <svg class="absolute bottom-[6%] left-[2%] w-16 opacity-10 z-0" viewBox="0 0 100 100">
+      <svg
+        class="absolute bottom-[6%] left-[2%] w-16 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
         <polygon points="0,0 100,0 50,100" fill="#FF6F61"></polygon>
       </svg>
 
-      <svg class="absolute bottom-[2%] right-[2%] w-14 opacity-10 z-0" viewBox="0 0 100 100">
-        <rect width="70" height="70" fill="#9C27B0" transform="rotate(20 35 35)"></rect>
+      <svg
+        class="absolute bottom-[2%] right-[2%] w-14 opacity-10 z-0"
+        viewBox="0 0 100 100"
+      >
+        <rect width="70" height="70" fill="#9C27B0" transform="rotate(20 35 35)"
+        ></rect>
       </svg>
 
       <!-- Texto y componente -->
       <div class="z-10 flex flex-col items-center mb-6 text-center px-4">
         <div class="flex items-center gap-3 mb-3">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" class="w-10 h-10">
-            <path d="M21 12C21 7.03 16.97 3 12 3C9.05 3 6.47 4.64 5.1 7" stroke="#5673E0" stroke-width="2.5" stroke-linecap="round" />
-            <path d="M3 12C3 16.97 7.03 21 12 21C14.95 21 17.53 19.36 18.9 17" stroke="#FF6F61" stroke-width="2.5" stroke-linecap="round" />
-            <path d="M9 12.5L11 14.5L15 10" stroke="#2D2C36" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            class="w-10 h-10"
+          >
+            <path
+              d="M21 12C21 7.03 16.97 3 12 3C9.05 3 6.47 4.64 5.1 7"
+              stroke="#5673E0"
+              stroke-width="2.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M3 12C3 16.97 7.03 21 12 21C14.95 21 17.53 19.36 18.9 17"
+              stroke="#FF6F61"
+              stroke-width="2.5"
+              stroke-linecap="round"></path>
+            <path
+              d="M9 12.5L11 14.5L15 10"
+              stroke="#2D2C36"
+              stroke-width="2.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"></path>
           </svg>
           <h1 class="text-3xl font-bold text-[#2d2c36]">DarkoTests</h1>
         </div>
 
-        <h2 class="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-4">
-          ¡Hola y bienvenido a DarkoTests!
-        </h2>
-        <p class="text-base text-[#444] max-w-2xl text-center">
-          Antes de acceder a tu panel de evaluaciones, necesitamos completar un paso muy importante: el registro facial inicial.
-        </p>
-        <p class="mt-4 text-base text-[#444] max-w-2xl text-center">
-          En los exámenes en línea, asegurarnos de que seas tú quien está presente es esencial. Por eso, te pediremos que tomes <strong>tres fotos</strong>: una de frente y dos de perfil (izquierdo y derecho).
-          <br />
-          Estas imágenes nos permitirán validar tu identidad automáticamente durante la evaluación, protegiendo la integridad del proceso.
-        </p>
-      </div>
-        <CapturarFotos client:load />
+        <div class="w-full flex justify-center px-4 py-10">
+          <div class="w-full max-w-3xl">
+            <!-- Título centrado -->
+            <h2
+              class="text-3xl md:text-4xl font-bold text-[#1a1a1a] mb-6 text-center"
+            >
+              ¡Hola y bienvenido a <span class="text-primary">DarkoTests</span>!
+            </h2>
 
+            <!-- Texto alineado a la izquierda -->
+            <div class="text-left text-base text-[#444] space-y-4">
+              <p>
+                Antes de acceder a tu panel de evaluaciones, necesitamos
+                completar un paso muy importante: el <strong
+                  >registro facial inicial</strong
+                >.
+              </p>
+              <p>
+                En los exámenes en línea, asegurarnos de que seas tú quien está
+                presente es esencial. Por eso, te pediremos que tomes <strong
+                  >tres fotos</strong
+                >: una de frente y dos de perfil (izquierdo y derecho).
+              </p>
+              <p>
+                Estas imágenes nos permitirán validar tu identidad
+                automáticamente durante la evaluación, protegiendo la integridad
+                del proceso.
+              </p>
+
+              <!-- Recomendación ajustada -->
+              <div
+                class="bg-yellow-50 border-l-4 border-yellow-400 text-yellow-800 p-4 rounded-md shadow-sm"
+              >
+                <h3 class="font-semibold text-base mb-1">
+                  💡 Recomendación útil
+                </h3>
+                <p class="text-sm">
+                  Si puedes, pide ayuda para tomar las fotos. Cuando escuches un
+                  sonido, sabrás que la foto fue tomada correctamente. Mantente
+                  en posición hasta que lo escuches.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <CapturarFotos client:load />
+      </div>
     </main>
   </body>
 </html>

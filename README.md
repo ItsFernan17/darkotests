@@ -85,8 +85,8 @@ Dentro de la carpeta `ml-api/models/`, debes colocar **manualmente** los siguien
 
 | Modelo | Descripción | Enlace de descarga |
 |--------|-------------|--------------------|
-| `dlib_face_recognition_resnet_model_v1.dat` | Modelo ResNet para embeddings faciales | [Descargar](https://acortar.link/1QIGEw) |
-| `shape_predictor_68_face_landmarks.dat` | Modelo de 68 puntos de referencia facial | [Descargar](https://acortar.link/R7p40w) |
+| `dlib_face_recognition_resnet_model_v1.dat` | Modelo ResNet para embeddings faciales | [Descargar](https://www.dropbox.com/scl/fi/si0x2m3eaw1xd0sfmv0un/dlib_face_recognition_resnet_model_v1.dat?rlkey=fam4v1p74brle53jm11tl9e8y&st=zuek2r7l&dl=0) |
+| `shape_predictor_68_face_landmarks.dat` | Modelo de 68 puntos de referencia facial | [Descargar](https://www.dropbox.com/scl/fi/ir6lx8hw0ihiydtk1ia0a/shape_predictor_68_face_landmarks.dat?rlkey=zky7a334wrzup20hivvz6dh4d&st=oicp35th&dl=0) |
 
 > 🔒 Estos archivos son pesados y no se encuentran en el repositorio por defecto.
 

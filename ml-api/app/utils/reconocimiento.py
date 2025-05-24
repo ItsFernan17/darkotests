@@ -100,7 +100,7 @@ def verificar_imagen(ruta_img: str, carpeta_usuario: str):
     distancia_min = min(distancias.values())
 
     # ✅ Verificación por mayoría + validación fuerte por distancia mínima
-    es_valido = cantidad_aciertos >= 1 and distancia_min < 0.6
+    es_valido = cantidad_aciertos >= 2 and distancia_min < 0.6
 
     print(f"[RESULTADO FINAL] {'✅ Verificado' if es_valido else '❌ No verificado'}\n")
 

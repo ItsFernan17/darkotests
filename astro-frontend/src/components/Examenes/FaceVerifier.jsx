@@ -41,7 +41,7 @@ export function FaceVerifier({ codigoAsignacion, onAnular }) {
     }
   };
 
-  const verificarResultado = (data, minimoCoincidencias = 1, umbral = 0.6) => {
+  const verificarResultado = (data, minimoCoincidencias = 2, umbral = 0.6) => {
     if (!data?.verificaciones || !Array.isArray(data.verificaciones)) {
       return { valido: false, coincidencias: 0 };
     }
@@ -118,7 +118,7 @@ export function FaceVerifier({ codigoAsignacion, onAnular }) {
 
               setBorrosasConsecutivas(0);
 
-              const { valido } = verificarResultado(data, 1, 0.6);
+              const { valido } = verificarResultado(data, 2, 0.6);
 
               if (!valido) {
                 setFallos((prev) => {
