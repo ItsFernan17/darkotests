@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DepartamentoService } from './departamento/departamento.service';
 import { initialData } from './data/seed-db.data';
 import { GradoService } from './grado/grado.service';
@@ -15,9 +15,8 @@ import { Comando } from './comando/model/comando.entity';
 import * as bcryptjs from 'bcryptjs';
 import { TipoPregunta } from './tipo-pregunta/model/tipo-pregunta.entity';
 
-
 @Injectable()
-export class SeedDbService {
+export class SeedDbService implements OnModuleInit {
   constructor(
     private readonly departamentoService: DepartamentoService,
     private readonly gradoService: GradoService,
@@ -25,20 +24,23 @@ export class SeedDbService {
     private readonly motivoService: MotivoService,
     private readonly comandoService: ComandoService,
 
-
-    @InjectRepository( Usuario )
+    @InjectRepository(Usuario)
     private readonly usuarioRepository: Repository<Usuario>,
-    @InjectRepository( Departamento )
+    @InjectRepository(Departamento)
     private readonly departamentoRepository: Repository<Departamento>,
-    @InjectRepository( Grado )
+    @InjectRepository(Grado)
     private readonly gradoRepository: Repository<Grado>,
-    @InjectRepository( Poblacion )
+    @InjectRepository(Poblacion)
     private readonly poblacionRepository: Repository<Poblacion>,
-    @InjectRepository( Comando )
+    @InjectRepository(Comando)
     private readonly comandoRepository: Repository<Comando>,
-    @InjectRepository( TipoPregunta )
+    @InjectRepository(TipoPregunta)
     private readonly tipoPreguntaRepository: Repository<TipoPregunta>,
   ) {}
+
+  async onModuleInit() {
+    await this.runSeed();
+  }
 
   async runSeed() {
     try {
@@ -49,169 +51,133 @@ export class SeedDbService {
       await this.insertComando();
       await this.insertAdmin();
       await this.insertTipoPregunta();
-      return { message: 'Datos insertados correctamente' };
+      console.log('✅ Seeding completado correctamente.');
     } catch (error) {
-      console.error('Error during seeding:', error);
-      return { message: 'Error durante la inserción de datos' };
+      console.error('❌ Error durante el seeding:', error);
     }
   }
 
   private async insertDepartamentos() {
     const departamentos = initialData.departamentos;
+    const existentes = await this.departamentoService.findAll();
+    const existentesNombres = existentes.map(dep => dep.nombre_departamento);
+    const nuevos = departamentos.filter(dep => !existentesNombres.includes(dep.nombre_departamento));
 
-    const existingDepartamentos = await this.departamentoService.findAll();
-    const existingDepartamentoNames = existingDepartamentos.map(dep => dep.nombre_departamento);
-
-    const departamentosToInsert = departamentos.filter(dep => !existingDepartamentoNames.includes(dep.nombre_departamento));
-
-    if (departamentosToInsert.length === 0) {
-      console.log('Departamentos ya existen. No se insertarán nuevos datos.');
+    if (nuevos.length) {
+      await Promise.all(nuevos.map(d => this.departamentoService.createDepartamento(d)));
+      console.log('Departamentos insertados.');
     } else {
-      const insertPromises = departamentosToInsert.map(departamento =>
-        this.departamentoService.createDepartamento(departamento) 
-      );
-      await Promise.all(insertPromises);
-      console.log('Nuevos departamentos insertados.');
+      console.log('Departamentos ya existen.');
     }
   }
 
   private async insertGrados() {
     const grados = initialData.grado;
+    const existentes = await this.gradoService.findAll();
+    const existentesNombres = existentes.map(g => g.nombre_grado);
+    const nuevos = grados.filter(g => !existentesNombres.includes(g.nombre_grado));
 
-    const existingGrados = await this.gradoService.findAll();
-    const existingGradoNames = existingGrados.map(grado => grado.nombre_grado);
-
-    const gradosToInsert = grados.filter(grado => !existingGradoNames.includes(grado.nombre_grado));
-
-    if (gradosToInsert.length === 0) {
-      console.log('Grados ya existen. No se insertarán nuevos datos.');
+    if (nuevos.length) {
+      await Promise.all(nuevos.map(g => this.gradoService.createGrado(g)));
+      console.log('Grados insertados.');
     } else {
-      const insertPromises = gradosToInsert.map(grado =>
-        this.gradoService.createGrado(grado)
-      );
-      await Promise.all(insertPromises);
-      console.log('Nuevos grados insertados.');
+      console.log('Grados ya existen.');
     }
   }
 
-  private async insertPoblacion(){
+  private async insertPoblacion() {
     const poblacion = initialData.poblacion;
+    const existentes = await this.poblacionService.findAll();
+    const existentesNombres = existentes.map(p => p.nombre_poblacion);
+    const nuevos = poblacion.filter(p => !existentesNombres.includes(p.nombre_poblacion));
 
-    const existingPoblacion = await this.poblacionService.findAll();
-    const existingPoblacionNames = existingPoblacion.map(poblacion => poblacion.nombre_poblacion);
-
-    const poblacionToInsert = poblacion.filter(poblacion => !existingPoblacionNames.includes(poblacion.nombre_poblacion));
-
-    if(poblacionToInsert.length === 0){
-      console.log('Poblaciones ya existe. No se insertarán nuevos datos.');
+    if (nuevos.length) {
+      await Promise.all(nuevos.map(p => this.poblacionService.createPoblacion(p)));
+      console.log('Poblaciones insertadas.');
     } else {
-      const insertPromises = poblacionToInsert.map(poblacion =>
-        this.poblacionService.createPoblacion(poblacion)
-      );
-      await Promise.all(insertPromises);
-      console.log('Nuevas poblaciones insertadas.');
+      console.log('Poblaciones ya existen.');
     }
   }
 
-  private async insertMotivo(){
-    const motivo = initialData.motivo;
+  private async insertMotivo() {
+    const motivos = initialData.motivo;
+    const existentes = await this.motivoService.findAll();
+    const existentesNombres = existentes.map(m => m.nombre_motivo);
+    const nuevos = motivos.filter(m => !existentesNombres.includes(m.nombre_motivo));
 
-    const existingMotivo = await this.motivoService.findAll();
-    const existingMotivoNames = existingMotivo.map(motivo => motivo.nombre_motivo);
-
-    const motivoToInsert = motivo.filter(motivo => !existingMotivoNames.includes(motivo.nombre_motivo));
-
-    if(motivoToInsert.length === 0){
-      console.log('Motivos ya existen. No se insertarán nuevos datos.');
+    if (nuevos.length) {
+      await Promise.all(nuevos.map(m => this.motivoService.createMotivo(m)));
+      console.log('Motivos insertados.');
     } else {
-      const insertPromises = motivoToInsert.map(motivo =>
-        this.motivoService.createMotivo(motivo)
-      );
-      await Promise.all(insertPromises);
-      console.log('Nuevos motivos insertados.');
+      console.log('Motivos ya existen.');
     }
   }
 
-  private async insertComando(){
-    const comando = initialData.comando;
+  private async insertComando() {
+    const comandos = initialData.comando;
+    const existentes = await this.comandoService.findAll();
+    const existentesNombres = existentes.map(c => c.nombre_comando);
+    const nuevos = comandos.filter(c => !existentesNombres.includes(c.nombre_comando));
 
-    const existingComando = await this.comandoService.findAll();
-    const existingComandoNames = existingComando.map(comando => comando.nombre_comando);
-
-    const comandoToInsert = comando.filter(comando => !existingComandoNames.includes(comando.nombre_comando));
-
-    if(comandoToInsert.length === 0){
-      console.log('Comandos ya existen. No se insertarán nuevos datos.');
+    if (nuevos.length) {
+      await Promise.all(nuevos.map(c => this.comandoService.createComando(c)));
+      console.log('Comandos insertados.');
     } else {
-      const insertPromises = comandoToInsert.map(comando =>
-        this.comandoService.createComando(comando)
-      );
-      await Promise.all(insertPromises);
-      console.log('Nuevos comandos insertados.');
+      console.log('Comandos ya existen.');
     }
   }
 
-  private async insertTipoPregunta(){
-    const seedTipoPregunta = initialData.tipo_pregunta;
+  private async insertTipoPregunta() {
+    const tipos = initialData.tipo_pregunta;
+    const existentes = await this.tipoPreguntaRepository.find();
 
-    const existingTipoPregunta = await this.tipoPreguntaRepository.find();
-    if (existingTipoPregunta.length > 0) {
-      console.log('Tipos de pregunta ya existen. No se insertarán nuevos datos.');
+    if (existentes.length > 0) {
+      console.log('Tipos de pregunta ya existen.');
       return;
     }
-  
-    const tipoPregunta: TipoPregunta[] = [];
-  
-    for (const tipo of seedTipoPregunta) {
-      const newTipo = new TipoPregunta();
-      newTipo.codigo_tipoP = tipo.codigo_tipo_pregunta;
-      newTipo.estado = tipo.estado;
-      newTipo.descripcion = tipo.descripcion;
-      tipoPregunta.push(newTipo);
-    }
-  
-    const dbTipoPregunta = await this.tipoPreguntaRepository.save(tipoPregunta);
-    console.log('Tipos de Preguntas Insertadas.');
-    return dbTipoPregunta;
-    
+
+    const insertados = tipos.map(tp => {
+      const tipo = new TipoPregunta();
+      tipo.codigo_tipoP = tp.codigo_tipo_pregunta;
+      tipo.estado = tp.estado;
+      tipo.descripcion = tp.descripcion;
+      return tipo;
+    });
+
+    await this.tipoPreguntaRepository.save(insertados);
+    console.log('Tipos de pregunta insertados.');
   }
 
-  private async insertAdmin(){
-      const seedUsers = initialData.usuario;
+  private async insertAdmin() {
+    const usuarios = initialData.usuario;
+    const existentes = await this.usuarioRepository.find();
 
-      const existingUsers = await this.usuarioRepository.find();
-      if (existingUsers.length > 0) {
-        console.log('Usuario Administrador ya existe. No se insertarán nuevos datos.');
-        return;
-      }
-  
-      const usuario: Usuario[] = [];
-  
-      for (const user of seedUsers) {
-        const newUser = new Usuario();
-        newUser.dpi = user.dpi;
-        newUser.estado = user.estado;
-        newUser.nombre_completo = user.nombre_completo;
-        newUser.telefono = user.telefono; 
-        newUser.rol = user.rol;
-        newUser.nombre_usuario = user.nombre_usuario;
-        newUser.password = bcryptjs.hashSync(user.contrasenia, 10);
-  
-        const grado = await this.gradoRepository.findOne({ where: { codigo_grado: user.grado } });
-        const poblacion = await this.poblacionRepository.findOne({ where: { codigo_poblacion: user.poblacion } });
-        const residencia = await this.departamentoRepository.findOne({ where: { codigo_departamento: user.residencia } });
-        const comando = await this.comandoRepository.findOne({ where: { codigo_comando: user.comando } });
-
-        newUser.grado = grado;
-        newUser.poblacion = poblacion;
-        newUser.residencia = residencia;
-        newUser.comando = comando;
-        usuario.push(newUser);
-      }
-  
-      const dbUsers = await this.usuarioRepository.save(usuario);
-      console.log('Usuario Administrador Insertado.');
-  
-      return dbUsers[0];
+    if (existentes.length > 0) {
+      console.log('Usuario administrador ya existe.');
+      return;
     }
+
+    const nuevos: Usuario[] = [];
+
+    for (const user of usuarios) {
+      const u = new Usuario();
+      u.dpi = user.dpi;
+      u.estado = user.estado;
+      u.nombre_completo = user.nombre_completo;
+      u.telefono = user.telefono;
+      u.rol = user.rol;
+      u.nombre_usuario = user.nombre_usuario;
+      u.password = bcryptjs.hashSync(user.contrasenia, 10);
+
+      u.grado = await this.gradoRepository.findOne({ where: { codigo_grado: user.grado } });
+      u.poblacion = await this.poblacionRepository.findOne({ where: { codigo_poblacion: user.poblacion } });
+      u.residencia = await this.departamentoRepository.findOne({ where: { codigo_departamento: user.residencia } });
+      u.comando = await this.comandoRepository.findOne({ where: { codigo_comando: user.comando } });
+
+      nuevos.push(u);
+    }
+
+    await this.usuarioRepository.save(nuevos);
+    console.log('Usuario administrador insertado.');
+  }
 }

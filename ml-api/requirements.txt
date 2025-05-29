@@ -1,6 +1,6 @@
 fastapi
 uvicorn
-opencv-python
-dlib
-numpy
 imutils
+numpy
+python-multipart
+pillow
