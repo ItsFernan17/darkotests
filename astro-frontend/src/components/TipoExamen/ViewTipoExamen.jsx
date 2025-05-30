@@ -14,6 +14,7 @@ import { NewTipoExamen } from "./NewTipoExamen";
 import { desactiveTipoExamen } from "./TipoExamen.api";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function ViewTipoExamen() {
   const [filterText, setFilterText] = useState("");
@@ -26,7 +27,7 @@ export function ViewTipoExamen() {
   const fetchTiposExamen = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("http://localhost:3000/api/v1/tipo-examen", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/tipo-examen`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

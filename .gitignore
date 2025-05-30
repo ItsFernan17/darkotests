@@ -1,3 +1,21 @@
-node_modules
+# Ignora node_modules, archivos temporales y de entorno
+node_modules/
 .DS_Store
 .env
+
+# Ignora archivos grandes de modelos en ml-api/models, pero no la carpeta
+ml-api/models/*.dat
+ml-api/models/*.pth
+ml-api/models/*.h5
+ml-api/models/*.pt
+ml-api/models/*.ckpt
+
+# Ignora modelos específicos por nombre en ml-api/models
+ml-api/models/dlib_face_recognition_resnet_model_.dat
+ml-api/models/shape_predictor_68_face_landmarks.dat
+
+# Ignorar carpetas de caché de Python
+__pycache__/
+ml-api/app/utils/__pycache__/
+*.py[cod]
+ml-api/app/**/__pycache__/

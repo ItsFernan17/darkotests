@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useFetch } from "../useFetch";
 import Select from "react-select";
+import { backendHost } from "../utils/apiHost"; 
 
 function Poblacion({ register, errors, setValue, resetSelectRef }) {
-  const { data } = useFetch("http://localhost:3000/api/v1/poblacion");
+  const { data } = useFetch(`http://${backendHost}:3000/api/v1/poblacion`);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isClient, setIsClient] = useState(false);
 

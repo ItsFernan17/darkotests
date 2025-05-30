@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createAsignacionExamen, updateAsignacionExamen } from "./Series.api";
 import { FileText, Info } from "lucide-react";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function NewSerie({ codigo_serie = null, onClose = null, onUserSaved = null }) {
   const {
@@ -26,7 +27,7 @@ const iconClass =
       if (codigo_serie) {
         try {
           const token = localStorage.getItem('accessToken');
-          const serieResponse = await fetch(`http://localhost:3000/api/v1/serie/${codigo_serie}`, {
+          const serieResponse = await fetch(`http://${backendHost}:3000/api/v1/serie/${codigo_serie}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { backendHost } from "../../utils/apiHost"; 
 
 const Examen = () => {
   const [fechaEvaluacion, setFechaEvaluacion] = useState('');
@@ -17,7 +18,7 @@ const Examen = () => {
     };
 
     try {
-      const response = await fetch('http://localhost:3000/examen', {
+      const response = await fetch(`http://${backendHost}:3000/examen`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

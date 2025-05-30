@@ -1,3 +1,5 @@
+import { backendHost } from "../../utils/apiHost"; 
+
 function getToken() {
     return localStorage.getItem('accessToken'); // Obtener el token del localStorage
   }
@@ -6,7 +8,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token
   
-      const response = await fetch('http://localhost:3000/api/v1/examen-master/crear-examen', {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/examen-master/crear-examen`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -33,7 +35,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token
   
-      const response = await fetch(`http://localhost:3000/api/v1/examen-master/actualizar/${codigo_examen}`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/examen-master/actualizar/${codigo_examen}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -58,7 +60,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token
   
-      const response = await fetch(`http://localhost:3000/api/v1/examen-master/anular/${codigo_examen}/estado`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/examen-master/anular/${codigo_examen}/estado`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}`, // Añadir el token en la cabecera

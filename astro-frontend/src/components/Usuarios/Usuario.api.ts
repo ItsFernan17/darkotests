@@ -1,3 +1,5 @@
+import { backendHost } from "../../utils/apiHost"; 
+
 // Función para obtener el token de localStorage
 function getToken() {
   return localStorage.getItem("accessToken");
@@ -7,7 +9,7 @@ export async function getUsuarioDpi(dpi: string) {
   try {
     const token = getToken(); // Obtener el token
 
-    const response = await fetch(`http://localhost:3000/api/v1/usuario/${dpi}`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/usuario/${dpi}`, {
       headers: {
         'Authorization': `Bearer ${token}` // Agregar token en el encabezado
       }
@@ -28,7 +30,7 @@ export async function createUsuario(newUsuario: any) {
   try {
     const token = getToken();
 
-    const response = await fetch('http://localhost:3000/api/v1/auth/register', {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/auth/register`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ export async function updateUsuario(dpi: string, newUsuario: any) {
   try {
     const token = getToken(); // Obtener el token
 
-    const response = await fetch(`http://localhost:3000/api/v1/usuario/${dpi}`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/usuario/${dpi}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +80,7 @@ export async function desactiveUsuario(dpi: string) {
   try {
     const token = getToken(); 
 
-    const response = await fetch(`http://localhost:3000/api/v1/usuario/${dpi}/estado`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/usuario/${dpi}/estado`, {
       method: "PATCH",
       headers: {
         'Authorization': `Bearer ${token}`

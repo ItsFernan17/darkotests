@@ -1,3 +1,5 @@
+import { backendHost } from "../../utils/apiHost";
+
 // Obtener el token de acceso desde localStorage
 const getToken = () => {
     return localStorage.getItem('accessToken');
@@ -6,7 +8,7 @@ const getToken = () => {
   export async function getAsignacionExamen(codigo_serie: number) {
     try {
       const token = getToken();
-      const response = await fetch(`http://localhost:3000/api/v1/serie/${codigo_serie}`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/serie/${codigo_serie}`, {
         headers: {
           Authorization: `Bearer ${token}`, // Agregar el token de autorización
           'Content-Type': 'application/json',
@@ -26,7 +28,7 @@ const getToken = () => {
   export async function createAsignacionExamen(newAsignacion: any) {
     try {
       const token = getToken();
-      const response = await fetch('http://localhost:3000/api/v1/serie/', {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/serie/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${token}`, // Agregar el token de autorización
@@ -52,7 +54,7 @@ const getToken = () => {
   export async function updateAsignacionExamen(codigo_serie: number, updatedAsignacion: any) {
     try {
       const token = getToken();
-      const response = await fetch(`http://localhost:3000/api/v1/serie/${codigo_serie}`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/serie/${codigo_serie}`, {
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${token}`, // Agregar el token de autorización
@@ -76,7 +78,7 @@ const getToken = () => {
   export async function desactiveAsignacionExamen(codigo_serie: number) {
     try {
       const token = getToken();
-      const response = await fetch(`http://localhost:3000/api/v1/serie/${codigo_serie}/estado`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/serie/${codigo_serie}/estado`, {
         method: 'PATCH',
         headers: {
           Authorization: `Bearer ${token}`, // Agregar el token de autorización

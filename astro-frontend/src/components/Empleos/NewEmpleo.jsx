@@ -4,6 +4,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { createEmpleo, updateEmpleo } from "./Empleo.api";
 import { FileText, Edit3 } from "lucide-react";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
   const {
@@ -27,7 +28,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
           const token = getToken();
 
           const empleoResponse = await fetch(
-            `http://localhost:3000/api/v1/empleo/${ceom}`,
+            `http://${backendHost}:3000/api/v1/empleo/${ceom}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

@@ -4,12 +4,17 @@ import Publico from "../layouts/publico.astro";
 
 <Publico title="Misión y Visión - DarkoTests">
   <!-- Sección inicial tipo Hero -->
-  <section class="w-full bg-[#5673E0] text-white py-24 px-6 text-center font-sans">
+  <section
+    class="w-full bg-[#e75686] text-white py-24 px-6 text-center font-sans"
+  >
     <div class="max-w-4xl mx-auto">
       <h1 class="text-5xl font-extrabold mb-6">Nuestra Filosofía</h1>
       <p class="text-xl leading-relaxed mb-4">
-        En DarkoTests, creemos en una educación digital inclusiva, segura y centrada en el crecimiento del evaluado y del evaluador.
-        Nuestro compromiso nace del deseo de brindar herramientas efectivas y accesibles para transformar el proceso educativo, asegurando oportunidades equitativas para todos.
+        En DarkoTests, creemos en una educación digital inclusiva, segura y
+        centrada en el crecimiento del evaluado y del evaluador. Nuestro
+        compromiso nace del deseo de brindar herramientas efectivas y accesibles
+        para transformar el proceso educativo, asegurando oportunidades
+        equitativas para todos.
       </p>
     </div>
   </section>
@@ -17,59 +22,134 @@ import Publico from "../layouts/publico.astro";
   <!-- Sección principal -->
   <section class="w-full py-20 px-6 font-sans">
     <div class="max-w-4xl mx-auto text-center mb-16">
-      <h2 class="text-4xl md:text-5xl font-extrabold text-[#2d2c36] mb-4">Misión y Visión</h2>
+      <h2 class="text-4xl md:text-5xl font-extrabold text-[#2d2c36] mb-4">
+        Misión y Visión
+      </h2>
       <p class="text-[#4b4b4b] text-2xl leading-loose">
-        En DarkoTests, estamos comprometidos con transformar la forma en que se evalúa el conocimiento y el talento.
+        En DarkoTests, estamos comprometidos con transformar la forma en que se
+        evalúa el conocimiento y el talento.
       </p>
     </div>
 
     <!-- Tarjeta Misión -->
-    <div class="max-w-6xl mx-auto bg-white shadow-md border border-[#E3E8F5] rounded-xl overflow-hidden mb-16 grid grid-cols-1 md:grid-cols-2 transform transition-transform duration-300 hover:scale-[1.02]">
-      <div class="p-10 flex flex-col justify-center order-2 md:order-1">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-11 h-11 flex items-center justify-center bg-[#5673E0] rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M12 20h.01M3.055 11H21a1 1 0 011 1v6a1 1 0 01-1 1H3.055a1 1 0 01-1-1v-6a1 1 0 011-1z" />
-            </svg>
+    <section class="py-1 px-6 bg-white font-sans">
+      <div
+        class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10"
+      >
+        <!-- Imagen -->
+        <div class="flex justify-center order-1 md:order-1">
+          <div class="p-6 rounded-xl border-full shadow-lg">
+            <img
+              src="/mision.webp"
+              alt="Ilustración de misión DarkoTests"
+              class="w-[800px] max-w-sm rounded-md"
+            />
           </div>
-          <h3 class="text-3xl font-bold text-[#2d2c36]">Nuestra <span class="text-[#5673E0]">Misión</span></h3>
         </div>
-        <p class="text-[#4b4b4b] text-xl leading-loose">
-          Empoderar a instituciones educativas y organizaciones a través de una plataforma de evaluación moderna, accesible y segura, que promueva la inclusión, la mejora continua y el análisis de resultados para la toma de decisiones efectivas.
-        </p>
+
+        <!-- Texto -->
+        <div class="order-2 md:order-2">
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-[#2d2c36] leading-tight mb-6"
+          >
+            Nuestra <span class="text-[#5673E0]">Misión</span>
+          </h2>
+          <p class="text-[#4b4b4b] text-lg md:text-xl leading-relaxed mb-6">
+            Empoderar a instituciones educativas y organizaciones a través de
+            una plataforma de evaluación moderna, accesible y segura, que
+            promueva la inclusión, la mejora continua y el análisis de
+            resultados para la toma de decisiones efectivas.
+          </p>
+          <ul class="text-[#2d2c36] text-base space-y-3">
+            <li class="flex items-start gap-2">
+              <span class="text-[#5673E0] text-xl">✓</span>
+              Compatible con computadoras, tablets y celulares.
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[#5673E0] text-xl">✓</span>
+              Experiencia intuitiva para evaluar desde cualquier lugar.
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[#5673E0] text-xl">✓</span>
+              Ideal para formación educativa o corporativa.
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="flex items-center justify-center p-6 bg-[#f9f9ff] order-1 md:order-2">
-        <img src="/mision.webp" alt="Misión" class="rounded-lg w-full max-w-[320px]" />
-      </div>
-    </div>
+    </section>
 
     <!-- Tarjeta Visión -->
-    <div class="max-w-6xl mx-auto bg-white shadow-md border border-[#E3E8F5] rounded-xl overflow-hidden grid grid-cols-1 md:grid-cols-2 transform transition-transform duration-300 hover:scale-[1.02]">
-      <div class="flex items-center justify-center p-6 bg-[#f9f9ff]">
-        <img src="/vision.webp" alt="Visión" class="rounded-lg w-full max-w-[320px]" />
-      </div>
-      <div class="p-10 flex flex-col justify-center">
-        <div class="flex items-center gap-4 mb-6">
-          <div class="w-11 h-11 flex items-center justify-center bg-[#FF6F61] rounded-full">
-            <svg xmlns="http://www.w3.org/2000/svg" class="w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6V4m0 16v-2m8-6h2M4 12H2m15.364-6.364l1.414-1.414M6.222 17.778l-1.414 1.414m0-13.192l1.414-1.414m12.728 12.728l-1.414 1.414M12 8a4 4 0 100 8 4 4 0 000-8z" />
-            </svg>
-          </div>
-          <h3 class="text-3xl font-bold text-[#2d2c36]">Nuestra <span class="text-[#5673E0]">Visión</span></h3>
+    <section class="mt-14 px-6 bg-white font-sans">
+      <div
+        class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 items-center gap-10"
+      >
+        <!-- Texto a la izquierda -->
+        <div class="order-1 md:order-1">
+          <h2
+            class="text-4xl md:text-5xl font-extrabold text-[#2d2c36] leading-tight mb-2"
+          >
+            Nuestra <span class="text-[#5673E0]">Visión</span>
+          </h2>
+          <p class="text-[#4b4b4b] text-lg md:text-xl leading-relaxed mb-6">
+            Ser la plataforma líder en soluciones de evaluación digital en
+            Latinoamérica, reconocida por su innovación, confiabilidad y su
+            impacto positivo en la educación y el desarrollo profesional
+            continuo.
+          </p>
         </div>
-        <p class="text-[#4b4b4b] text-xl leading-loose">
-          Ser la plataforma líder en soluciones de evaluación digital en Latinoamérica, reconocida por su innovación, confiabilidad y su impacto positivo en la educación y el desarrollo profesional continuo.
-        </p>
+
+        <!-- Imagen a la derecha -->
+        <div class="flex justify-center order-2 md:order-2">
+          <div class="p-6 rounded-xl border-full shadow-lg">
+            <img
+              src="/vision.webp"
+              alt="Ilustración de visión DarkoTests"
+              class="w-[800px] max-w-sm rounded-md"
+            />
+          </div>
+        </div>
       </div>
+    </section>
+  </section>
+
+  <section
+    class="relative w-full bg-[#f9f9fb] text-center font-sans overflow-hidden px-4"
+  >
+    <!-- Contenido central -->
+    <div class="relative z-10 max-w-2xl mx-auto">
+      <h2
+        class="text-4xl md:text-5xl font-semibold text-[#1d1d1f] mb-4 mt-10 leading-tight"
+      >
+        Evaluaciones modernas para instituciones y empresas
+      </h2>
+      <p class="text-lg md:text-xl text-[#444] leading-relaxed mb-6">
+        DarkoTests no es solo una plataforma. Es una solución confiable para
+        gestionar exámenes de forma segura, flexible y eficiente. Está diseñada
+        para instituciones educativas, organizaciones gubernamentales y empresas
+        que buscan evaluar conocimientos, habilidades o desempeño de manera
+        profesional. Nuestro compromiso es ofrecer evaluaciones precisas,
+        accesibles y adaptadas a las necesidades del entorno actual.
+      </p>
+      <a
+        href="/contacto"
+        class="mb-10 inline-block bg-[#1d1d1f] text-white font-semibold text-base rounded-full px-6 py-3 hover:bg-[#333] transition"
+      >
+        Habla con nuestro equipo
+      </a>
     </div>
 
-    <!-- Sección Final -->
-    <div class="bg-[#f9f9ff] mt-24 py-20 px-6 text-[#2d2c36] text-center rounded-xl max-w-6xl mx-auto shadow-lg">
-      <h3 class="text-3xl md:text-4xl font-extrabold mb-4">Creemos en la educación del futuro</h3>
-      <p class="text-lg md:text-xl leading-relaxed max-w-4xl mx-auto mb-4">
-        DarkoTests no es solo un sistema. Es una visión compartida por estudiantes comprometidos con el avance tecnológico y académico de nuestra región. Apostamos por un sistema evaluativo justo, moderno y humano.
-      Nuestro compromiso va más allá del desarrollo de una herramienta: construimos una experiencia educativa confiable, con impacto real en instituciones que buscan excelencia académica y adaptación al entorno digital.
-      </p>
+    <!-- Forma decorativa inferior -->
+    <div
+      class="absolute bottom-0 left-1/2 transform -translate-x-1/2 z-0 w-[400px] md:w-full h-[300px] opacity-20"
+    >
+      <svg
+        viewBox="0 0 600 200"
+        xmlns="http://www.w3.org/2000/svg"
+        class="w-full h-auto"
+      >
+        <path d="M0,100 C150,200 450,0 600,100 L600,200 L0,200 Z" fill="#e75686"
+        ></path>
+      </svg>
     </div>
   </section>
 </Publico>

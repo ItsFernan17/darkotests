@@ -1,4 +1,5 @@
-// Función para obtener el token de localStorage
+import { backendHost } from "../../utils/apiHost"; 
+
 function getToken() {
     return localStorage.getItem("accessToken");
   }
@@ -7,7 +8,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token de localStorage
   
-      const response = await fetch(`http://localhost:3000/api/v1/empleo/${ceom}`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/empleo/${ceom}`, {
         headers: {
           'Authorization': `Bearer ${token}` // Agregar token en el encabezado
         }
@@ -29,7 +30,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token de localStorage
   
-      const response = await fetch('http://localhost:3000/api/v1/empleo/', {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/empleo/`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token de localStorage
   
-      const response = await fetch(`http://localhost:3000/api/v1/empleo/${ceom}`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/empleo/${ceom}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -81,7 +82,7 @@ function getToken() {
     try {
       const token = getToken(); // Obtener el token de localStorage
   
-      const response = await fetch(`http://localhost:3000/api/v1/empleo/${ceom}/estado`, {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/empleo/${ceom}/estado`, {
         method: 'PATCH',
         headers: {
           'Authorization': `Bearer ${token}` // Agregar token en el encabezado

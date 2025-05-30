@@ -9,6 +9,7 @@ import TipoExamen from "./TipoExamen";
 import TipoMotivo from "./TipoMotivo";
 import Serie from "./Series";
 import { createExamen, updateExamen } from "./Examen.api";
+import { backendHost } from "../../utils/apiHost"; 
 
 // Estilos reutilizables
 const inputClass =
@@ -70,7 +71,7 @@ export function NewExamen({ codigo_examen = null, onClose = null, onUserSaved = 
         try {
           const token = getToken();
           const response = await fetch(
-            `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`,
+            `http://${backendHost}:3000/api/v1/examen-master/informacion/${codigo_examen}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

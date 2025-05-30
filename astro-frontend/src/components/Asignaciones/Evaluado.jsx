@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Select from "react-select";
+import { backendHost } from "../../utils/apiHost"; 
 
 function Evaluado({ register, errors, setValue, resetSelectRef }) {
   const [data, setData] = useState([]);
@@ -12,7 +13,7 @@ function Evaluado({ register, errors, setValue, resetSelectRef }) {
   const fetchUsuarios = async () => {
     try {
       const token = getToken(); // Obtener el token de localStorage
-      const response = await fetch("http://localhost:3000/api/v1/usuario", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/usuario`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

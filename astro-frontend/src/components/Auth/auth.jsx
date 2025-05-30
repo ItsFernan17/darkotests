@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaBan } from "react-icons/fa";
 import { jwtDecode } from "jwt-decode";
+import { backendHost } from "../../utils/apiHost"; 
 
 const AuthGuard = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -20,7 +21,7 @@ const AuthGuard = ({ children }) => {
         if (!refreshToken) return false;
 
         const response = await fetch(
-          "http://localhost:3000/api/v1/auth/refresh-token",
+          `http://${backendHost}:3000/api/v1/auth/refresh-token`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

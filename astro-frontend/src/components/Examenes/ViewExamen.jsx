@@ -14,6 +14,7 @@ import { NewExamen } from "./NewExamen";
 import { desactiveExamen } from "./Examen.api";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function ViewExamen() {
   const [filterText, setFilterText] = useState("");
@@ -28,7 +29,7 @@ export function ViewExamen() {
   const fetchExamenes = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://localhost:3000/api/v1/examen", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/examen`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

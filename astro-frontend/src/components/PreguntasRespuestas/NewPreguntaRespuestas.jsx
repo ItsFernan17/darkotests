@@ -6,6 +6,7 @@ import { FaPlus, FaTrash } from "react-icons/fa";
 import { FileText, CheckCircle, Edit3 } from "lucide-react";
 import TipoPregunta from "./TipoPregunta";
 import { createPregunta, updatePregunta } from "./PreguntaRespuesta.api";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function NewPreguntaRespuestas({
   id = null,
@@ -43,7 +44,7 @@ export function NewPreguntaRespuestas({
           const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
   
           const preguntaResponse = await fetch(
-            `http://localhost:3000/api/v1/pregunta-respuesta/preguntas/${id}`,
+            `http://${backendHost}:3000/api/v1/pregunta-respuesta/preguntas/${id}`,
             {
               headers: {
                 'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
