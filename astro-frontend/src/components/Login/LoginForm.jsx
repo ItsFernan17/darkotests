@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast, ToastContainer } from "react-toastify";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import "react-toastify/dist/ReactToastify.css";
+import { backendHost } from "../../utils/apiHost"
 
 export function LoginForm() {
   const {
@@ -49,7 +50,7 @@ export function LoginForm() {
         formData.append("tipo", keys[key]);
 
         try {
-          const blob = await fetch("http://localhost:3000" + url, {
+          const blob = await fetch(`http://${backendHost}:3000` + url, {
             headers: {
               Authorization: `Bearer ${token}`,
             },
@@ -58,7 +59,7 @@ export function LoginForm() {
           formData.append("file", blob, `${keys[key]}.jpg`);
 
           const resUpload = await fetch(
-            "http://localhost:8000/guardar-foto-evaluado/",
+            `http://${backendHost}:8000/guardar-foto-evaluado/`,
             {
               method: "POST",
               body: formData,
@@ -84,7 +85,7 @@ export function LoginForm() {
     toast.dismiss();
 
     try {
-      const response = await fetch("http://localhost:3000/api/v1/auth/login/", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/auth/login/`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data),
@@ -108,7 +109,7 @@ export function LoginForm() {
       if (role === "evaluado") {
         try {
           const fotosResp = await fetch(
-            `http://localhost:3000/api/v1/usuario/${dpi}/mis-fotos`,
+            `http://${backendHost}:3000/api/v1/usuario/${dpi}/mis-fotos`,
             {
               headers: { Authorization: `Bearer ${accessToken}` },
             }

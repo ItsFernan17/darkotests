@@ -6,6 +6,7 @@ import Departamentos from "../Departamentos";
 import { createUsuario, updateUsuario } from "./Usuario.api";
 import Roles from "./Roles";
 import { User, Phone, Lock, FileText } from "lucide-react";
+import { backendHost } from "../../utils/apiHost";
 
 export function NewUsuario({
   usuario = null,
@@ -30,7 +31,7 @@ export function NewUsuario({
         try {
           const token = localStorage.getItem("accessToken");
           const res = await fetch(
-            `http://localhost:3000/api/v1/usuario/${usuario}`,
+            `http://${backendHost}:3000/api/v1/usuario/${usuario}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -118,7 +119,7 @@ export function NewUsuario({
         }
   
         const usuarioResponse = await fetch(
-          `http://localhost:3000/api/v1/usuario/${dataUsuario.dpi}`, {
+          `http://${backendHost}:3000/api/v1/usuario/${dataUsuario.dpi}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }

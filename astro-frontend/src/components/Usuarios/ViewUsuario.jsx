@@ -14,6 +14,7 @@ import { NewUsuario } from "./NewUsuario";
 import { desactiveUsuario } from "./Usuario.api";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function ViewUsuarios() {
   const [filterText, setFilterText] = useState("");
@@ -36,7 +37,7 @@ export function ViewUsuarios() {
   const fetchUsuarios = async () => {
     try {
       const token = getToken();
-      const response = await fetch("http://localhost:3000/api/v1/usuario", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/usuario`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {

@@ -1,5 +1,6 @@
 import { useRef, useState, useLayoutEffect, useEffect } from "react";
 import { toast } from "react-toastify";
+import { backendHost } from "../../utils/apiHost"; 
 
 export default function CapturaFotos() {
   const videoRef = useRef(null);
@@ -108,7 +109,7 @@ export default function CapturaFotos() {
     formData.append("tipo", tipo);
     formData.append("dpi", dpi);
     try {
-      const res = await fetch("http://localhost:8000/validar-orientacion/", {
+      const res = await fetch(`http://${backendHost}:8000/validar-orientacion/`, {
         method: "POST",
         body: formData,
       });
@@ -143,7 +144,7 @@ export default function CapturaFotos() {
       formData.append(`foto_${tipo}`, file, `${tipo}.jpg`);
     }
 
-    await fetch(`http://localhost:3000/api/v1/usuario/fotos`, {
+    await fetch(`http://${backendHost}:3000/api/v1/usuario/fotos`, {
       method: "POST",
       headers: { Authorization: `Bearer ${token}` },
       body: formData,

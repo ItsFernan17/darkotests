@@ -1,3 +1,4 @@
+import { backendHost } from "../../utils/apiHost"; 
 // Función para obtener el token desde el localStorage
 function getToken() {
     return localStorage.getItem('accessToken'); // Obtener el token almacenado en localStorage
@@ -6,7 +7,7 @@ function getToken() {
 export async function getEmpleoCEOM(id: number) {
     const token = getToken(); // Obtener el token
 
-    const response = await fetch(`http://localhost:3000/api/v1/pregunta-respuesta/registrar-pregunta/preguntas/${id}`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/pregunta-respuesta/registrar-pregunta/preguntas/${id}`, {
         headers: {
             'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
             'Content-Type': 'application/json' // Especificar el tipo de contenido
@@ -19,7 +20,7 @@ export async function getEmpleoCEOM(id: number) {
 export async function createPregunta(newPregunta: any) {
     const token = getToken(); // Obtener el token
 
-    const response = await fetch('http://localhost:3000/api/v1/pregunta-respuesta/registrar-pregunta', {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/pregunta-respuesta/registrar-pregunta`, {
         method: 'POST',
         headers: {
             'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
@@ -35,7 +36,7 @@ export async function createPregunta(newPregunta: any) {
 export async function updatePregunta(id: number, newPregunta: any) {
     const token = getToken(); // Obtener el token
 
-    const response = await fetch(`http://localhost:3000/api/v1/pregunta-respuesta/actualizar-pregunta/${id}`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/pregunta-respuesta/actualizar-pregunta/${id}`, {
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado
@@ -50,7 +51,7 @@ export async function updatePregunta(id: number, newPregunta: any) {
 export async function desactivePreguntaRespuesta(codigo_pregunta: number) {
     const token = getToken(); // Obtener el token
 
-    const res = await fetch(`http://localhost:3000/api/v1/pregunta-respuesta/pregunta/${codigo_pregunta}/estado`, {
+    const res = await fetch(`http://${backendHost}:3000/api/v1/pregunta-respuesta/pregunta/${codigo_pregunta}/estado`, {
         method: 'PATCH',
         headers: {
             'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado

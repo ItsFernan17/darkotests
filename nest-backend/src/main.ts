@@ -9,10 +9,10 @@ import * as cors from 'cors';
 async function bootstrap() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
-  // ✅ Prefijo global de API
+
   app.setGlobalPrefix('api/v1');
 
-  // ✅ Validaciones globales
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -21,25 +21,24 @@ async function bootstrap() {
     }),
   );
 
-  // ✅ Carpeta de uploads (si la usas)
+
   app.useStaticAssets(join(__dirname, '..', 'uploads'), {
     prefix: '/uploads/',
   });
 
-  // ✅ Carpeta de fotos con CORS habilitado
+
   app.use(
     '/resources/pictures',
-    cors({ origin: '*' }), // 🔓 Puedes restringir a ['http://localhost:4321'] en producción
+    cors({ origin: '*' }), 
     express.static(join(__dirname, '..', 'resources', 'pictures')),
   );
 
-  // ✅ Habilita CORS general
   app.enableCors({
     origin: '*',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
   });
 
-  await app.listen(3000);
+  await app.listen(3000, '0.0.0.0');
 }
 bootstrap();

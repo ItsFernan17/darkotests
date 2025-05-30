@@ -14,7 +14,7 @@ import { NewEmpleo } from "./NewEmpleo";
 import { desactiveEmpleo } from "./Empleo.api";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
-
+import { backendHost } from "../../utils/apiHost"; 
 
 export function ViewEmpleo() {
   const [filterText, setFilterText] = useState("");
@@ -27,7 +27,7 @@ export function ViewEmpleo() {
   const fetchEmpleos = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("http://localhost:3000/api/v1/empleo", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/empleo`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

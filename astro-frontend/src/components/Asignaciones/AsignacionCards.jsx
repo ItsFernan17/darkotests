@@ -4,6 +4,7 @@ import { FileText, PlayCircle } from "lucide-react";
 import { logoBase64 } from "../../constants/logoBase64";
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
+import { backendHost } from "../../utils/apiHost"; 
 pdfMake.vfs = pdfFonts.vfs;
 
 export function AsignacionCards() {
@@ -17,7 +18,7 @@ export function AsignacionCards() {
   const fetchAsignaciones = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("http://localhost:3000/api/v1/asignacion", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/asignacion`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

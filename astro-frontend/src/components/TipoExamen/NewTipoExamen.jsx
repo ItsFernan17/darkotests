@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { createTipoExamen, updateTipoExamen } from "./TipoExamen.api";
 import Empleo from "./Empleo";
 import { FileText } from "lucide-react";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function NewTipoExamen({
   codigo_tipoE = null,
@@ -27,7 +28,7 @@ export function NewTipoExamen({
         try {
           const token = localStorage.getItem("accessToken");
           const tipoExamenResponse = await fetch(
-            `http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}`,
+            `http://${backendHost}:3000/api/v1/tipo-examen/${codigo_tipoE}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

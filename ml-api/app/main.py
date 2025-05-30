@@ -13,7 +13,7 @@ app = FastAPI()
 # Habilitar CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # En producción, restringe a tu frontend
+    allow_origins=["*"], 
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 FOTOS_BASE_DIR = os.path.abspath(os.path.join(BASE_DIR, "fotos"))  # dentro de ml-api/fotos
 os.makedirs(FOTOS_BASE_DIR, exist_ok=True)
 
-# ✅ Guarda una foto del evaluado
+
 @app.post("/guardar-foto-evaluado/")
 async def guardar_foto_evaluado(
     file: UploadFile = File(...),

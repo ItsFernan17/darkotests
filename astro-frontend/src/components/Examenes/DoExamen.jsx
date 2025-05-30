@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaceVerifier } from "./FaceVerifier";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function DoExamen() {
   const [examen, setExamen] = useState(null);
@@ -17,7 +18,7 @@ export function DoExamen() {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
-        fetch("http://localhost:3000/api/v1/examen/advertencia", {
+        fetch(`http://${backendHost}:3000/api/v1/examen/advertencia`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -50,7 +51,7 @@ export function DoExamen() {
 
   const handleVisibilityChange = () => {
     if (document.visibilityState === "hidden") {
-      fetch("http://localhost:3000/api/v1/examen/advertencia", {
+      fetch(`http://${backendHost}:3000/api/v1/examen/advertencia`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -71,7 +72,7 @@ export function DoExamen() {
     document.addEventListener("visibilitychange", handleVisibilityChange);
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/examen-master/informacion/${codigo_examen}`
+        `http://${backendHost}:3000/api/v1/examen-master/informacion/${codigo_examen}`
       );
       const data = await response.json();
       setExamen(data);
@@ -126,7 +127,7 @@ export function DoExamen() {
 
     try {
       const response = await fetch(
-        `http://localhost:3000/api/v1/asignacion/${codigo_asignacion}/punteo`,
+        `http://${backendHost}:3000/api/v1/asignacion/${codigo_asignacion}/punteo`,
         {
           method: "PUT",
           headers: {

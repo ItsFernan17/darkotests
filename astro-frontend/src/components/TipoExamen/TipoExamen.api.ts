@@ -1,8 +1,10 @@
+import { backendHost } from "../../utils/apiHost"; 
+
 export async function createTipoExamen(newTipoExamen: any) {
   const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
 
   try {
-    const response = await fetch('http://localhost:3000/api/v1/tipo-examen/', {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/tipo-examen/`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -29,7 +31,7 @@ export async function updateTipoExamen(codigo_tipoE: number, newTipoExamen: any)
   const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
 
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/tipo-examen/${codigo_tipoE}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -54,7 +56,7 @@ export async function desactiveTipoExamen(codigo_tipoE: number) {
   const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
 
   try {
-    const response = await fetch(`http://localhost:3000/api/v1/tipo-examen/${codigo_tipoE}/estado`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/tipo-examen/${codigo_tipoE}/estado`, {
       method: 'PATCH',
       headers: {
         'Authorization': `Bearer ${token}`, // Agregar el token en el encabezado

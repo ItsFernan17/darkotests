@@ -15,6 +15,7 @@ import { NewPreguntaRespuestas } from "./NewPreguntaRespuestas";
 import { desactivePreguntaRespuesta } from "./PreguntaRespuesta.api";
 import { motion } from "framer-motion";
 import { X } from "lucide-react";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function ViewPreguntaRespuesta() {
   const [filterText, setFilterText] = useState("");
@@ -28,7 +29,7 @@ export function ViewPreguntaRespuesta() {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        "http://localhost:3000/api/v1/pregunta-respuesta/preguntas",
+        `http://${backendHost}:3000/api/v1/pregunta-respuesta/preguntas`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

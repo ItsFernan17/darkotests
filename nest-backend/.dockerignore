@@ -1,0 +1,35 @@
+# Ignora módulos y dependencias locales
+node_modules
+__pycache__/
+*.pyc
+
+# Ignora salidas de compilación
+dist
+build
+.out
+.cache
+.next
+astro.config.ts
+
+# Ignora archivos de entorno y configuración sensible
+.env
+.env.*
+*.env.local
+
+# Ignora archivos de pruebas y logs
+coverage
+*.log
+.vscode
+.idea
+.DS_Store
+*.swp
+
+# Docker interno
+Dockerfile*
+.dockerignore
+
+# Otros
+*.sqlite
+*.db
+*.lock
+*.bak

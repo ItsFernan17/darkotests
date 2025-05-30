@@ -14,6 +14,7 @@ import { NewSerie } from "./NewSerieExamen";
 import { desactiveAsignacionExamen } from "./Series.api";
 import { X } from "lucide-react";
 import { motion } from "framer-motion";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function ViewSerie() {
   const [filterText, setFilterText] = useState("");
@@ -26,7 +27,7 @@ export function ViewSerie() {
   const fetchSeries = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch("http://localhost:3000/api/v1/serie", {
+      const response = await fetch(`http://${backendHost}:3000/api/v1/serie`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

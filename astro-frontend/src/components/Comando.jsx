@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useFetch } from "../useFetch";
 import Select from "react-select";
+import { backendHost } from "../utils/apiHost"; 
 
 function Comando({ register, errors, setValue, resetSelectRef }) {
-  const { data } = useFetch("http://localhost:3000/api/v1/comando");
+  const { data } = useFetch(`http://${backendHost}:3000/api/v1/comando`);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isClient, setIsClient] = useState(false);
 

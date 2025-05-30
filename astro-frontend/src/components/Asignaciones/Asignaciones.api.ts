@@ -1,4 +1,5 @@
-// Obtener el token de acceso desde localStorage
+import { backendHost } from "../../utils/apiHost"; 
+
 const getToken = () => {
   return localStorage.getItem('accessToken');
 };
@@ -6,7 +7,7 @@ const getToken = () => {
 export async function createAsignacion(newAsignacion: any) {
   try {
     const token = getToken();
-    const response = await fetch('http://localhost:3000/api/v1/asignacion', {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/asignacion`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +33,7 @@ export async function createAsignacion(newAsignacion: any) {
 export async function updateAsignacion(codigo_asignacion: number, newAsignacion: any) {
   try {
     const token = getToken();
-    const response = await fetch(`http://localhost:3000/api/v1/asignacion/${codigo_asignacion}`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/asignacion/${codigo_asignacion}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -56,7 +57,7 @@ export async function updateAsignacion(codigo_asignacion: number, newAsignacion:
 export async function desactiveAsignacion(codigo_asignacion: number) {
   try {
     const token = getToken(); 
-    const response = await fetch(`http://localhost:3000/api/v1/asignacion/${codigo_asignacion}/estado`, {
+    const response = await fetch(`http://${backendHost}:3000/api/v1/asignacion/${codigo_asignacion}/estado`, {
       method: 'PATCH',
       headers: {
         Authorization: `Bearer ${token}`,

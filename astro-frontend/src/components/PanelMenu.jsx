@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { UserRound } from "lucide-react";
+import { backendHost } from "../utils/apiHost"; 
 
 const PanelDerecho = () => {
   const [userRole, setUserRole] = useState(null);
@@ -13,7 +14,7 @@ const PanelDerecho = () => {
     setUserRole(role);
 
     if (dpi && token) {
-      fetch(`http://localhost:3000/api/v1/usuario/${dpi}`, {
+      fetch(`http://${backendHost}:3000/api/v1/usuario/${dpi}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

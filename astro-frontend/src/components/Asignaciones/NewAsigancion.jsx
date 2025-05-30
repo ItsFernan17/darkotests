@@ -5,6 +5,7 @@ import "react-toastify/dist/ReactToastify.css";
 import { createAsignacion, updateAsignacion } from "./Asignaciones.api";
 import Examen from "./Examen";
 import { Search } from "lucide-react";
+import { backendHost } from "../../utils/apiHost"; 
 
 export function NewAsignacion({
   codigo_asignacion = null,
@@ -30,7 +31,7 @@ export function NewAsignacion({
         try {
           const token = localStorage.getItem("accessToken");
           const response = await fetch(
-            `http://localhost:3000/api/v1/examen/${codigoExamen}`,
+            `http://${backendHost}:3000/api/v1/examen/${codigoExamen}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -57,7 +58,7 @@ export function NewAsignacion({
     const fetchAsignaciones = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await fetch("http://localhost:3000/api/v1/asignacion", {
+        const res = await fetch(`http://${backendHost}:3000/api/v1/asignacion`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -193,7 +194,7 @@ export function NewAsignacion({
   const fetchEvaluados = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const res = await fetch("http://localhost:3000/api/v1/usuario", {
+      const res = await fetch(`http://${backendHost}:3000/api/v1/usuario`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -201,7 +202,7 @@ export function NewAsignacion({
 
       if (codigo_asignacion) {
         const asignacionRes = await fetch(
-          `http://localhost:3000/api/v1/asignacion/${codigo_asignacion}`,
+          `http://${backendHost}:3000/api/v1/asignacion/${codigo_asignacion}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
