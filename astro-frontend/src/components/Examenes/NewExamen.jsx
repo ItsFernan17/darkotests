@@ -71,7 +71,7 @@ export function NewExamen({ codigo_examen = null, onClose = null, onUserSaved = 
         try {
           const token = getToken();
           const response = await fetch(
-            `http://${backendHost}:3000/api/v1/examen-master/informacion/${codigo_examen}`,
+            `${backendHost}/api/v1/examen-master/informacion/${codigo_examen}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

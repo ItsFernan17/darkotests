@@ -31,7 +31,7 @@ export function NewAsignacion({
         try {
           const token = localStorage.getItem("accessToken");
           const response = await fetch(
-            `http://${backendHost}:3000/api/v1/examen/${codigoExamen}`,
+            `${backendHost}/api/v1/examen/${codigoExamen}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,
@@ -58,7 +58,7 @@ export function NewAsignacion({
     const fetchAsignaciones = async () => {
       try {
         const token = localStorage.getItem("accessToken");
-        const res = await fetch(`http://${backendHost}:3000/api/v1/asignacion`, {
+        const res = await fetch(`${backendHost}/api/v1/asignacion`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         const data = await res.json();
@@ -194,7 +194,7 @@ export function NewAsignacion({
   const fetchEvaluados = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const res = await fetch(`http://${backendHost}:3000/api/v1/usuario`, {
+      const res = await fetch(`${backendHost}/api/v1/usuario`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -202,7 +202,7 @@ export function NewAsignacion({
 
       if (codigo_asignacion) {
         const asignacionRes = await fetch(
-          `http://${backendHost}:3000/api/v1/asignacion/${codigo_asignacion}`,
+          `${backendHost}/api/v1/asignacion/${codigo_asignacion}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }

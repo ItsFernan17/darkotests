@@ -21,7 +21,7 @@ const AuthGuard = ({ children }) => {
         if (!refreshToken) return false;
 
         const response = await fetch(
-          `http://${backendHost}:3000/api/v1/auth/refresh-token`,
+          `${backendHost}/api/v1/auth/refresh-token`,
           {
             method: "POST",
             headers: { "Content-Type": "application/json" },

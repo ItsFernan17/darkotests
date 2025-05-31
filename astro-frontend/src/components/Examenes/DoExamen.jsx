@@ -18,7 +18,7 @@ export function DoExamen() {
 
     const handleVisibilityChange = () => {
       if (document.visibilityState === "hidden") {
-        fetch(`http://${backendHost}:3000/api/v1/examen/advertencia`, {
+        fetch(`${backendHost}/api/v1/examen/advertencia`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -51,7 +51,7 @@ export function DoExamen() {
 
   const handleVisibilityChange = () => {
     if (document.visibilityState === "hidden") {
-      fetch(`http://${backendHost}:3000/api/v1/examen/advertencia`, {
+      fetch(`${backendHost}/api/v1/examen/advertencia`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -72,7 +72,7 @@ export function DoExamen() {
     document.addEventListener("visibilitychange", handleVisibilityChange);
     try {
       const response = await fetch(
-        `http://${backendHost}:3000/api/v1/examen-master/informacion/${codigo_examen}`
+        `${backendHost}/api/v1/examen-master/informacion/${codigo_examen}`
       );
       const data = await response.json();
       setExamen(data);
@@ -127,7 +127,7 @@ export function DoExamen() {
 
     try {
       const response = await fetch(
-        `http://${backendHost}:3000/api/v1/asignacion/${codigo_asignacion}/punteo`,
+        `${backendHost}/api/v1/asignacion/${codigo_asignacion}/punteo`,
         {
           method: "PUT",
           headers: {

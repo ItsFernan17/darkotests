@@ -14,7 +14,7 @@ const PanelDerecho = () => {
     setUserRole(role);
 
     if (dpi && token) {
-      fetch(`http://${backendHost}:3000/api/v1/usuario/${dpi}`, {
+      fetch(`${backendHost}/api/v1/usuario/${dpi}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

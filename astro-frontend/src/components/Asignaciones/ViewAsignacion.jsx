@@ -41,7 +41,7 @@ export function ViewAsignacion() {
   const fetchAsignaciones = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`http://${backendHost}:3000/api/v1/asignacion`, {
+      const response = await fetch(`${backendHost}/api/v1/asignacion`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -235,7 +235,7 @@ export function ViewAsignacion() {
     try {
       const token = localStorage.getItem("accessToken");
       const response = await fetch(
-        `http://${backendHost}:3000/api/v1/asignacion/${codigoAsignacion}/datos`,
+        `${backendHost}/api/v1/asignacion/${codigoAsignacion}/datos`,
         {
           method: "GET",
           headers: {

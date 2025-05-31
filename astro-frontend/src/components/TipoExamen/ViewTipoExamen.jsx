@@ -27,7 +27,7 @@ export function ViewTipoExamen() {
   const fetchTiposExamen = async () => {
     try {
       const token = localStorage.getItem("accessToken");
-      const response = await fetch(`http://${backendHost}:3000/api/v1/tipo-examen`, {
+      const response = await fetch(`${backendHost}/api/v1/tipo-examen`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

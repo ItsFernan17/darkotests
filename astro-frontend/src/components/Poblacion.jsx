@@ -4,7 +4,7 @@ import Select from "react-select";
 import { backendHost } from "../utils/apiHost"; 
 
 function Poblacion({ register, errors, setValue, resetSelectRef }) {
-  const { data } = useFetch(`http://${backendHost}:3000/api/v1/poblacion`);
+  const { data } = useFetch(`${backendHost}/api/v1/poblacion`);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isClient, setIsClient] = useState(false);
 
