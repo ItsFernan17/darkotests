@@ -29,7 +29,7 @@ export function ViewExamen() {
   const fetchExamenes = async () => {
     try {
       const token = getToken();
-      const response = await fetch(`http://${backendHost}:3000/api/v1/examen`, {
+      const response = await fetch(`${backendHost}/api/v1/examen`, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "application/json",

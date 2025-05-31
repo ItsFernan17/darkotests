@@ -44,7 +44,7 @@ export function NewPreguntaRespuestas({
           const token = localStorage.getItem('accessToken'); // Obtener el token de localStorage
   
           const preguntaResponse = await fetch(
-            `http://${backendHost}:3000/api/v1/pregunta-respuesta/preguntas/${id}`,
+            `${backendHost}/api/v1/pregunta-respuesta/preguntas/${id}`,
             {
               headers: {
                 'Authorization': `Bearer ${token}`, // Incluir el token en el encabezado

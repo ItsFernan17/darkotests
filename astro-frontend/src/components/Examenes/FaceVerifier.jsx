@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { backendHost } from "../../utils/apiHost"; 
+import { iaApiHost } from "../../utils/apiHost"; 
 
 export function FaceVerifier({ codigoAsignacion, onAnular }) {
   const videoRef = useRef(null);
@@ -30,7 +31,7 @@ export function FaceVerifier({ codigoAsignacion, onAnular }) {
   const anularExamen = async () => {
     try {
       const response = await fetch(
-        `http://${backendHost}:3000/api/v1/asignacion/${codigoAsignacion}/punteo`,
+        `${backendHost}/api/v1/asignacion/${codigoAsignacion}/punteo`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
@@ -85,7 +86,7 @@ export function FaceVerifier({ codigoAsignacion, onAnular }) {
               formData.append("dpi", dpi);
               formData.append("file", blob, "vivo.jpg");
 
-              const res = await fetch(`http://${backendHost}:8000/verificar-identidad/`, {
+              const res = await fetch(`${iaApiHost}/verificar-identidad/`, {
                 method: "POST",
                 body: formData,
               });

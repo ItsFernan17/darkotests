@@ -18,7 +18,7 @@ const Examen = () => {
     };
 
     try {
-      const response = await fetch(`http://${backendHost}:3000/examen`, {
+      const response = await fetch(`${backendHost}/examen`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

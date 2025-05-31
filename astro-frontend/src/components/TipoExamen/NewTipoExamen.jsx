@@ -28,7 +28,7 @@ export function NewTipoExamen({
         try {
           const token = localStorage.getItem("accessToken");
           const tipoExamenResponse = await fetch(
-            `http://${backendHost}:3000/api/v1/tipo-examen/${codigo_tipoE}`,
+            `${backendHost}/api/v1/tipo-examen/${codigo_tipoE}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

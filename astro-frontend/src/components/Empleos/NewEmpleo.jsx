@@ -28,7 +28,7 @@ export function NewEmpleo({ ceom = null, onClose = null, onUserSaved = null }) {
           const token = getToken();
 
           const empleoResponse = await fetch(
-            `http://${backendHost}:3000/api/v1/empleo/${ceom}`,
+            `${backendHost}/api/v1/empleo/${ceom}`,
             {
               headers: {
                 Authorization: `Bearer ${token}`,

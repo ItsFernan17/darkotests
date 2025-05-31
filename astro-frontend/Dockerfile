@@ -12,4 +12,4 @@ RUN npm run build
 
 EXPOSE 4321
 
-CMD ["npx", "astro", "preview", "--host", "0.0.0.0"]
+CMD ["npx", "astro", "preview", "--host", "0.0.0.0", "--allowed-hosts=darkotest-escobo.bot.gt"]

@@ -4,7 +4,7 @@ import Select from "react-select";
 import { backendHost } from "../utils/apiHost";
 
 function Grado({ register, errors, setValue, resetSelectRef }) {
-  const { data } = useFetch(`http://${backendHost}:3000/api/v1/grado`);
+  const { data } = useFetch(`${backendHost}/api/v1/grado`);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isClient, setIsClient] = useState(false);
 

@@ -17,11 +17,6 @@ services:
     depends_on:
       - mysql
 
-  ml-api:
-    build: ./ml-api
-    ports:
-      - "8000:8000"
-
   mysql:
     image: mysql:8.0
     restart: always

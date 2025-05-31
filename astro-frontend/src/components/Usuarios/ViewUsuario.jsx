@@ -37,7 +37,7 @@ export function ViewUsuarios() {
   const fetchUsuarios = async () => {
     try {
       const token = getToken();
-      const response = await fetch(`http://${backendHost}:3000/api/v1/usuario`, {
+      const response = await fetch(`${backendHost}/api/v1/usuario`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {

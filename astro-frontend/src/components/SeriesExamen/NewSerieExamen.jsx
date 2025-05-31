@@ -27,7 +27,7 @@ const iconClass =
       if (codigo_serie) {
         try {
           const token = localStorage.getItem('accessToken');
-          const serieResponse = await fetch(`http://${backendHost}:3000/api/v1/serie/${codigo_serie}`, {
+          const serieResponse = await fetch(`${backendHost}/api/v1/serie/${codigo_serie}`, {
             headers: {
               Authorization: `Bearer ${token}`,
               'Content-Type': 'application/json',

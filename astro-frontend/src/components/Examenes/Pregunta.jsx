@@ -4,7 +4,7 @@ import { FaChevronDown, FaChevronUp } from "react-icons/fa";
 import { backendHost } from "../../utils/apiHost";
 
 function Pregunta({ register, errors, setValue, getValues, name }) {
-  const { data, loading, error } = useFetch(`http://${backendHost}:3000/api/v1/pregunta`);
+  const { data, loading, error } = useFetch(`${backendHost}/api/v1/pregunta`);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedPreguntas, setSelectedPreguntas] = useState([]);
 

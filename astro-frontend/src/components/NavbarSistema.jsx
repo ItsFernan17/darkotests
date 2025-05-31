@@ -5,6 +5,7 @@ import MovilMenuSistema from "./MovilMenuSistema";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { backendHost } from "../utils/apiHost"; 
+import { iaApiHost } from "../utils/apiHost"; 
 
 const Navbar = () => {
   const [userDropdown, setUserDropdown] = useState(false);
@@ -20,7 +21,7 @@ const Navbar = () => {
     // 🔥 Si es un evaluado, elimina las fotos del servidor FastAPI
     if (role === "evaluado" && dpi) {
       try {
-        await fetch(`http://${backendHost}:8000/eliminar-fotos-evaluado/${dpi}`, {
+        await fetch(`${iaApiHost}/eliminar-fotos-evaluado/${dpi}`, {
           method: "DELETE",
           headers: {
             Authorization: `Bearer ${token}`, // opcional si tu backend no lo requiere
@@ -48,7 +49,7 @@ const Navbar = () => {
     setUserRole(role);
 
     if (dpi && token) {
-      fetch(`http://${backendHost}:3000/api/v1/usuario/${dpi}`, {
+      fetch(`${backendHost}/api/v1/usuario/${dpi}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

@@ -4,7 +4,7 @@ import Select from "react-select";
 import { backendHost } from "../../utils/apiHost"; 
 
 function Examenes({ register, errors, setValue, resetSelectRef, examenesFiltrados = [] })  {
-  const { data } = useFetch(`http://${backendHost}:3000/api/v1/examen`);
+  const { data } = useFetch(`${backendHost}/api/v1/examen`);
   const [selectedOption, setSelectedOption] = useState(null);
   const [isClient, setIsClient] = useState(false);
   const [examenData, setExamenData] = useState(null);

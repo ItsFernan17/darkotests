@@ -31,7 +31,7 @@ export function NewUsuario({
         try {
           const token = localStorage.getItem("accessToken");
           const res = await fetch(
-            `http://${backendHost}:3000/api/v1/usuario/${usuario}`,
+            `${backendHost}/api/v1/usuario/${usuario}`,
             {
               headers: { Authorization: `Bearer ${token}` },
             }
@@ -119,7 +119,7 @@ export function NewUsuario({
         }
   
         const usuarioResponse = await fetch(
-          `http://${backendHost}:3000/api/v1/usuario/${dataUsuario.dpi}`, {
+          `${backendHost}/api/v1/usuario/${dataUsuario.dpi}`, {
             headers: {
               'Authorization': `Bearer ${token}`
             }
